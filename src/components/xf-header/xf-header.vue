@@ -36,7 +36,7 @@
           <el-checkbox label="自动登录" v-model="autoLogin"></el-checkbox>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit" class="submit" v-loading="loading">登录</el-button>
+          <el-button type="primary" @click="onSubmit" class="submit" :loading="loading">登录</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>

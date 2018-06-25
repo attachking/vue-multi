@@ -13,6 +13,7 @@
               :options="dictionaries.CRAFT_AS"
               v-model="bca111"
               change-on-select
+              placeholder="请选择职位类别"
               @change="handleBcalll">
             </el-cascader>
           </el-form-item>
@@ -22,6 +23,7 @@
               change-on-select
               filterable
               :options="dictionaries.TAB_CITY"
+              placeholder="请选择地区"
               v-model="acb202"
               @change="handleAcb202">
             </el-cascader>
@@ -125,95 +127,50 @@
       </transition>
     </div>
     <div class="list" ref="list">
-      <div class="item">
+      <div class="item" v-for="val in list" :key="val.acb210">
         <div class="top">
           <p>
-            <a href="" target="_blank">产品经理</a>
-            <span class="salary">5000-6999元</span>
+            <a :href="'job.html?acb210=' + val.acb210" target="_blank">{{val.cca113}}</a>
+            <span class="salary">{{val.acc034Name}}</span>
           </p>
-          <p>大学本科 / 15人 / 全职</p>
-          <p>[ 2018-6-21 17:47:51 发布 ]</p>
+          <p>{{val.aac012 || '--'}} / {{val.acb21r || 0}}人 / {{val.acb21iName || '--'}}</p>
+          <p>[ {{$dateFormat(val.ccpr05, 'yyyy-MM-dd hh:mm:ss')}} 发布 ]</p>
         </div>
         <div class="bottom">
           <div class="img">
             <img src="../corp/corp.png" alt="">
           </div>
           <div class="corp-info">
-            <a href="" target="_blank">郑州石水源教育科技有限公司</a>
-            <p>文化/体育/娱乐业</p>
+            <a :href="'corp.html?aab001=' + val.aab001" target="_blank">{{val.aab004}}</a>
+            <p>
+              <!--行业-->
+              <span>{{val.ccpr10name || '--'}}</span>&nbsp;/&nbsp;
+              <span>{{val.bcb202 || '--'}}</span>
+            </p>
           </div>
-          <i class="xffont font-shoucang"></i>
+          <i class="xffont" v-if="ccmu17 === 1" @click="collectSingle(val)" :class="Number(val.is_Collection) === 0 ? 'font-shoucang' : 'font-shoucang1'"></i>
         </div>
       </div>
-      <div class="item">
-        <div class="top">
-          <p>
-            <a href="">产品经理</a>
-            <span class="salary">5000-6999元</span>
-          </p>
-          <p>大学本科 / 15人 / 全职</p>
-          <p>[ 2018-6-21 17:47:51 发布 ]</p>
-        </div>
-        <div class="bottom">
-          <div class="img">
-            <img src="../corp/corp.png" alt="">
-          </div>
-          <div class="corp-info">
-            <a href="">郑州石水源教育科技有限公司</a>
-            <p>文化/体育/娱乐业</p>
-          </div>
-          <i class="xffont font-shoucang"></i>
-        </div>
-      </div>
-      <div class="item">
-        <div class="top">
-          <p>
-            <a href="">产品经理</a>
-            <span class="salary">5000-6999元</span>
-          </p>
-          <p>大学本科 / 15人 / 全职</p>
-          <p>[ 2018-6-21 17:47:51 发布 ]</p>
-        </div>
-        <div class="bottom">
-          <div class="img">
-            <img src="../corp/corp.png" alt="">
-          </div>
-          <div class="corp-info">
-            <a href="">郑州石水源教育科技有限公司</a>
-            <p>文化/体育/娱乐业</p>
-          </div>
-          <i class="xffont font-shoucang"></i>
-        </div>
-      </div>
-      <div class="item">
-        <div class="top">
-          <p>
-            <a href="" target="_blank">产品经理</a>
-            <span class="salary">5000-6999元</span>
-          </p>
-          <p>大学本科 / 15人 / 全职</p>
-          <p>[ 2018-6-21 17:47:51 发布 ]</p>
-        </div>
-        <div class="bottom">
-          <div class="img">
-            <img src="../corp/corp.png" alt="">
-          </div>
-          <div class="corp-info">
-            <a href="" target="_blank">郑州石水源教育科技有限公司</a>
-            <p>文化/体育/娱乐业</p>
-          </div>
-          <i class="xffont font-shoucang"></i>
-        </div>
-      </div>
+    </div>
+    <empty v-if="pageBean.totalCount === 0"></empty>
+    <div class="page" v-if="pageBean.totalCount > 0">
+      <pagination :bean="pageBean" @current-change="handlePage"></pagination>
     </div>
   </div>
 </template>
 <script>
 import {echo} from '../../../../common/js/utils'
+import Pagination from '../../../../components/pagination/pagination.vue'
+import Empty from '../../../../components/empty/empty.vue'
 
 export default {
+  components: {
+    Empty,
+    Pagination},
+  name: 'job-search',
   data() {
     return {
+      ccmu17: this.$userInfo.ccmu17,
       form: {
         bca112: '', // 关键字
         bca111Name: '', // 职位
@@ -245,7 +202,9 @@ export default {
       showMore: false,
       bca111: [],
       acb202: [],
-      aab056: []
+      aab056: [],
+      pageBean: {},
+      list: []
     }
   },
   methods: {
@@ -263,10 +222,32 @@ export default {
         this.form.acb202 = ''
       }
     },
+    handlePage(page) {
+      this.form.currentPage = page
+      this.getList()
+    },
     onSubmit() {
-      this.form.aab056 = Array.slice.call(this.aab056).sort((a, b) => a - b).join(',')
-      const form = Object.assign({}, this.form)
+      this.form.currentPage = 1
+      this.getList()
+    },
+    getList() {
+      this.form.aab056 = Array.prototype.slice.call(this.aab056).sort((a, b) => a - b).join(',')
+      const form = Object.assign({
+        aac001: this.$userInfo.aac001,
+        ccmu17: this.$userInfo.ccmu17
+      }, this.form)
       form.bca112 = encodeURIComponent(form.bca112)
+      const loading = this.$loading({
+        target: this.$refs.list,
+        fullscreen: false
+      })
+      this.$post('/service/business/corp/newPosition/queryPositionList.xf', form).then(res => {
+        this.pageBean = res.pageBean
+        this.list = res.result
+        loading.close()
+      }).catch(() => {
+        loading.close()
+      })
     },
     getDictionaries() { // 字典表
       this.$post('/service/sys/config/config/getConditionList', {
@@ -306,10 +287,46 @@ export default {
       this.acb202 = []
       this.aab056 = []
       echo(this.form)
+    },
+    collectSingle(val) {
+      if (Number(val.is_Collection) === 0) {
+        this.collect(val.acb210)
+      } else {
+        this.delCollect()
+      }
+    },
+    collect(acb210) {
+      this.$post('/service/business/person/positionTalent/talentPositionSave.xf', {
+        aac001: this.$userInfo.aac001,
+        acb210
+      }).then(res => {
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getList()
+        }
+      })
+    },
+    delCollect(acb210) {
+      this.$post('/service/business/person/positionTalent/talentPositionDel.xf', {
+        aac001: this.$userInfo.aac001,
+        acb210
+      }).then(res => {
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getList()
+        }
+      })
     }
   },
   created() {
     this.getDictionaries()
+    this.onSubmit()
   }
 }
 </script>
@@ -322,7 +339,6 @@ export default {
         margin-bottom: 0;
       }
       .search-tit{
-        background: #f8f8f8;
         padding: 15px 10px;
         border-top: 1px solid #ebebeb;
         border-bottom: 1px solid #ebebeb;
@@ -358,11 +374,14 @@ export default {
       .item{
         display: block;
         float: left;
-        width: 395px;
+        width: 415px;
         height: 176px;
         margin-bottom: 15px;
         overflow: hidden;
         border: 1px solid #ebebeb;
+        &:hover{
+          border-color: $--color-primary;
+        }
         &:nth-child(2n-1){
           margin-right: 15px;
         }
@@ -405,7 +424,7 @@ export default {
             }
           }
           .corp-info{
-            width: 310px;
+            width: 325px;
             float: right;
             a{
               display: inline-block;
@@ -434,5 +453,9 @@ export default {
         }
       }
     }
+  }
+  .page{
+    margin: 10px 0;
+    text-align: center;
   }
 </style>

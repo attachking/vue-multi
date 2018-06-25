@@ -80,21 +80,22 @@
     </div>
     <div class="recommend">
       <div class="card-tit">
-        <span class="item active"><i class="xffont font-iconzhiwei"></i>推荐职位</span>
-        <span class="item"><i class="xffont font-gongsixinxi"></i>推荐单位</span>
+        <span class="item" :class="currentTab === 1 ? 'active' : ''"><i class="xffont font-iconzhiwei"></i>推荐职位</span>
+        <span class="item" :class="currentTab === 2 ? 'active' : ''"><i class="xffont font-gongsixinxi"></i>推荐单位</span>
       </div>
-      <div class="job-list">
-        <div class="item">
-          <div class="logo">
-            <img src="../../static/logo.png" alt="">
-          </div>
-          <div class="pos-info">
-            <p>
-              <a href="" class="pos-name">软件工程师</a>
-              <a href="" class="corp-name">百世物流科技（中国）有限公司</a>
-              <span class="salary">3000元以上</span>
-            </p>
-            <p class="pos-detail">
+      <transition name="el-zoom-in-top" mode="out-in">
+        <div class="job-list" key="jobList" v-if="currentTab === 1">
+          <div class="item">
+            <div class="logo">
+              <img src="../../static/logo.png" alt="">
+            </div>
+            <div class="pos-info">
+              <p>
+                <a href="" class="pos-name">软件工程师</a>
+                <a href="" class="corp-name">百世物流科技（中国）有限公司</a>
+                <span class="salary">3000元以上</span>
+              </p>
+              <p class="pos-detail">
               <span>
                 <span>地点：北京</span>&nbsp;|&nbsp;
                 <span>招聘人数：2 人</span>&nbsp;|&nbsp;
@@ -102,21 +103,21 @@
                 <span>学历：大学本科</span>&nbsp;|&nbsp;
                 <span>工作性质：全职</span>
               </span>
-              <span class="date">2016-8-2</span>
-            </p>
+                <span class="date">2016-8-2</span>
+              </p>
+            </div>
           </div>
-        </div>
-        <div class="item">
-          <div class="logo">
-            <img src="../../static/logo.png" alt="">
-          </div>
-          <div class="pos-info">
-            <p>
-              <a href="" class="pos-name">软件工程师</a>
-              <a href="" class="corp-name">百世物流科技（中国）有限公司</a>
-              <span class="salary">3000元以上</span>
-            </p>
-            <p class="pos-detail">
+          <div class="item">
+            <div class="logo">
+              <img src="../../static/logo.png" alt="">
+            </div>
+            <div class="pos-info">
+              <p>
+                <a href="" class="pos-name">软件工程师</a>
+                <a href="" class="corp-name">百世物流科技（中国）有限公司</a>
+                <span class="salary">3000元以上</span>
+              </p>
+              <p class="pos-detail">
               <span>
                 <span>地点：北京</span>&nbsp;|&nbsp;
                 <span>招聘人数：2 人</span>&nbsp;|&nbsp;
@@ -124,18 +125,25 @@
                 <span>学历：大学本科</span>&nbsp;|&nbsp;
                 <span>工作性质：全职</span>
               </span>
-              <span class="date">2016-8-2</span>
-            </p>
+                <span class="date">2016-8-2</span>
+              </p>
+            </div>
+            <div class="job-control">
+              <i class="xffont font-shoucang"></i>
+              <i class="xffont font-shoucang"></i>
+            </div>
           </div>
         </div>
-      </div>
+      </transition>
     </div>
   </div>
 </template>
 <script>
 export default {
   data() {
-    return {}
+    return {
+      currentTab: 1
+    }
   }
 }
 </script>
@@ -244,60 +252,6 @@ export default {
         }
         &:hover{
           background: #f3f3f3;
-        }
-      }
-    }
-  }
-  .job-list{
-    .item{
-      padding: 20px 10px;
-      @include clearFixed;
-      &:not(:last-child){
-        border-bottom: 1px solid #ebebeb;
-      }
-      &:hover{
-        background: #f3f3f3;
-      }
-      .logo{
-        width: 65px;
-        height: 65px;
-        overflow: hidden;
-        float: left;
-        img{
-          width: 100%;
-        }
-      }
-      .pos-info{
-        width: 860px;
-        float: right;
-        & > p{
-          padding: 5px 0 0 0;
-        }
-        .pos-name{
-          display: inline-block;
-          width: 30%;
-          @include ellipsis;
-          color: $--color-primary;
-          font-size: 16px;
-        }
-        .corp-name{
-          display: inline-block;
-          width: 40%;
-          @include ellipsis;
-          font-size: 14px;
-        }
-        .salary{
-          color: #f26b01;
-          font-size: 14px;
-          display: inline-block;
-          float: right;
-        }
-        .pos-detail{
-          font-size: 14px;
-          .date{
-            display: inline-block;
-            float: right;
-          }
         }
       }
     }

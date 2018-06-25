@@ -24,6 +24,10 @@
               <i class="xffont font-shezhi"></i>
               <span>账号管理</span>
             </router-link>
+            <router-link to="/jobSearch" class="item">
+              <i class="xffont font-search"></i>
+              <span>岗位搜索</span>
+            </router-link>
           </div>
         </div>
         <transition name="el-fade-in" mode="out-in">
@@ -70,7 +74,7 @@ export default {
     @include clearFixed;
   }
   .menu{
-    width: 180px;
+    width: 200px;
     float: left;
     .info{
       padding: 15px 0 35px 0;

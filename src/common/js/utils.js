@@ -65,7 +65,8 @@ export function post(url, params = {}) {
             type: 'error'
           })
         }
-        if (data.error && data.error.result === 90) { // 访问异常
+        // 90：失败（查不到该token）  92：超时   93：越权
+        if (data.error && (data.error.result === 90 || data.error.result === 92)) { // 访问异常
           event.$emit('login')
         }
       },

@@ -13,6 +13,9 @@ const message = () => import('../routes/message/message.vue')
 const account = () => import('../routes/account/account.vue')
 const head = () => import('../routes/account/head/head.vue')
 const password = () => import('../routes/account/password/password.vue')
+const pics = () => import('../routes/account/pics/pics.vue')
+// 职位搜索页面直接复用二级页面的职位搜索
+const jobSearch = () => import('../routes/job-search/job-search.vue')
 
 const router = new Router({
   routes: [{
@@ -36,7 +39,15 @@ const router = new Router({
       path: 'password',
       name: 'password',
       component: password
+    }, {
+      path: 'pics',
+      name: 'pics',
+      component: pics
     }]
+  }, {
+    path: '/jobSearch',
+    name: 'jobSearch',
+    component: jobSearch
   }]
 })
 
