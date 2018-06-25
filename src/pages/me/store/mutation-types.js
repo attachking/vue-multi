@@ -1,0 +1,2 @@
+
+export const SET_DICTIONARIES = 'SET_DICTIONARIES'
