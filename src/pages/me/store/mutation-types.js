@@ -1,2 +1,4 @@
 
 export const SET_DICTIONARIES = 'SET_DICTIONARIES'
+
+export const SET_PHONE_OPEN = 'SET_PHONE_OPEN'

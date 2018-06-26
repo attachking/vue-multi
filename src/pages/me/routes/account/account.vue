@@ -2,6 +2,7 @@
   <div class="account">
     <div class="card-tit">
       <router-link to="/account/head" class="item"><i class="xffont font-yonghu"></i>修改头像</router-link>
+      <router-link to="/account/info" class="item" v-if="ccmu17 === 2"><i class="xffont font-yidiandiantubiao04"></i>基本信息</router-link>
       <router-link to="/account/password" class="item"><i class="xffont font-anquanshezhi"></i>安全设置</router-link>
       <router-link to="/account/pics" class="item"><i class="xffont font-gerenfengcai"></i>个人风采</router-link>
     </div>
@@ -13,7 +14,9 @@
 <script>
 export default {
   data() {
-    return {}
+    return {
+      ccmu17: this.$userInfo.ccmu17
+    }
   },
   methods: {
     handleRouter(route) {

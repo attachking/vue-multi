@@ -130,7 +130,7 @@
             </div>
             <div class="job-control">
               <i class="xffont font-shoucang"></i>
-              <i class="xffont font-shoucang"></i>
+              <i class="xffont font-send active"></i>
             </div>
           </div>
         </div>

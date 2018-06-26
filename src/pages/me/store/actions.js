@@ -1,17 +1,32 @@
 import * as types from './mutation-types'
 import {post} from '../../../common/js/utils'
 
+export const getPhoneOpen = function({commit, state}, name) {
+  post('/service/business/login/account/messageIsOpen', {}).then(res => {
+    commit(types.SET_PHONE_OPEN, Number(res.result.message_is_open[0].caos04))
+  })
+}
+
 export const getDictionaries = function ({commit, state}, name) {
-  post('service/sys/iccParameter/iccParameter/getConditionList.xf', {
-    tabStr: '2,3,4,5,6'
+  post('/service/sys/config/config/getConditionList', {
+    tabStr: 'TAB_CITY,TAB_EDUCATION,TAB_AFFIL,TAB_NATION,TAB_NATURE,TAB_SEX,TAB_SALARY,CRAFT_AS,TAB_MARRIAGE,TAB_CERFORM,INDUSTRY_AS,TAB_UNITNATURE,TAB_PSCALE'
   }).then(res => {
-    dispatchDictionary(res.result[3].children)
+    dispatchDictionary(res.result.TAB_CITY.children)
+    dispatchDictionary(res.result.CRAFT_AS.children)
     commit(types.SET_DICTIONARIES, {
-      express: res.result[2],
-      cities: res.result[3].children,
-      corpNature: res.result[4],
-      issuesType: res.result[5],
-      deviceType: res.result[6]
+      TAB_CITY: res.result.TAB_CITY.children,
+      CRAFT_AS: res.result.CRAFT_AS.children,
+      TAB_EDUCATION: res.result.TAB_EDUCATION,
+      TAB_AFFIL: res.result.TAB_AFFIL,
+      TAB_NATION: res.result.TAB_NATION,
+      TAB_NATURE: res.result.TAB_NATURE,
+      TAB_SEX: res.result.TAB_SEX,
+      TAB_SALARY: res.result.TAB_SALARY,
+      TAB_MARRIAGE: res.result.TAB_MARRIAGE,
+      TAB_CERFORM: res.result.TAB_CERFORM,
+      INDUSTRY_AS: res.result.INDUSTRY_AS,
+      TAB_UNITNATURE: res.result.TAB_UNITNATURE,
+      TAB_PSCALE: res.result.TAB_PSCALE
     })
   })
 }

@@ -17,6 +17,7 @@
     &.active,&.router-link-active{
       color: $--color-primary;
       border-bottom: 2px solid $--color-primary;
+      cursor: text;
     }
   }
 }
@@ -99,10 +100,14 @@
       transform: translateY(-50%);
       .xffont{
         font-size: 22px;
+        margin: 0 5px 0 0;
         &:hover{
           cursor: pointer;
           color: #f26b01;
         }
+      }
+      .active,.font-shoucang1{
+        color: #f26b01;
       }
     }
   }

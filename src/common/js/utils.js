@@ -151,18 +151,19 @@ export class BackCascader {
     this.parentArr = [] // 缓存数据
   }
   back() {
-    this.backCity(this.list, this.id)
+    this.findParentArr(this.id, this.list)
+    this.backCity(this.parentArr, this.id)
     return this.backArr
   }
   backCity(arr, id) { // 地区选择回填
     if (!id) return
     this.backArr.unshift(id)
     for (let i = 0; i < arr.length; i++) {
-      if (arr[i].id === id) {
-        if (arr[i].parentId === '0') {
+      if (Number(arr[i].id) === Number(id)) {
+        if (Number(arr[i].parentId) === 0) {
           return
         } else {
-          this.findParentArr(arr[i].parentId, this.dictionaries.cities)
+          this.findParentArr(arr[i].parentId, this.list)
           this.backCity(this.parentArr, arr[i].parentId)
         }
       }
@@ -171,7 +172,7 @@ export class BackCascader {
   findParentArr(id, arr) {
     if (!id) return
     for (let i = 0; i < arr.length; i++) {
-      if (arr[i].id === id) {
+      if (Number(arr[i].id) === Number(id)) {
         this.parentArr = arr
         break
       } else {

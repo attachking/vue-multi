@@ -137,7 +137,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   @import "../../common/style/variables";
   .module{
     min-height: 640px;

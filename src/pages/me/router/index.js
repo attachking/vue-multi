@@ -8,14 +8,18 @@ const ccmu17 = Number(storage.get(STORAGE_TYPE.ccmu17))
 
 // 路由组件懒加载,每个路由组件单独生成一个js,需要时通过创建script标签引入,需要配置webpack的output.chunkFilename
 // import(url)返回的是一个Promise对象实例
-const user = () => import('../routes/user-index/user-index.vue')
-const message = () => import('../routes/message/message.vue')
-const account = () => import('../routes/account/account.vue')
-const head = () => import('../routes/account/head/head.vue')
-const password = () => import('../routes/account/password/password.vue')
-const pics = () => import('../routes/account/pics/pics.vue')
-// 职位搜索页面直接复用二级页面的职位搜索
-const jobSearch = () => import('../routes/job-search/job-search.vue')
+const user = () => import('../routes/user-index/user-index.vue') // 个人中心首页
+const message = () => import('../routes/message/message.vue') // 我的消息
+const account = () => import('../routes/account/account.vue') // 账户管理
+const head = () => import('../routes/account/head/head.vue') // 头像
+const password = () => import('../routes/account/password/password.vue') // 密码
+const pics = () => import('../routes/account/pics/pics.vue') // 风采
+const jobSearch = () => import('../routes/job-search/job-search.vue') // 岗位搜索
+const resume = () => import('../routes/resume/resume.vue') // 简历
+
+// 企业中心
+const corp = () => import('../routes/corp-index/corp-index.vue')
+const info = () => import('../routes/account/info/info.vue')
 
 const router = new Router({
   routes: [{
@@ -43,11 +47,26 @@ const router = new Router({
       path: 'pics',
       name: 'pics',
       component: pics
+    }, {
+      path: 'info',
+      name: 'info',
+      component: info,
+      meta: {ccmu17: 2}
     }]
   }, {
     path: '/jobSearch',
     name: 'jobSearch',
     component: jobSearch
+  }, {
+    path: '/resume',
+    name: 'resume',
+    component: resume,
+    meta: {ccmu17: 1}
+  }, {
+    path: '/corp',
+    name: 'corp',
+    component: corp,
+    meta: {ccmu17: 2}
   }]
 })
 
@@ -56,7 +75,7 @@ router.beforeEach((to, from, next) => {
   if (!to.name) {
     next({name: ccmu17 === 1 ? 'user' : 'corp'})
     // 限制访问非登录类型的路由
-  } else if (to.matched.some(record => typeof record.meta.category !== 'undefined' && record.meta.category !== ccmu17)) {
+  } else if (to.matched.some(record => typeof record.meta.ccmu17 !== 'undefined' && record.meta.ccmu17 !== ccmu17)) {
     next({name: ccmu17 === 1 ? 'user' : 'corp'})
   } else {
     next(true)

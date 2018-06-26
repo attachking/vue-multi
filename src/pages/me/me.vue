@@ -28,6 +28,10 @@
               <i class="xffont font-search"></i>
               <span>岗位搜索</span>
             </router-link>
+            <router-link to="/resume" class="item">
+              <i class="xffont font-jianli-copy"></i>
+              <span>我的简历</span>
+            </router-link>
           </div>
         </div>
         <transition name="el-fade-in" mode="out-in">
@@ -44,6 +48,7 @@
 import XfHeader from '../../components/xf-header/xf-header.vue'
 import XfFooter from '../../components/xf-footer/xf-footer.vue'
 import RightMenu from '../../components/right-menu/right-menu.vue'
+import {mapActions} from 'vuex'
 
 export default {
   components: {
@@ -53,8 +58,16 @@ export default {
   data() {
     return {}
   },
-  methods: {},
-  created() {}
+  methods: {
+    ...mapActions([
+      'getPhoneOpen',
+      'getDictionaries'
+    ])
+  },
+  created() {
+    this.getPhoneOpen()
+    this.getDictionaries()
+  }
 }
 </script>
 <style lang="scss" scoped>
