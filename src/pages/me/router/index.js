@@ -20,6 +20,10 @@ const resume = () => import('../routes/resume/resume.vue') // 简历
 // 企业中心
 const corp = () => import('../routes/corp-index/corp-index.vue')
 const info = () => import('../routes/account/info/info.vue')
+const job = () => import('../routes/job/job.vue') // 职位管理
+const jobList = () => import('../routes/job/jobList/jobList.vue') // 职位列表
+const jobEdit = () => import('../routes/job/jobEdit/jobEdit.vue') // 职位编辑
+const jobPreview = () => import('../routes/job/jobPreview/jobPreview.vue') // 职位预览
 
 const router = new Router({
   routes: [{
@@ -67,6 +71,24 @@ const router = new Router({
     name: 'corp',
     component: corp,
     meta: {ccmu17: 2}
+  }, {
+    path: '/job',
+    name: 'job',
+    component: job,
+    meta: {ccmu17: 2},
+    children: [{
+      path: 'jobList',
+      name: 'jobList',
+      component: jobList
+    }, {
+      path: 'jobEdit',
+      name: 'jobEdit',
+      component: jobEdit
+    }, {
+      path: 'jobPreview',
+      name: 'jobPreview',
+      component: jobPreview
+    }]
   }]
 })
 

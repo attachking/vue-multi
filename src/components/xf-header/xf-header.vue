@@ -153,14 +153,7 @@ export default {
               this.validCode()
             }
             if (res.error.result === 1) { // 登陆成功
-              storage.set(STORAGE_TYPE.ccmu17, res.result.ccmu17)
-              storage.set(STORAGE_TYPE.aac001, res.result.aac001)
-              storage.set(STORAGE_TYPE.token, res.result.token)
-              storage.set(STORAGE_TYPE.name, res.result.userName)
-              storage.set(STORAGE_TYPE.status, 1)
-              storage.set(STORAGE_TYPE.aab001, res.result.aab001)
-              storage.set(STORAGE_TYPE.ccmu01, res.result.userid)
-              storage.set(STORAGE_TYPE.logo, res.result.logo)
+              this.saveStorage(res)
               location.reload()
             }
           }).catch(() => {
@@ -168,6 +161,24 @@ export default {
           })
         }
       })
+    },
+    // 刷新登录状态
+    refreshLogin() {
+      if (this.$userInfo.status !== 1) return
+      this.$post('/service/business/login/account/userLogin', {}).then(res => {
+        this.saveStorage(res)
+      })
+    },
+    saveStorage(res) {
+      if (!res.result) return
+      storage.set(STORAGE_TYPE.ccmu17, res.result.ccmu17)
+      storage.set(STORAGE_TYPE.aac001, res.result.aac001)
+      if (res.result.token) storage.set(STORAGE_TYPE.token, res.result.token)
+      storage.set(STORAGE_TYPE.name, res.result.userName)
+      storage.set(STORAGE_TYPE.status, 1)
+      storage.set(STORAGE_TYPE.aab001, res.result.aab001)
+      storage.set(STORAGE_TYPE.ccmu01, res.result.userid)
+      storage.set(STORAGE_TYPE.logo, res.result.logo)
     },
     validCode() {
       this.$post('/service/business/login/verifyCode/getVerifyCode').then(res => {
@@ -181,6 +192,7 @@ export default {
   },
   created() {
     this.getChannel()
+    this.refreshLogin()
     event.$on('login', () => {
       this.login()
     })

@@ -12,6 +12,10 @@
             <p class="other">20127710150</p>
           </div>
           <div class="list">
+            <router-link to="/corp" class="item">
+              <i class="xffont font-yidiandiantubiao04"></i>
+              <span>企业中心</span>
+            </router-link>
             <router-link to="/user" class="item">
               <i class="xffont font-yidiandiantubiao04"></i>
               <span>个人中心</span>
@@ -31,6 +35,10 @@
             <router-link to="/resume" class="item">
               <i class="xffont font-jianli-copy"></i>
               <span>我的简历</span>
+            </router-link>
+            <router-link to="/job" class="item">
+              <i class="xffont font-iconzhiwei"></i>
+              <span>职位管理</span>
             </router-link>
           </div>
         </div>
@@ -113,7 +121,7 @@ export default {
         font-size: 14px;
       }
       .name{
-        color: $--color-primary
+        color: $--color-primary;
       }
       .other{
         color: #666;

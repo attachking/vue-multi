@@ -39,7 +39,7 @@ export const storage = {
 }
 
 const user = {
-  ccmu17: Number(storage.get(STORAGE_TYPE.ccmu17)),
+  ccmu17: Number(storage.get(STORAGE_TYPE.ccmu17)) || '',
   aac001: storage.get(STORAGE_TYPE.aac001),
   aab001: storage.get(STORAGE_TYPE.aab001),
   token: storage.get(STORAGE_TYPE.token)

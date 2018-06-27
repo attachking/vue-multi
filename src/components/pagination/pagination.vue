@@ -1,5 +1,6 @@
 <template>
   <el-pagination
+    v-if="bean.totalCount > 0"
     @size-change="handleSizeChange"
     :small="small"
     @current-change="handleCurrentChange"

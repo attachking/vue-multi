@@ -9,7 +9,7 @@ export const getPhoneOpen = function({commit, state}, name) {
 
 export const getDictionaries = function ({commit, state}, name) {
   post('/service/sys/config/config/getConditionList', {
-    tabStr: 'TAB_CITY,TAB_EDUCATION,TAB_AFFIL,TAB_NATION,TAB_NATURE,TAB_SEX,TAB_SALARY,CRAFT_AS,TAB_MARRIAGE,TAB_CERFORM,INDUSTRY_AS,TAB_UNITNATURE,TAB_PSCALE'
+    tabStr: 'TAB_CITY,TAB_EDUCATION,TAB_AFFIL,TAB_NATION,TAB_NATURE,TAB_SEX,TAB_SALARY,CRAFT_AS,TAB_MARRIAGE,TAB_CERFORM,INDUSTRY_AS,TAB_UNITNATURE,TAB_PSCALE,TAB_SREQUIREMENT,TAB_WORKYEARS,TAB_WELFARE'
   }).then(res => {
     dispatchDictionary(res.result.TAB_CITY.children)
     dispatchDictionary(res.result.CRAFT_AS.children)
@@ -26,7 +26,10 @@ export const getDictionaries = function ({commit, state}, name) {
       TAB_CERFORM: res.result.TAB_CERFORM,
       INDUSTRY_AS: res.result.INDUSTRY_AS,
       TAB_UNITNATURE: res.result.TAB_UNITNATURE,
-      TAB_PSCALE: res.result.TAB_PSCALE
+      TAB_PSCALE: res.result.TAB_PSCALE,
+      TAB_SREQUIREMENT: res.result.TAB_SREQUIREMENT,
+      TAB_WORKYEARS: res.result.TAB_WORKYEARS,
+      TAB_WELFARE: res.result.TAB_WELFARE
     })
   })
 }
