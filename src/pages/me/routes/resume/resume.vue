@@ -8,119 +8,148 @@
       <transition name="el-fade-in" mode="out-in" @enter="handleEnter('formBase')">
         <el-form label-position="left" inline class="demo-table-expand" v-if="!formBase" key="baseList">
           <el-form-item label="姓名">
-            <span>徐丹阳</span>
+            <span>{{info1.aac003 || '--'}}</span>
           </el-form-item>
           <el-form-item label="身份证号">
-            <span>412312654946126</span>
+            <span>{{info1.aac002 || '--'}}</span>
+          </el-form-item>
+          <el-form-item label="出生日期">
+            <span>{{info1.aac006 || '--'}}</span>
           </el-form-item>
           <el-form-item label="年龄">
-            <span>29</span>
+            <span>{{info1.age || '--'}}</span>
           </el-form-item>
           <el-form-item label="性别">
-            <span>女性</span>
+            <span>{{info1.aac004name || '--'}}</span>
           </el-form-item>
           <el-form-item label="民族">
-            <span>汉族</span>
+            <span>{{info1.aac005name || '--'}}</span>
           </el-form-item>
-          <el-form-item label="手机号码">
-            <span>15617696629</span>
+          <el-form-item label="联系电话">
+            <span>{{info1.aae005}}</span>
+          </el-form-item>
+          <el-form-item label="身高">
+            <span>{{info1.aac034 ? info1.aac034 + 'cm' : '--'}}</span>
+          </el-form-item>
+          <el-form-item label="体重">
+            <span>{{info1.aac035 ? info1.aac035 + 'kg' : '--'}}</span>
           </el-form-item>
           <el-form-item label="学历">
-            <span>本科</span>
+            <span>{{info1.aac011 || '--'}}</span>
           </el-form-item>
           <el-form-item label="政治面貌">
-            <span>党员</span>
+            <span>{{info1.aac024name || '--'}}</span>
           </el-form-item>
           <el-form-item label="婚姻状况">
-            <span>未婚</span>
+            <span>{{info1.aac017name || '--'}}</span>
           </el-form-item>
           <el-form-item label="毕业院校">
-            <span>郑州大学</span>
+            <span>{{info1.aac180name || '--'}}</span>
+          </el-form-item>
+          <el-form-item label="专业类别">
+            <span>--</span>
+          </el-form-item>
+          <el-form-item label="专业名称">
+            <span>{{info1.aac040 || '--'}}</span>
           </el-form-item>
           <el-form-item label="毕业时间">
-            <span>2018-06-20</span>
-          </el-form-item>
-          <el-form-item label="专业">
-            <span>给水排水工程</span>
+            <span>{{info1.aac181 || '--'}}</span>
           </el-form-item>
           <el-form-item label="户口所在地">
-            <span>河南省郑州市</span>
+            <span>{{info1.aab305name || '--'}}</span>
           </el-form-item>
           <el-form-item label="现居住地">
-            <span>河南省郑州市</span>
+            <span>{{info1.aab301 || '--'}}</span>
           </el-form-item>
           <el-form-item label="邮箱">
-            <span>6516161@qq.com</span>
+            <span>{{info1.aae015 || '--'}}</span>
           </el-form-item>
         </el-form>
-        <el-form ref="formBase" :model="form1" :rules="rules1" class="form" label-width="100px" key="formBase" v-if="formBase">
+        <el-form ref="formBase" :model="form1" inline :rules="rules1" class="base-form" label-width="100px" key="formBase" v-if="formBase">
           <el-form-item prop="aac003" label="姓名">
             <el-input v-model.trim="form1.aac003" placeholder="请输入姓名" clearable></el-input>
           </el-form-item>
           <el-form-item prop="aac002" label="身份证号">
-            <el-input v-model.trim="form1.aac002" placeholder="请输入身份证号" clearable></el-input>
+            <el-input v-model.trim="form1.aac002" placeholder="请输入身份证号" clearable @blur="getSex"></el-input>
           </el-form-item>
           <el-form-item prop="aac006" label="出生日期">
             <el-date-picker
               v-model="form1.aac006"
               :editable="false"
               type="date"
+              value-format="yyyy-MM-dd"
               placeholder="选择日期">
             </el-date-picker>
           </el-form-item>
+          <el-form-item prop="age" label="年龄">
+            <el-input v-model.trim="form1.age" placeholder="请输入年龄" clearable></el-input>
+          </el-form-item>
           <el-form-item prop="aac004" label="性别">
-            <el-select v-model="form1.aac004" placeholder="请选择性别">
+            <el-select v-model="form1.aac004" placeholder="请选择性别" clearable>
               <el-option v-for="item in dictionaries.TAB_SEX" :key="item.code" :label="item.name" :value="item.code"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item prop="aac005" label="民族">
-            <el-select v-model="form1.aac005" filterable placeholder="请选择民族">
+            <el-select v-model="form1.aac005" filterable placeholder="请选择民族" clearable>
               <el-option v-for="item in dictionaries.TAB_NATION" :key="item.code" :label="item.name" :value="item.code"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item prop="aae005" label="手机号">
-            <el-input v-model.trim="form1.aae005" placeholder="请输入手机号" clearable></el-input>
+          <el-form-item prop="aae005" label="联系电话">
+            <el-input v-model.trim="form1.aae005" placeholder="请输入联系电话" clearable></el-input>
           </el-form-item>
-          <el-form-item prop="acc011" label="学历">
-            <el-select v-model="form1.acc011" placeholder="请选择学历">
+          <el-form-item prop="aac034" label="身高">
+            <el-input v-model.trim="form1.aac034" placeholder="请输入身高" clearable>
+              <template slot="append">cm</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="aac035" label="体重">
+            <el-input v-model.trim="form1.aac035" placeholder="请输入体重" clearable>
+              <template slot="append">kg</template>
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="aac011" label="学历">
+            <el-select v-model="form1.aac011" placeholder="请选择学历" clearable>
               <el-option v-for="item in dictionaries.TAB_EDUCATION" :key="item.code" :label="item.name" :value="item.code"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item prop="aac024" label="政治面貌">
-            <el-select v-model="form1.aac024" filterable placeholder="请选择政治面貌">
+            <el-select v-model="form1.aac024" filterable placeholder="请选择政治面貌" clearable>
               <el-option v-for="item in dictionaries.TAB_AFFIL" :key="item.code" :label="item.name" :value="item.code"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item prop="aac017" label="婚姻状况">
-            <el-select v-model="form1.aac017" filterable placeholder="请选择婚姻状况">
+            <el-select v-model="form1.aac017" filterable placeholder="请选择婚姻状况" clearable>
               <el-option v-for="item in dictionaries.TAB_MARRIAGE" :key="item.code" :label="item.name" :value="item.code"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item prop="aac180" label="毕业院校">
-            <el-select v-model="form1.aac180" filterable placeholder="输入关键字选择毕业院校">
+            <el-input placeholder="请选择毕业院校" v-model="form1.aac180name" readonly @click.native="showSchool"></el-input>
+          </el-form-item>
+          <el-form-item prop="acc01g" label="专业类别">
+            <el-select v-model="form1.acc01g" filterable placeholder="请选择专业类别">
               <!--<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
               </el-option>-->
             </el-select>
           </el-form-item>
-          <el-form-item prop="acc01g" label="专业">
-            <el-select v-model="form1.acc01g" filterable placeholder="输入关键字选择专业">
-              <!--<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>-->
-            </el-select>
+          <el-form-item prop="aac040" label="专业名称">
+            <el-input v-model.trim="form1.aac040" placeholder="请输入专业名称" clearable></el-input>
           </el-form-item>
           <el-form-item prop="aac181" label="毕业时间">
             <el-date-picker
               v-model="form1.aac181"
               :editable="false"
               type="date"
+              clearable
+              value-format="yyyy-MM-dd"
               placeholder="选择日期">
             </el-date-picker>
           </el-form-item>
           <el-form-item prop="aab305" label="户口所在地">
-            <el-select v-model="form1.aab305" filterable placeholder="输入关键字选择地区">
-              <!--<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>-->
-            </el-select>
+            <!--<el-select v-model="form1.aab305" filterable placeholder="输入关键字选择地区" clearable remote :remote-method="remoteAddress" :loading="addressLoading">
+              <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>-->
+            <xf-cascader :options="dictionaries.TAB_CITY" v-model="form1.aab305" placeholder="请选择户口所在地" clearable></xf-cascader>
           </el-form-item>
           <el-form-item prop="aab301" label="现居住地">
             <el-input v-model.trim="form1.aab301" placeholder="请输入现居住地" clearable></el-input>
@@ -128,7 +157,7 @@
           <el-form-item prop="aae015" label="邮箱">
             <el-input v-model.trim="form1.aae015" placeholder="请输入邮箱" clearable></el-input>
           </el-form-item>
-          <el-form-item>
+          <el-form-item style="width: 100%;text-align: center;">
             <el-button type="primary" @click="onSubmit1" :loading="loading1" size="mini">确定</el-button>
             <el-button type="default" @click="toggle('formBase')" size="mini">取消</el-button>
           </el-form-item>
@@ -140,40 +169,40 @@
       <el-button title="修改" icon="el-icon-edit" size="mini" circle @click="toggle('formIntention')"></el-button>
     </div>
     <div class="container">
-      <transition name="el-fade-in" mode="out-in">
+      <transition name="el-fade-in" mode="out-in" @enter="handleEnter('formIntention')">
         <el-form ref="form" class="demo-table" v-if="!formIntention" key="intentionList">
           <el-form-item label="意向岗位">
-            <span>意向岗位</span>
+            <span>{{info2.bca112 || '--'}}</span>
           </el-form-item>
           <el-form-item label="期望工作地区">
-            <span>意向岗位</span>
+            <span>{{info2.bcb202 || '--'}}</span>
           </el-form-item>
           <el-form-item label="期望薪资">
-            <span>意向岗位</span>
+            <span>{{info2.acc034Name || '--'}}</span>
           </el-form-item>
           <el-form-item label="期望工作性质">
-            <span>意向岗位</span>
+            <span>{{info2.aac013Name || '--'}}</span>
           </el-form-item>
         </el-form>
         <!--求职意向表单-->
         <el-form ref="formIntention" :model="form2" :rules="rules2" class="form" label-width="100px" key="formIntention" v-if="formIntention">
           <el-form-item prop="bca112" label="意向岗位" style="width: 100%;">
-            <xf-cascader v-model="form2.bca112" placeholder="请选择意向岗位" change-on-select :options="dictionaries.CRAFT_AS"></xf-cascader>
-            <xf-cascader v-model="form2.bca112" placeholder="第二意向岗位" change-on-select :options="dictionaries.CRAFT_AS"></xf-cascader>
-            <xf-cascader v-model="form2.bca112" placeholder="第三意向岗位" change-on-select :options="dictionaries.CRAFT_AS"></xf-cascader>
+            <xf-cascader v-model="form2.bca111" :text.sync="form2.bca112" placeholder="请选择意向岗位" :options="dictionaries.CRAFT_AS"></xf-cascader>
+            <!--<xf-cascader v-model="form2.bca112" placeholder="第二意向岗位" change-on-select :options="dictionaries.CRAFT_AS"></xf-cascader>
+            <xf-cascader v-model="form2.bca112" placeholder="第三意向岗位" change-on-select :options="dictionaries.CRAFT_AS"></xf-cascader>-->
           </el-form-item>
           <el-form-item prop="bcb202" label="工作地点" style="width: 100%;">
-            <xf-cascader v-model="form2.bcb202" placeholder="请选择意向工作地点" change-on-select :options="dictionaries.TAB_CITY"></xf-cascader>
-            <xf-cascader v-model="form2.bcb202" placeholder="第二意向工作地点" change-on-select :options="dictionaries.TAB_CITY"></xf-cascader>
-            <xf-cascader v-model="form2.bcb202" placeholder="第三意向工作地点" change-on-select :options="dictionaries.TAB_CITY"></xf-cascader>
+            <xf-cascader v-model="form2.acb202" :fulltext.sync="form2.bcb202" placeholder="请选择意向工作地点" change-on-select :options="dictionaries.TAB_CITY"></xf-cascader>
+            <!--<xf-cascader v-model="form2.bcb202" placeholder="第二意向工作地点" change-on-select :options="dictionaries.TAB_CITY"></xf-cascader>
+            <xf-cascader v-model="form2.bcb202" placeholder="第三意向工作地点" change-on-select :options="dictionaries.TAB_CITY"></xf-cascader>-->
           </el-form-item>
           <el-form-item prop="acc034" label="期望薪资">
-            <el-select v-model="form1.acc034" placeholder="请选择期望薪资">
+            <el-select v-model="form2.acc034" placeholder="请选择期望薪资">
               <el-option v-for="item in dictionaries.TAB_SALARY" :key="item.code" :label="item.name" :value="item.code"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item prop="aac013" label="求职性质">
-            <el-select v-model="form1.aac013" placeholder="请选择求职性质">
+            <el-select v-model="form2.aac013" placeholder="请选择求职性质">
               <el-option v-for="item in dictionaries.TAB_NATURE" :key="item.code" :label="item.name" :value="item.code"></el-option>
             </el-select>
           </el-form-item>
@@ -185,33 +214,38 @@
       </transition>
     </div>
     <div class="card-tit">
-      <span class="item active"><i class="xffont font-qiuzhiyixiang"></i>教育经历</span>
+      <span class="item active"><i class="xffont font-xueshimao"></i>教育经历</span>
       <el-button title="添加" icon="el-icon-plus" size="mini" circle @click="toggle('formEducation')"></el-button>
     </div>
     <div class="container">
-      <transition name="el-fade-in" mode="out-in">
+      <transition name="el-fade-in" mode="out-in" @enter="handleEnter('formEducation')">
         <div class="education-list" v-if="!formEducation" key="educationList">
-          <div class="item">
-            <span>2016-03-03 -- 2017-06-06</span>
-            <span>郑州大学</span>
-            <span>给水排水工程</span>
-            <span>本科</span>
-            <el-button icon="el-icon-edit" size="mini" circle @click="toggle('formEducation')"></el-button>
+          <div class="item" v-for="val in educationList" :key="val.aac0d0">
+            <span>{{val.aae030}} -- {{val.aac046}}</span>
+            <span :title="val.aac045">{{val.aac045 || '--'}}</span>
+            <span :title="val.acc01g">{{val.acc01g || '--'}}</span>
+            <span :title="val.atc011">{{val.atc011}}</span>
+            <el-button icon="el-icon-edit" size="mini" circle @click="editEducation(val)" title="修改"></el-button>
+            <el-button icon="el-icon-delete" size="mini" circle @click="delEducation(val)" title="删除"></el-button>
           </div>
         </div>
         <!--教育经历表单-->
         <el-form ref="formEducation" :model="form3" :rules="rules3" class="form" label-width="100px" key="formEducation" v-if="formEducation">
           <el-form-item prop="aae030" label="开始时间">
             <el-date-picker
+              :editable="false"
               v-model="form3.aae030"
               type="date"
+              value-format="yyyy-MM-dd"
               placeholder="选择开始日期">
             </el-date-picker>
           </el-form-item>
           <el-form-item prop="aac046" label="结束时间">
             <el-date-picker
               v-model="form3.aac046"
+              :editable="false"
               type="date"
+              value-format="yyyy-MM-dd"
               placeholder="选择结束日期">
             </el-date-picker>
           </el-form-item>
@@ -234,41 +268,49 @@
       </transition>
     </div>
     <div class="card-tit">
-      <span class="item active"><i class="xffont font-qiuzhiyixiang"></i>工作经历</span>
+      <span class="item active"><i class="xffont font-iconzhiwei"></i>工作经历</span>
       <el-button title="添加" icon="el-icon-plus" size="mini" circle @click="toggle('formWork')"></el-button>
     </div>
     <div class="container">
-      <transition name="el-fade-in" mode="out-in">
+      <transition name="el-fade-in" mode="out-in" @enter="handleEnter('formWork')">
         <div v-if="!formWork" key="workList">
-          <el-form class="demo-table work-item">
+          <p class="no-data" v-if="!worksList.length"><i class="el-icon-info"></i>您还没有填写工作经历</p>
+          <el-form class="demo-table work-item" v-for="val in worksList" :key="val.aac0b0">
             <el-form-item label="起止时间">
-              <span>2017-03-03 -- 2018-12-12</span>
+              <span>{{val.aae030}} -- {{val.aae031}}</span>
             </el-form-item>
             <el-form-item label="公司名称">
-              <span>河南讯丰信息技术有限公司</span>
+              <span>{{val.aac045 || '--'}}</span>
             </el-form-item>
             <el-form-item label="职位名称">
-              <span>web前端工程师</span>
+              <span>{{val.aac0b3 || '--'}}</span>
             </el-form-item>
             <el-form-item label="职位描述">
-              <span>负责公司前端项目的研发和维护工作</span>
+              <span class="max-text">{{val.aac0b4 || '--'}}</span>
             </el-form-item>
-            <el-button title="修改" icon="el-icon-edit" size="mini" circle @click="toggle('formWork')"></el-button>
+            <div class="item-edit">
+              <el-button title="修改" icon="el-icon-edit" size="mini" circle @click="editWork(val)"></el-button>
+              <el-button title="删除" icon="el-icon-delete" size="mini" circle @click="delWork(val)"></el-button>
+            </div>
           </el-form>
         </div>
         <!--工作经历表单-->
         <el-form ref="formWork" :model="form4" :rules="rules4" class="form" label-width="100px" key="formWork" v-if="formWork">
-          <el-form-item prop="start" label="开始时间">
+          <el-form-item prop="aae030" label="开始时间">
             <el-date-picker
-              v-model="form4.start"
+              :editable="false"
+              v-model="form4.aae030"
               type="date"
+              value-format="yyyy-MM-dd"
               placeholder="选择开始日期">
             </el-date-picker>
           </el-form-item>
-          <el-form-item prop="end" label="结束时间">
+          <el-form-item prop="aae031" label="结束时间">
             <el-date-picker
-              v-model="form4.end"
+              :editable="false"
+              v-model="form4.aae031"
               type="date"
+              value-format="yyyy-MM-dd"
               placeholder="选择结束日期">
             </el-date-picker>
           </el-form-item>
@@ -289,59 +331,116 @@
       </transition>
     </div>
     <div class="card-tit">
-      <span class="item active"><i class="xffont font-qiuzhiyixiang"></i>技能证书</span>
+      <span class="item active"><i class="el-icon-document"></i>技能证书</span>
       <el-button title="添加" icon="el-icon-plus" size="mini" circle @click="toggle('certForm')"></el-button>
     </div>
     <div class="container">
-      <div class="cert-list">
-        <span>英语四级<i class="el-icon-delete" title="删除" @click="delCert"></i></span>
-      </div>
-      <transition name="el-fade-in" mode="out-in">
-        <div v-if="certForm">
-          <el-form ref="certForm" inline :model="form5" class="inline-form" :rules="rules5" label-width="100px" v-if="certForm">
-            <el-form-item prop="start" label="自定义证书">
-              <el-input v-model="form5.name" placeholder="请输入自定义证书名称"></el-input>
+      <transition name="el-fade-in" mode="out-in" @enter="handleEnter('certForm')">
+        <div class="cert-list" v-if="!certForm" key="list">
+          <el-table
+            :data="certList"
+            stripe
+            style="width: 100%">
+            <el-table-column
+              label="证书名称">
+              <template slot-scope="scope">
+                <span>{{scope.row.bac0c2}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="证书类别">
+              <template slot-scope="scope">
+                <span>{{scope.row.cczy06Str}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="证书编号">
+              <template slot-scope="scope">
+                <span>{{scope.row.aac0c3 || '--'}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              label="备注">
+              <template slot-scope="scope">
+                <span>{{scope.row.aae013 || '--'}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              align="center"
+              label="操作">
+              <template slot-scope="scope">
+                <el-button title="修改" icon="el-icon-edit" size="mini" circle @click="editCert(val)"></el-button>
+                <el-button title="删除" icon="el-icon-delete" size="mini" circle @click="delCert(val)"></el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+        </div>
+        <div v-if="certForm" key="form">
+          <!--技能证书表单-->
+          <el-form ref="certForm" :model="form5" class="form" :rules="rules5" label-width="100px" v-if="certForm">
+            <el-form-item prop="bac0c2" label="证书名称">
+              <el-input v-model="form5.bac0c2" placeholder="请输入证书名称"></el-input>
+            </el-form-item>
+            <el-form-item prop="aac0c4" label="开始时间">
+              <el-date-picker
+                :editable="false"
+                v-model="form5.aac0c4"
+                type="date"
+                value-format="yyyy-MM-dd"
+                placeholder="选择开始日期">
+              </el-date-picker>
+            </el-form-item>
+            <el-form-item prop="aac0c3" label="证书编号">
+              <el-input v-model="form5.aac0c3" placeholder="请输入证书编号"></el-input>
+            </el-form-item>
+            <el-form-item prop="cczy06" label="证书类别">
+              <el-select v-model="form5.cczy06" placeholder="请选择证书类别" clearable>
+                <el-option v-for="item in dictionaries.TAB_CERTIFICATE_TYPE" :key="item.code" :label="item.name" :value="item.code"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item prop="aae013" label="备注">
+              <el-input v-model="form5.aae013" placeholder="请输入备注"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit5" :loading="loading5" size="mini">确定</el-button>
               <el-button type="default" @click="toggle('certForm')" size="mini">取消</el-button>
             </el-form-item>
           </el-form>
-          <div class="cert-list">
-            <span>英语六级<i class="el-icon-plus" title="添加" @click="addCert"></i></span>
-          </div>
         </div>
       </transition>
     </div>
     <div class="card-tit">
-      <span class="item active"><i class="xffont font-qiuzhiyixiang"></i>培训经历</span>
+      <span class="item active"><i class="el-icon-tickets"></i>培训经历</span>
       <el-button title="添加" icon="el-icon-plus" size="mini" circle @click="toggle('formTrain')"></el-button>
     </div>
     <div class="container">
-      <transition name="el-fade-in" mode="out-in">
+      <transition name="el-fade-in" mode="out-in" @enter="handleEnter('formTrain')">
         <div v-if="!formTrain" key="workList">
-          <el-form class="demo-table work-item">
+          <p class="no-data" v-if="!trainList.length"><i class="el-icon-info"></i>您还没有填写培训经历</p>
+          <el-form class="demo-table work-item" v-for="val in trainList" :key="val.id">
             <el-form-item label="起止时间">
-              <span>2017-03-03 -- 2018-12-12</span>
+              <span>{{val.starttime}} -- {{val.endtime}}</span>
             </el-form-item>
             <el-form-item label="公司名称">
-              <span>河南讯丰信息技术有限公司</span>
+              <span>{{val.agencyname || '--'}}</span>
             </el-form-item>
-            <el-form-item label="职位名称">
-              <span>web前端工程师</span>
+            <el-form-item label="培训内容">
+              <span class="max-text">{{val.traindesc || '--'}}</span>
             </el-form-item>
-            <el-form-item label="职位描述">
-              <span>负责公司前端项目的研发和维护工作</span>
-            </el-form-item>
-            <el-button title="修改" icon="el-icon-edit" size="mini" circle @click="toggle('formTrain')"></el-button>
+            <div class="item-edit">
+              <el-button title="修改" icon="el-icon-edit" size="mini" circle @click="editTrain(val)"></el-button>
+              <el-button icon="el-icon-delete" size="mini" circle @click="delTrain(val)" title="删除"></el-button>
+            </div>
           </el-form>
         </div>
         <!--培训经历表单-->
-        <el-form ref="formWork" :model="form6" :rules="rules6" class="form" label-width="100px" key="formTrain" v-if="formTrain">
+        <el-form ref="formTrain" :model="form6" :rules="rules6" class="form" label-width="100px" key="formTrain" v-if="formTrain">
           <el-form-item prop="starttime" label="开始时间">
             <el-date-picker
               v-model="form6.starttime"
               type="date"
+              :editable="false"
+              value-format="yyyy-MM-dd"
               placeholder="选择开始日期">
             </el-date-picker>
           </el-form-item>
@@ -349,10 +448,12 @@
             <el-date-picker
               v-model="form6.endtime"
               type="date"
+              :editable="false"
+              value-format="yyyy-MM-dd"
               placeholder="选择结束日期">
             </el-date-picker>
           </el-form-item>
-          <el-form-item prop="agencyname" label="培训机构名称">
+          <el-form-item prop="agencyname" label="机构名称">
             <el-input v-model.trim="form6.agencyname" placeholder="请输入培训机构名称" clearable></el-input>
           </el-form-item>
           <el-form-item prop="traindesc" label="培训内容">
@@ -366,19 +467,20 @@
       </transition>
     </div>
     <div class="card-tit">
-      <span class="item active"><i class="xffont font-qiuzhiyixiang"></i>技能描述</span>
+      <span class="item active"><i class="xffont font-admin"></i>技能描述</span>
       <el-button title="添加" icon="el-icon-edit" size="mini" circle @click="toggle('formSkill')"></el-button>
     </div>
     <div class="container">
-      <transition name="el-fade-in" mode="out-in">
-        <div v-if="!formSkill" key="skill" class="skill">
-          1、撒大大大的
-          2、方式发送到三国杀
+      <transition name="el-fade-in" mode="out-in" @enter="handleEnter('formSkill')">
+        <div v-if="!formSkill" key="skill" class="skill-box">
+          <el-button icon="el-icon-delete" size="mini" circle @click="delDesc('skill')" title="删除" class="skill-del" v-if="info1.aac042"></el-button>
+          <p class="no-data" v-if="!info1.aac042"><i class="el-icon-info"></i>您还没有填写技能描述</p>
+          <p class="skill">{{info1.aac042}}</p>
         </div>
         <!--技能描述表单-->
         <el-form ref="formSkill" :model="form7" :rules="rules7" class="formSkill" label-width="100px" key="formSkill" v-if="formSkill">
-          <el-form-item prop="desc" label="技能描述">
-            <el-input type="textarea" :rows="6" v-model.trim="form7.desc" placeholder="请输入技能描述"></el-input>
+          <el-form-item prop="aac042" label="技能描述">
+            <el-input type="textarea" :rows="6" v-model.trim="form7.aac042" placeholder="请输入技能描述"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit7" :loading="loading7" size="mini">确定</el-button>
@@ -388,19 +490,20 @@
       </transition>
     </div>
     <div class="card-tit">
-      <span class="item active"><i class="xffont font-qiuzhiyixiang"></i>自我介绍</span>
+      <span class="item active"><i class="xffont font-yonghu"></i>自我介绍</span>
       <el-button title="添加" icon="el-icon-edit" size="mini" circle @click="toggle('formDesc')"></el-button>
     </div>
     <div class="container">
-      <transition name="el-fade-in" mode="out-in">
-        <div v-if="!formSkill" key="skill" class="skill">
-          1、撒大大大的
-          2、方式发送到三国杀
+      <transition name="el-fade-in" mode="out-in" @enter="handleEnter('formDesc')">
+        <div v-if="!formDesc" key="skill" class="skill-box">
+          <el-button icon="el-icon-delete" size="mini" circle @click="delDesc('desc')" title="删除" class="skill-del" v-if="info1.aac041"></el-button>
+          <p class="no-data" v-if="!info1.aac041"><i class="el-icon-info"></i>您还没有填写自我介绍</p>
+          <p class="skill">{{info1.aac041}}</p>
         </div>
-        <!--技能描述表单-->
+        <!--自我介绍表单-->
         <el-form ref="formDesc" :model="form8" :rules="rules8" class="formSkill" label-width="100px" key="formDesc" v-if="formDesc">
-          <el-form-item prop="desc" label="技能描述">
-            <el-input type="textarea" :rows="6" v-model.trim="form8.desc" placeholder="请输入自我介绍"></el-input>
+          <el-form-item prop="aac041" label="自我介绍">
+            <el-input type="textarea" :rows="6" v-model.trim="form8.aac041" placeholder="请输入自我介绍"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit8" :loading="loading8" size="mini">确定</el-button>
@@ -409,6 +512,24 @@
         </el-form>
       </transition>
     </div>
+    <el-dialog
+      title="选择院校"
+      :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
+      width="500px">
+      <div style="white-space: nowrap;">
+        <el-select v-model="formSchool.province" filterable placeholder="请选择省份" style="width: 35%;">
+          <el-option v-for="item in dictionaries.tab_university_city" :key="item.code" :label="item.name" :value="item.code"></el-option>
+        </el-select>
+        <el-select v-model="formSchool.school" filterable placeholder="请选择毕业院校" style="width: 63%;" remote :remote-method="getSchoolList" :loading="remoteLoading">
+          <el-option v-for="item in schoolList" :key="item.id" :label="item.name" :value="item.id"></el-option>
+        </el-select>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirmSchool">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -424,7 +545,9 @@ export default {
     ])
   },
   data() {
+    let _this = this
     return {
+      dialogVisible: false,
       formBase: false,
       form1: { // 基本信息
         aac002: '', // 身份证号
@@ -434,33 +557,154 @@ export default {
         aac181: '', // 毕业时间
         aac004: '', // 性别
         aac004name: '',
+        age: '', // 年龄
         aac005: '', // 民族
         aac005name: '',
         aac006: '', // 出生日期
         aac024: '', // 政治面貌
         aab301: '', // 居住地
-        aac041: '', // 个人介绍
-        aac042: '', // 技能描述
+        // aac041: '', // 个人介绍
+        // aac042: '', // 技能描述
         aab305: '', // 户籍地址
         aab305name: '',
         acc01g: '', // 专业
-        acc011: '', // 学历
-        acc011name: '',
+        aac040: '', // 专业（文字）
+        aac011: '', // 学历
+        aac011name: '',
         aac034: '', // 身高
         aac035: '', // 体重
-        aac180: '', // 毕业院校
+        aac180: '', // 毕业院校（code）
+        aac180name: '',
         aac017: '', // 婚姻状况
         aac017name: ''
       },
-      rules1: {},
+      info1: {},
+      rules1: {
+        aac003: [{
+          required: true,
+          message: '请输入姓名',
+          trigger: 'change'
+        }, {
+          max: 10,
+          message: '最多10个字符',
+          trigger: 'change'
+        }],
+        aac002: [{
+          required: true,
+          message: '请输入身份证号',
+          trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            if (/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('请输入正确的身份证号'))
+            }
+          }
+        }],
+        aac006: [{
+          required: true,
+          message: '请选择出生日期',
+          trigger: 'change'
+        }],
+        aae005: [{
+          required: true,
+          message: '请输入您的手机号',
+          trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            if (/^[1][3,4,5,7,8,9][0-9]{9}$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('请输入正确的手机号'))
+            }
+          }
+        }],
+        age: [{
+          required: true,
+          message: '请输入年龄',
+          trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            if (/^[1-9][0-9]{0,1}$$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('请输入小于99的整数'))
+            }
+          }
+        }],
+        aac004: [{
+          required: true,
+          message: '请选择性别',
+          trigger: 'change'
+        }],
+        aac005: [{
+          required: true,
+          message: '请选择民族',
+          trigger: 'change'
+        }],
+        aac011: [{
+          required: true,
+          message: '请选择学历',
+          trigger: 'change'
+        }],
+        aac024: [{
+          required: true,
+          message: '请选择政治面貌',
+          trigger: 'change'
+        }],
+        aac017: [{
+          required: true,
+          message: '请选择婚姻状况',
+          trigger: 'change'
+        }],
+        aab305: [{
+          required: true,
+          message: '请选择户籍地址',
+          trigger: 'change'
+        }],
+        aab301: [{
+          required: true,
+          message: '请输入现居住地',
+          trigger: 'change'
+        }, {
+          max: 30,
+          message: '最多30个字符',
+          trigger: 'change'
+        }]
+      },
       // 求职意向
       form2: {
+        bca111: '', // 期望岗位code
         bca112: '', // 期望岗位
         bcb202: '', // 期望地点
+        acb202: '', // 期望地点code
         acc034: '', // 期望月薪
         aac013: '' // 求职性质
       },
-      rules2: {},
+      info2: {},
+      rules2: {
+        bca111: [{
+          required: true,
+          message: '请选择期望岗位',
+          trigger: 'change'
+        }],
+        acb202: [{
+          required: true,
+          message: '请选择期望工作地点',
+          trigger: 'change'
+        }],
+        acc034: [{
+          required: true,
+          message: '请选择期望月薪',
+          trigger: 'change'
+        }],
+        aac013: [{
+          required: true,
+          message: '请选择求职性质',
+          trigger: 'change'
+        }]
+      },
       formIntention: false,
       // 教育经历
       form3: {
@@ -470,21 +714,158 @@ export default {
         acc01g: '', // 专业名称
         atc011: '' // 学历
       },
-      rules3: {},
+      rules3: {
+        aae030: [{
+          required: true,
+          message: '请选择开始日期',
+          trigger: 'change'
+        }],
+        aac046: [{
+          required: true,
+          message: '请选择结束日期',
+          trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            if (!_this.form3.aae030 || !value) {
+              callback()
+              return
+            }
+            let begin = new Date(_this.form3.aae030.replace(/-/g, '/')).getTime()
+            let end = new Date(value.replace(/-/g, '/')).getTime()
+            if (begin < end) {
+              callback()
+            } else {
+              callback(new Error('结束时间需要大于开始时间'))
+            }
+          },
+          trigger: 'change'
+        }],
+        aac045: [{
+          required: true,
+          message: '请输入学校名称',
+          trigger: 'change'
+        }, {
+          max: 20,
+          message: '最多20个字符',
+          trigger: 'change'
+        }],
+        acc01g: [{
+          max: 20,
+          message: '最多20个字符',
+          trigger: 'change'
+        }],
+        atc011: [{
+          required: true,
+          message: '请选择学历',
+          trigger: 'change'
+        }]
+      },
+      educationList: [],
       formEducation: false,
       // 工作经历
       form4: {
-        start: '', // 开始时间
-        end: '', // 结束时间
+        aae030: '', // 开始时间
+        aae031: '', // 结束时间
         aac045: '', // 公司名称
         aac0b3: '', // 职位名称
         aac0b4: '' // 职位描述
       },
-      rules4: {},
+      rules4: {
+        aae030: [{
+          required: true,
+          message: '请选择开始日期',
+          trigger: 'change'
+        }],
+        aae031: [{
+          required: true,
+          message: '请选择结束日期',
+          trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            if (!_this.form3.aae030 || !value) {
+              callback()
+              return
+            }
+            let begin = new Date(_this.form3.aae030.replace(/-/g, '/')).getTime()
+            let end = new Date(value.replace(/-/g, '/')).getTime()
+            if (begin < end) {
+              callback()
+            } else {
+              callback(new Error('结束时间需要大于开始时间'))
+            }
+          },
+          trigger: 'change'
+        }],
+        aac045: [{
+          required: true,
+          message: '请输入公司名称',
+          trigger: 'change'
+        }, {
+          max: 25,
+          message: '最多25个字符',
+          trigger: 'change'
+        }],
+        aac0b3: [{
+          required: true,
+          message: '请输入职位名称',
+          trigger: 'change'
+        }, {
+          max: 25,
+          message: '最多25个字符',
+          trigger: 'change'
+        }],
+        aac0b4: [{
+          required: true,
+          message: '请输入职位描述',
+          trigger: 'change'
+        }, {
+          max: 25,
+          message: '最多25个字符',
+          trigger: 'change'
+        }]
+      },
       formWork: false,
+      worksList: [],
       // 证书
-      form5: {},
-      rules5: {},
+      form5: {
+        bac0c2: '', // 证书名称
+        cczy06: '', // 证书类别
+        aac0c3: '', // 证书编号
+        aae013: '', // 证书备注
+        aac0c4: '' // 证书获得时间
+      },
+      rules5: {
+        bac0c2: [{
+          required: true,
+          message: '请输入证书名称',
+          trigger: 'change'
+        }, {
+          max: 20,
+          message: '最多20个字符',
+          trigger: 'change'
+        }],
+        cczy06: [{
+          required: true,
+          message: '请选择证书类别',
+          trigger: 'change'
+        }],
+        aac0c3: [{
+          max: 25,
+          message: '最多25个字符',
+          trigger: 'change'
+        }],
+        aae013: [{
+          max: 20,
+          message: '最多20个字符',
+          trigger: 'change'
+        }],
+        aac0c4: [{
+          required: true,
+          message: '请选择证书获得时间',
+          trigger: 'change'
+        }]
+      },
+      certList: [],
       certForm: false,
       // 培训经历
       form6: {
@@ -493,19 +874,84 @@ export default {
         endtime: '', // 结束时间
         traindesc: '' // 培训详情
       },
-      rules6: {},
+      rules6: {
+        agencyname: [{
+          required: true,
+          message: '请输入机构名称',
+          trigger: 'change'
+        }, {
+          max: 20,
+          message: '最多20个字符',
+          trigger: 'change'
+        }],
+        starttime: [{
+          required: true,
+          message: '请选择开始时间',
+          trigger: 'change'
+        }],
+        endtime: [{
+          required: true,
+          message: '请选择结束时间',
+          trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            if (!_this.form6.starttime || !value) {
+              callback()
+              return
+            }
+            let begin = new Date(_this.form6.starttime.replace(/-/g, '/')).getTime()
+            let end = new Date(value.replace(/-/g, '/')).getTime()
+            if (begin < end) {
+              callback()
+            } else {
+              callback(new Error('结束时间需要大于开始时间'))
+            }
+          },
+          trigger: 'change'
+        }],
+        traindesc: [{
+          required: true,
+          message: '请输入培训详情',
+          trigger: 'change'
+        }, {
+          max: 200,
+          message: '最多200个字符',
+          trigger: 'change'
+        }]
+      },
+      trainList: [],
       formTrain: false,
       // 技能描述
       form7: {
-        desc: ''
+        aac042: ''
       },
-      rules7: {},
+      rules7: {
+        aac042: [{
+          required: true,
+          message: '请输入技能描述',
+          trigger: 'change'
+        }, {
+          max: 150,
+          message: '最多150个字符',
+          trigger: 'change'
+        }]
+      },
       formSkill: false,
       // 自我介绍
       form8: {
-        desc: ''
+        aac041: ''
       },
-      rules8: {},
+      rules8: {
+        aac041: [{
+          required: true,
+          message: '请输入自我介绍',
+          trigger: 'change'
+        }, {
+          max: 150,
+          message: '最多150个字符',
+          trigger: 'change'
+        }]
+      },
       formDesc: false,
       loading1: false,
       loading2: false,
@@ -514,56 +960,418 @@ export default {
       loading5: false,
       loading6: false,
       loading7: false,
-      loading8: false
+      loading8: false,
+      formSchool: {
+        province: '',
+        school: ''
+      },
+      schoolList: [],
+      remoteLoading: false,
+      addressList: [],
+      addressLoading: false
     }
   },
   methods: {
     toggle(name) {
       this[name] = !this[name]
+      if (name === 'formEducation') {
+        echo(this.form3)
+        this.aac0d0 = ''
+      }
+      if (name === 'formWork') {
+        echo(this.form4)
+        this.aac0b0 = ''
+      }
+      if (name === 'certForm') {
+        this.aac0c1 = ''
+        echo(this.form5)
+      }
+      if (name === 'formTrain') {
+        echo(this.form6)
+        this.trainId = ''
+      }
     },
     handleEnter(name) {
       if (this[name]) {
         this.$refs[name].clearValidate()
       }
     },
+    // 基本信息提交
     onSubmit1() {
       this.$refs.formBase.validate(valid => {
-        if (valid) {}
+        if (valid) {
+          this.loading1 = true
+          const form = Object.assign({
+            ccmu01: this.$userInfo.ccmu01,
+            aac001: this.$userInfo.aac001
+          }, this.form1)
+          this.$post('/service/business/person/personInfo/personSave.xf', form).then(res => {
+            this.loading1 = false
+            if (res.result.result === 1) {
+              this.formBase = false
+              this.$message({
+                message: res.result.message,
+                type: 'success'
+              })
+              this.getBase()
+            }
+          }).catch(() => {
+            this.loading1 = false
+          })
+        }
       })
     },
+    // 求职意向提交
     onSubmit2() {
       this.$refs.formIntention.validate(valid => {
-        if (valid) {}
+        if (valid) {
+          const form = Object.assign({
+            aac001: this.$userInfo.aac001,
+            ccmu01: this.$userInfo.ccmu01
+          }, this.form2)
+          this.loading2 = true
+          this.$post('/service/business/search/stuApplyJob/jobIntentionSave.xf', form).then(res => {
+            this.loading2 = false
+            if (res.result.result === 1) {
+              this.formIntention = false
+              this.$message({
+                message: res.result.message,
+                type: 'success'
+              })
+              this.getBase()
+            }
+          }).catch(() => {
+            this.loading2 = false
+          })
+        }
       })
     },
     onSubmit3() {
       this.$refs.formEducation.validate(valid => {
-        if (valid) {}
+        if (valid) {
+          this.loading3 = true
+          const form = Object.assign({
+            aac001: this.$userInfo.aac001,
+            aac0d0: this.aac0d0
+          }, this.form3)
+          this.$post('/service/business/person/stuEducation/educationSave', form).then(res => {
+            this.loading3 = false
+            if (res.error.result === 1) {
+              this.formEducation = false
+              this.$message({
+                message: res.error.message,
+                type: 'success'
+              })
+              this.getBase()
+            }
+          }).catch(() => {
+            this.loading3 = false
+          })
+        }
+      })
+    },
+    editEducation(val) {
+      this.aac0d0 = val.aac0d0
+      this.formEducation = true
+      const loading = this.$loading({ fullscreen: true })
+      this.$post('/service/business/person/stuEducation/educationEdit.xf', {
+        aac001: this.$userInfo.aac001,
+        aac0d0: val.aac0d0
+      }).then(res => {
+        loading.close()
+        if (!res.result.length) return
+        echo(this.form3, res.result[0])
+      }).catch(() => {
+        loading.close()
+      })
+    },
+    delEducation(val) {
+      this.$confirm('确定删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return this.$post('/service/business/person/stuEducation/educationDel.xf', {
+          aac001: this.$userInfo.aac001,
+          aac0d0: val.aac0d0
+        })
+      }).then(res => {
+        if (res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getBase()
+        }
       })
     },
     onSubmit4() {
       this.$refs.formWork.validate(valid => {
-        if (valid) {}
+        if (valid) {
+          const form = Object.assign({
+            aac001: this.$userInfo.aac001,
+            aac0b0: this.aac0b0
+          }, this.form4)
+          this.loading4 = true
+          this.$post('/service/business/person/stuWorkExperience/workExperienceSave.xf', form).then(res => {
+            this.loading4 = false
+            if (res.error.result === 1) {
+              this.formWork = false
+              this.$message({
+                message: res.error.message,
+                type: 'success'
+              })
+              this.getBase()
+            }
+          }).catch(() => {
+            this.loading4 = false
+          })
+        }
       })
     },
+    editWork(val) {
+      this.aac0b0 = val.aac0b0
+      const loading = this.$loading({ fullscreen: true })
+      this.$post('/service/business/person/stuWorkExperience/workExperienceEdit.xf', {
+        aac0b0: val.aac0b0,
+        aac001: this.$userInfo.aac001
+      }).then(res => {
+        loading.close()
+        if (!res.result.length) return
+        echo(this.form4, res.result[0])
+      }).catch(() => {
+        loading.close()
+      })
+    },
+    delWork(val) {
+      this.$confirm('确定删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return this.$post('/service/business/person/stuWorkExperience/workExperienceDel.xf', {
+          aac001: this.$userInfo.aac001,
+          aac0b0: val.aac0b0
+        })
+      }).then(res => {
+        if (res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getBase()
+        }
+      })
+    },
+    // 证书
     onSubmit5() {
       this.$refs.certForm.validate(valid => {
-        if (valid) {}
+        if (valid) {
+          const form = Object.assign({
+            aac001: this.$userInfo.aac001,
+            aac0c1: this.aac0c1
+          }, this.form5)
+          this.loading5 = true
+          this.$post('/service/business/person/stuSkill/saveOrUpdate', form).then(res => {
+            this.loading5 = false
+            if (res.error.result === 1) {
+              this.certForm = false
+              this.$message({
+                message: res.error.message,
+                type: 'success'
+              })
+              this.getCert()
+            }
+          }).catch(() => {
+            this.loading5 = false
+          })
+        }
       })
     },
+    editCert(val) {
+      this.aac0c1 = val.aac0c1
+      this.certForm = true
+      const loading = this.$loading({ fullscreen: true })
+      this.$post('/service/business/person/stuSkill/listJson', {
+        aac0c1: val.aac0c1,
+        aac001: this.$userInfo
+      }).then(res => {
+        loading.close()
+        if (!res.result.length) return
+        echo(this.form5, res.result[0])
+      }).catch(() => {
+        loading.close()
+      })
+    },
+    delCert(val) {
+      this.$confirm('确定删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return this.$post('/service/business/person/stuSkill/del', {aac0c1: val.aac0c1})
+      }).then(res => {
+        if (res.error.result === 1) {
+          this.formTrain = false
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getCert()
+        }
+      })
+    },
+    getCert() {
+      this.$post('/service/business/person/stuSkill/listJson', {
+        aac001: this.$userInfo.aac001
+      }).then(res => {
+        this.certList = res.result
+      })
+    },
+    // 培训经历
     onSubmit6() {
       this.$refs.formTrain.validate(valid => {
-        if (valid) {}
+        if (valid) {
+          this.loading6 = true
+          const form = Object.assign({
+            id: this.trainId,
+            aac001: this.$userInfo.aac001
+          }, this.form6)
+          this.$post('/service/business/person/train/saveTrainInfo', form).then(res => {
+            this.loading6 = false
+            if (res.error.result === 1) {
+              this.formTrain = false
+              this.$message({
+                message: res.error.message,
+                type: 'success'
+              })
+              this.getTrainList()
+            }
+          }).catch(() => {
+            this.loading6 = false
+          })
+        }
+      })
+    },
+    editTrain(val) {
+      this.trainId = val.id
+      this.formTrain = true
+      const loading = this.$loading({ fullscreen: true })
+      this.$post('/service/business/person/train/getTrainInfo', {
+        aac001: this.$userInfo.aac001,
+        trainId: val.id
+      }).then(res => {
+        loading.close()
+        echo(this.form6, res.result)
+      }).catch(() => {
+        loading.close()
+      })
+    },
+    delTrain(val) {
+      this.$confirm('确定删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        return this.$post('/service/business/person/train/delTrainInfo', {
+          aac001: this.$userInfo.aac001,
+          trainId: val.id
+        })
+      }).then(res => {
+        if (res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getTrainList()
+        }
+      })
+    },
+    getTrainList() {
+      this.$post('/service/business/person/train/getTrainList', {
+        rowsNum: 100,
+        currentPage: 1,
+        aac001: this.$userInfo.aac001
+      }).then(res => {
+        this.trainList = res.result
       })
     },
     onSubmit7() {
       this.$refs.formSkill.validate(valid => {
-        if (valid) {}
+        if (valid) {
+          const form = Object.assign({
+            aac001: this.$userInfo.aac001
+          }, this.form7)
+          form.aac042 = encodeURIComponent(form.aac042)
+          this.loading7 = true
+          this.$post('/service/business/person/stuSkill/skillDescSave.xf', form).then(res => {
+            this.loading7 = false
+            if (res.result.result === 1) {
+              this.$message({
+                message: res.result.message,
+                type: 'success'
+              })
+              this.getBase()
+            }
+          }).catch(() => {
+            this.loading7 = false
+          })
+        }
       })
     },
     onSubmit8() {
-      this.$refs.formSkill.validate(valid => {
-        if (valid) {}
+      this.$refs.formDesc.validate(valid => {
+        if (valid) {
+          const form = Object.assign({
+            aac001: this.$userInfo.aac001
+          }, this.form8)
+          form.aac041 = encodeURIComponent(form.aac041)
+          this.loading8 = true
+          this.$post('/service/business/person/stuSkill/skillDescSave.xf', form).then(res => {
+            this.loading8 = false
+            if (res.result.result === 1) {
+              this.$message({
+                message: res.result.message,
+                type: 'success'
+              })
+              this.getBase()
+            }
+          }).catch(() => {
+            this.loading8 = false
+          })
+        }
+      })
+    },
+    // 删除技能描述/自我介绍
+    delDesc(type) {
+      this.$confirm('确定删除?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        const form = {
+          aac001: this.$userInfo.aac001,
+          aac041: 'a',
+          aac042: 'a'
+        }
+        if (type === 'desc') {
+          form.aac041 = ''
+        } else {
+          form.aac042 = ''
+        }
+        const loading = this.$loading({ fullscreen: true })
+        this.$post('/service/business/person/stuSkill/skillDel', form).then(res => {
+          loading.close()
+          if (res.result.result === 1) {
+            this.$message({
+              message: res.result.message,
+              type: 'success'
+            })
+            this.getBase()
+          }
+        }).catch(() => {
+          loading.close()
+        })
       })
     },
     getBase() {
@@ -571,21 +1379,64 @@ export default {
         aac001: this.$userInfo.aac001
       }).then(res => {
         echo(this.form1, res.result.personInfo)
+        echo(this.form7, res.result.personInfo)
+        echo(this.form8, res.result.personInfo)
+        this.info1 = res.result.personInfo
+        res.result.jobIntention || (res.result.jobIntention = {})
+        echo(this.form2, res.result.jobIntention)
+        this.info2 = res.result.jobIntention
+        this.educationList = res.result.educationList || []
+        this.worksList = res.result.worksList || []
       })
     },
-    delCert() {
-      this.$confirm('确定删除?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        // 1
+    // 根据身份证号读取生日，性别
+    getSex() {
+      if (/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(this.form1.aac002)) {
+        this.$post('/service/business/person/personInfo/getInfoByCard', {cardNo: this.form1.aac002}).then(res => {
+          this.form1.aac006 || (this.form1.aac006 = res.result.birthday || '')
+          this.form1.aac004 || (this.form1.aac004 = res.result.sexCode || '')
+          this.form1.age || (this.form1.age = res.result.age || '')
+        })
+      }
+    },
+    showSchool() {
+      this.dialogVisible = true
+    },
+    confirmSchool() {
+      this.dialogVisible = false
+      this.form1.aac180 = this.formSchool.school
+      let index = this.schoolList.findIndex(item => item.id === this.form1.aac180)
+      this.form1.aac180name = this.schoolList[index].name
+    },
+    // 根据省份变化获取学校列表
+    getSchoolList(query) {
+      if (query === '') return
+      this.remoteLoading = true
+      this.$post('/service/sys/config/config/getCityList', {
+        code: this.formSchool.province,
+        keyword: query
+      }).then(res => {
+        this.remoteLoading = false
+        this.schoolList = res.result
+      }).catch(() => {
+        this.remoteLoading = false
       })
     },
-    addCert() {}
+    // 根据关键字搜索户籍地址
+    remoteAddress(cityname) {
+      this.addressLoading = true
+      this.$post('/service/business/graduation/graduation/listCity', {cityname}).then(res => {
+        this.addressList = res.result
+        this.addressLoading = false
+      }).catch(() => {
+        this.addressLoading = false
+      })
+    }
   },
   created() {
     this.getBase()
+    this.getCert()
+    this.getTrainList()
   }
 }
 </script>
@@ -593,6 +1444,19 @@ export default {
   @import "../../../../common/style/variables";
   .resume{
     padding: 20px 20px;
+  }
+  .base-form{
+    label {
+      width: 90px;
+      color: #99a9bf;
+    }
+    .el-form-item {
+      margin-right: 0;
+      width: 49%;
+    }
+    .el-input,.el-select,.el-cascader{
+      width: 210px;
+    }
   }
   .demo-table-expand {
     font-size: 0;
@@ -613,6 +1477,9 @@ export default {
     .el-button{
       float: right;
       margin-top: 5px;
+      .el-icon-edit{
+        margin-right: 0;
+      }
     }
   }
   .demo-table{
@@ -624,6 +1491,7 @@ export default {
     }
   }
   .form{
+    margin: 10px 0 0 0;
     .el-form-item{
       width: 350px;
     }
@@ -660,13 +1528,13 @@ export default {
           width: 25%;
         }
         &:nth-child(2){
-          width: 30%;
+          width: 25%;
         }
         &:nth-child(3){
-          width: 30%;
+          width: 25%;
         }
         &:nth-child(4){
-          width: 85px;
+          width: 100px;
         }
       }
     }
@@ -674,7 +1542,8 @@ export default {
   .work-item{
     padding: 10px 0;
     position: relative;
-    .el-button{
+    .item-edit{
+      width: 80px;
       position: absolute;
       right: 10px;
       top: 50%;
@@ -684,38 +1553,34 @@ export default {
       border-bottom: 1px dashed #d9d9d9;
     }
   }
-  .cert-list{
-    padding: 10px 0;
-    span{
-      font-size: 14px;
-      display: inline-block;
-      padding: 8px 12px;
-      border: 1px solid #d9d9d9;
-      border-radius: 3px;
-      .el-icon-delete,.el-icon-plus{
-        vertical-align: middle;
-        margin-left: 5px;
-        &:hover{
-          color: $--color-primary;
-          cursor: pointer;
-        }
-      }
-    }
-  }
-  .inline-form{
-    margin: 10px 0 0 0;
-    padding: 20px 0 0 0;
-    border-top: 1px solid #ebebeb;
-    .el-form-item{
-      margin-bottom: 10px;
-    }
-  }
   .formSkill{
     padding: 10px 0 0 0;
     width: 500px;
   }
   .skill{
     white-space: pre-wrap;
+    word-break: break-all;
+    max-width: 850px;
+  }
+  .no-data{
+    color: #666;
+    font-size: 14px;
+    padding: 20px 0;
+    i{
+      margin: 0 8px 0 0;
+    }
+  }
+  .skill-box{
+    position: relative;
+    .skill-del{
+      position: absolute;
+      right: 10px;
+      top: 10px;
+    }
+  }
+  .max-text{
+    display: inline-block;
+    max-width: 700px;
     word-break: break-all;
   }
 </style>

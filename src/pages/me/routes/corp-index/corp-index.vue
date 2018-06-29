@@ -53,7 +53,7 @@
           </div>
         </div>
         <div class="slideBox">
-          <i class="xffont font-xueshimao-shi"></i>
+          <i class="xffont font-xueshimao"></i>
           <div class="surplus">
             <p>
               <a href="">
@@ -80,8 +80,8 @@
           </div>
         </div>
         <div class="slideBoxd">
-          <i class="xffont font-tubiao209" style="color:#999; font-size: 40px; margin:0px 8px;"></i>
-          <span class="number"></span>
+          <i class="xffont font-youxiang"></i>
+          <span class="number">4</span>
           <div class="surplus newsBox">
             <a href="">
               <p>
@@ -117,7 +117,7 @@
             <span>教三楼</span>
           </p>
           <p>
-            <i></i>
+            <i class="xffont font-msnui-time"></i>
             <span>2018-01-12 10:00~2018-01-12 12:00</span>
           </p>
         </div>
@@ -131,7 +131,7 @@
     </div>
     <div class="recommendTalent">
       <ul class="talentTop">
-        <li class="recommend">
+        <li class="recommend click">
           <i class="xffont font-admin"></i>
           <span>推荐人才</span>
         </li>
@@ -140,7 +140,13 @@
           <span>专业推荐</span>
         </li>
       </ul>
-      <div class="xffont xf-shuaxin3"></div>
+      <div class="batch">
+        <i class="xffont font-shuaxin"></i>
+        <a href="">换一批</a>
+      </div>
+    </div>
+    <div class="errBox">
+      <img src="./2.png" alt="">
     </div>
   </div>
 </template>
@@ -222,15 +228,23 @@ export default {
     }
     .slideBoxd{
       position:relative;
+      padding-top:25px;
+      i{
+        color: #999;
+        font-size: 39px;
+        margin:0px 65px;
+      }
       .number{
         display:inline-block;
         width:20px;
         height:20px;
         background: red;
         position:absolute;
-        top:22px;
-        right:55px;
+        top: 17px;
+        right: 58px;
         border-radius: 50%;
+        color: #fff;
+        text-align: center;
       }
     }
   }
@@ -260,8 +274,8 @@ export default {
   }
   .springAction{
     height:81px;
-    border-bottom:1px solid #e3e3e3;
-    padding:0px 10px;
+    border-bottom:1px dotted #e3e3e3;
+    padding:15px 10px;
     :hover{
       background:#eee;
     }
@@ -272,7 +286,6 @@ export default {
       .action{
         width:700px;
         color:#585858;
-        margin-top:15px;
         a :hover{
           color:#faa65e;
         }
@@ -280,8 +293,12 @@ export default {
       p{
         float: left;
         font-size: 14px;
-        margin-top: 10px;
         color: #b5b4b4;
+        margin-top:10px;
+        i{
+          font-size: 14px;
+          margin-left: 10px;
+        }
       }
     }
     .springAction_right{
@@ -296,9 +313,49 @@ export default {
         color:#faa65e;
         -webkit-border-radius: 7%;
         border:1px solid #faa65e;
-        margin-top:23px;
-
+        margin-top: -10px;
       }
+    }
+  }
+  .recommendTalent{
+    height:50px;
+    line-height: 50px;
+    border-bottom:1px solid #e3e3e3;
+    color:#585858;
+    ul{
+      float:left;
+      .recommend{
+        float: left;
+        width: 106px;
+        list-style: none;
+        text-align: center;
+        color: #585858;
+        i {
+          font-size: 20px;
+        }
+      }
+      .click{
+        color: #2a63b3;
+        border-bottom: 2px solid #2a63b3;
+        margin-top:-2px;
+      }
+    }
+    .batch{
+      float: right;
+      margin-right: 20px;
+      i{
+        font-size:20px;
+      }
+    }
+  }
+  .errBox{
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    text-align: center;
+    img{
+      width:400px;
+      height:210px;
     }
   }
 </style>

@@ -38,7 +38,7 @@
         <span>{{form.acb21iName}}</span>
       </el-form-item>
       <el-form-item label="食宿情况">
-        <span>{{form.acb228}}</span>
+        <span>{{form.acb228name}}</span>
       </el-form-item>
       <el-form-item label="优惠政策">
         <span>{{form.favouredPolicy}}</span>
@@ -72,6 +72,7 @@ export default {
   @import "../../../../../common/style/variables";
   .demo-table-expand {
     font-size: 0;
+    margin: 20px 0 0 0;
   }
   .demo-table-expand label {
     width: 90px;

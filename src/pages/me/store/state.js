@@ -12,11 +12,12 @@ const state = {
     TAB_NATION: [], // 民族
     TAB_EDUCATION: [], // 学历
     TAB_MARRIAGE: [], // 婚姻状况
-    TAB_CERFORM: [], // 技能证书
+    TAB_CERTIFICATE_TYPE: [], // 技能证书
     INDUSTRY_AS: [], // 行业类型
     TAB_UNITNATURE: [], // 企业性质
     TAB_PSCALE: [], // 企业规模
-    TAB_SREQUIREMENT: [] // 食宿情况
+    TAB_SREQUIREMENT: [], // 食宿情况
+    tab_university_city: [] // 省份字典表（用于选择院校）
   },
   phoneOpen: false
 }

@@ -3,11 +3,9 @@
     <xf-header ref="header"></xf-header>
     <div class="register">
       <div class="register-con">
-        <div class="title">
-          <span><i class="xffont font-gongsixinxi"></i>单位注册</span>
-          <span>ESTABLISHMENT REGISTRATION</span>
-        </div>
-        <router-view @login="login"></router-view>
+        <transition name="el-fade-in" mode="out-in">
+          <router-view @login="login"></router-view>
+        </transition>
       </div>
     </div>
     <xf-footer></xf-footer>
@@ -44,8 +42,9 @@ export default {
     min-height: 650px;
   }
   .register-con{
-    width: 1200px;
-    margin: 0 auto;
+    width: 40%;
+    height: 450px;
+    margin: 40px 30%;
     background: #fff;
     border-radius: 8px;
     .title{

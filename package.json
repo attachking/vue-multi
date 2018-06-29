@@ -5,6 +5,7 @@
   "author": "papachen <447334358@qq.com>",
   "private": true,
   "scripts": {
+    "241": "set HOST=192.168.1.241&& webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "244": "set HOST=192.168.1.244&& webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "start": "npm run dev",

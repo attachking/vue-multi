@@ -80,13 +80,11 @@
 </template>
 <script>
 import Pagination from '../../../../../components/pagination/pagination.vue'
-import Empty from '../../../../../components/empty/empty.vue'
 // abb773  审核状态
 // acb208  职位状态  0-使用中, 1-暂停, 2-已过期,3-审核不通过,4-待审核
 
 export default {
   components: {
-    Empty,
     Pagination},
   data() {
     return {

@@ -2,14 +2,14 @@
 .card-tit{
   font-size: 16px;
   border-bottom: 1px solid #ebebeb;
-  .xffont,i{
-    font-size: 18px;
-    margin: 0 5px 0 0;
-    vertical-align: middle;
-  }
   .item{
     display: inline-block;
     padding: 10px 10px;
+    .xffont,i{
+      font-size: 18px;
+      margin: 0 5px 0 0;
+      vertical-align: middle;
+    }
     &:hover{
       color: $--color-primary;
       cursor: pointer;

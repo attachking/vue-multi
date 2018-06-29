@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import {storage, STORAGE_TYPE} from '../../../common/js/utils'
+import event from '../../../common/js/event'
 
 Vue.use(Router)
 
 const ccmu17 = Number(storage.get(STORAGE_TYPE.ccmu17))
+const status = Number(storage.get(STORAGE_TYPE.status))
 
 // 路由组件懒加载,每个路由组件单独生成一个js,需要时通过创建script标签引入,需要配置webpack的output.chunkFilename
 // import(url)返回的是一个Promise对象实例
@@ -16,6 +18,7 @@ const password = () => import('../routes/account/password/password.vue') // 密�
 const pics = () => import('../routes/account/pics/pics.vue') // 风采
 const jobSearch = () => import('../routes/job-search/job-search.vue') // 岗位搜索
 const resume = () => import('../routes/resume/resume.vue') // 简历
+const userCollection = () => import('../routes/user-collection/user-collection.vue') // 我的收藏
 
 // 企业中心
 const corp = () => import('../routes/corp-index/corp-index.vue')
@@ -89,10 +92,21 @@ const router = new Router({
       name: 'jobPreview',
       component: jobPreview
     }]
+  }, {
+    path: '/userCollection',
+    name: 'userCollection',
+    component: userCollection,
+    meta: {ccmu17: 1}
   }]
 })
 
 router.beforeEach((to, from, next) => {
+  if (status !== 1) {
+    setTimeout(() => {
+      event.$emit('login')
+    }, 20)
+    return
+  }
   // 默认跳转路由
   if (!to.name) {
     next({name: ccmu17 === 1 ? 'user' : 'corp'})

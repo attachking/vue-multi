@@ -11,9 +11,23 @@
             <a :href="handleUrl(item.canc04)" v-for="item in val.CR_LIST" :key="item.canc04">{{item.canc03}}</a>
           </span>
         </a>
-        <span class="login">
+        <span class="login" v-if="!userInfo.status">
           <a href="javascript:;" @click="login">登录</a>/<a href="javascript:;">注册</a>
         </span>
+        <div class="user-info" v-if="userInfo.status === 1">
+          <el-dropdown placement="bottom" @command="handleCommand">
+            <a class="img" href="me.html">
+              <img src="./head.png">
+            </a>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>
+                <a href="me.html">个人中心</a>
+              </el-dropdown-item>
+              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <a class="user-info-name" href="me.html" :title="userInfo.name">{{userInfo.name}}</a>
+        </div>
       </div>
     </div>
     <el-dialog title="用户登录" :visible.sync="dialogTableVisible" width="380px">
@@ -114,7 +128,8 @@ export default {
           },
           trigger: 'blur'
         }]
-      }
+      },
+      userInfo: this.$userInfo
     }
   },
   methods: {
@@ -165,7 +180,7 @@ export default {
     // 刷新登录状态
     refreshLogin() {
       if (this.$userInfo.status !== 1) return
-      this.$post('/service/business/login/account/userLogin', {}).then(res => {
+      this.$post('/service/business/login/account/userLogin', {}, false).then(res => {
         this.saveStorage(res)
       })
     },
@@ -188,6 +203,12 @@ export default {
     },
     logout() {
       storage.out()
+      location.reload()
+    },
+    handleCommand(cmd) {
+      if (cmd === 'logout') {
+        this.logout()
+      }
     }
   },
   created() {
@@ -337,6 +358,32 @@ export default {
   .code-item{
     .el-input{
       width: 255px;
+    }
+  }
+  .user-info{
+    display: inline-block;
+    vertical-align: middle;
+    text-align: right;
+    width: 180px;
+    .img{
+      width: 40px;
+      height: 40px;
+      display: inline-block;
+      border-radius: 50%;
+      vertical-align: middle;
+      &:hover{
+        cursor: pointer;
+      }
+      img{
+        width: 100%;
+      }
+    }
+    .user-info-name{
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 14px;
+      max-width: 120px;
+      @include ellipsis;
     }
   }
 </style>

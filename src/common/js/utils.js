@@ -45,7 +45,8 @@ const user = {
   token: storage.get(STORAGE_TYPE.token)
 }
 
-export function post(url, params = {}) {
+export function post(url, params = {}, status = true) {
+  // status是否需要提示
   params = Object.assign({}, {
     userId: user.ccmu17 === 1 ? user.aac001 : user.aab001,
     ccmu17: user.ccmu17,
@@ -58,7 +59,7 @@ export function post(url, params = {}) {
       url: BASE_URL + url,
       success(data) {
         resolve(data)
-        if (data.error && data.error.result === 0) {
+        if (data.error && data.error.result === 0 && status) {
           Message({
             showClose: false,
             message: data.error.message,
@@ -66,7 +67,7 @@ export function post(url, params = {}) {
           })
         }
         // 90：失败（查不到该token）  92：超时   93：越权
-        if (data.error && (data.error.result === 90 || data.error.result === 92)) { // 访问异常
+        if (data.error && (data.error.result === 90 || data.error.result === 92) && status) { // 访问异常
           event.$emit('login')
         }
       },
@@ -194,5 +195,11 @@ export function echo(target, resource) {
         target[i] = ''
       }
     }
+  }
+}
+
+export const reg = {
+  tel(str) { // 手机号+固定电话正则
+    return /^([0-9]{3,4}-)?[0-9]{7,8}$/.test(str) || /^1[345789]\d{9}$/.test(str)
   }
 }

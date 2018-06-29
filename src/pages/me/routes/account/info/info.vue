@@ -22,7 +22,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="所在区域" prop="aab301">
-          <xf-cascader :options="dictionaries.TAB_CITY" v-model="form.aab301" placeholder="请选择所在区域"></xf-cascader>
+          <xf-cascader :fulltext.sync="form.aaa021" :options="dictionaries.TAB_CITY" v-model="form.aab301" placeholder="请选择所在区域"></xf-cascader>
         </el-form-item>
         <el-form-item label="联系地址" prop="aae006">
           <el-input v-model="form.aae006" placeholder="请输入联系地址"></el-input>
@@ -34,6 +34,9 @@
         </el-form-item>
         <el-form-item label="联系人" prop="aae004">
           <el-input v-model="form.aae004" placeholder="请输入联系人"></el-input>
+        </el-form-item>
+        <el-form-item label="联系电话" prop="aae005">
+          <el-input v-model="form.aae005" placeholder="请输入固定电话或手机号"></el-input>
         </el-form-item>
         <el-form-item label="乘车路线" prop="acb205">
           <el-input v-model="form.acb205" placeholder="请输入乘车路线"></el-input>
@@ -71,10 +74,13 @@
           <span class="tip" :class="info.cabq02 ? 'green' : 'red'">{{info.cabq02 ? '已选取坐标' : '未选取坐标'}}</span>
         </el-form-item>
         <el-form-item label="法定代表人">
-          <span>{{info.aae006 || '--'}}</span>
+          <span>{{info.aab013 || '--'}}</span>
         </el-form-item>
         <el-form-item label="联系人">
           <span>{{info.aae004 || '--'}}</span>
+        </el-form-item>
+        <el-form-item label="联系电话">
+          <span>{{info.aae005 || '--'}}</span>
         </el-form-item>
         <el-form-item label="乘车路线">
           <span>{{info.acb205 || '--'}}</span>
@@ -100,7 +106,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import XfCascader from '../../../../../components/xf-cascader/xf-cascader.vue'
-import {echo} from '../../../../../common/js/utils'
+import {echo, reg} from '../../../../../common/js/utils'
 
 const BMap = window.BMap
 
@@ -132,7 +138,97 @@ export default {
         cabq02: '', // 经度
         cabq03: '' // 维度
       },
-      rules: {},
+      rules: {
+        aab004: [{
+          required: true,
+          message: '请输入企业名称',
+          trigger: 'change'
+        }, {
+          max: 20,
+          message: '最多20个字符',
+          trigger: 'change'
+        }],
+        aab019: [{
+          required: true,
+          message: '请选择企业性质',
+          trigger: 'change'
+        }],
+        ccpr10: [{
+          required: true,
+          message: '请选择行业类型',
+          trigger: 'change'
+        }],
+        aab056: [{
+          required: true,
+          message: '请选择人员规模',
+          trigger: 'change'
+        }],
+        aab301: [{
+          required: true,
+          message: '请选择所在区域',
+          trigger: 'change'
+        }],
+        aae006: [{
+          required: true,
+          message: '请输入联系地址',
+          trigger: 'change'
+        }, {
+          max: 30,
+          message: '最多不超过30个字符',
+          trigger: 'change'
+        }],
+        aab013: [{
+          required: true,
+          message: '请输入法定代表人',
+          trigger: 'change'
+        }, {
+          max: 10,
+          message: '最多不超过10个字符',
+          trigger: 'change'
+        }],
+        aae004: [{
+          required: true,
+          message: '请输入联系人',
+          trigger: 'change'
+        }, {
+          max: 10,
+          message: '最多不超过10个字符',
+          trigger: 'change'
+        }],
+        aae005: [{
+          required: true,
+          message: '请输入联系方式',
+          trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            if (reg.tel(value)) {
+              callback()
+            } else {
+              callback(new Error('请输入正确的电话号码'))
+            }
+          },
+          trigger: 'change'
+        }],
+        acb205: [{
+          required: false,
+          message: '请输入乘车路线',
+          trigger: 'change'
+        }, {
+          max: 30,
+          message: '最多不超过30个字符',
+          trigger: 'change'
+        }],
+        aae016: [{
+          max: 30,
+          message: '最多不超过30个字符',
+          trigger: 'change'
+        }],
+        acb206: [{
+          max: 1000,
+          message: '最多不超过1000个字符',
+          trigger: 'change'
+        }]
+      },
       info: {},
       hasMap: false
     }

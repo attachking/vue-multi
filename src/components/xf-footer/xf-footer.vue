@@ -51,6 +51,10 @@ export default {
         border-right: 1px solid #454547;
         margin: 30px 0;
         padding: 15px 0 0 30px;
+        img{
+          width: 116px;
+          height: 116px;
+        }
       }
       .xf-footer-middle{
         width: 715px;
