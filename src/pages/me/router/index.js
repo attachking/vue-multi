@@ -19,6 +19,11 @@ const pics = () => import('../routes/account/pics/pics.vue') // 风采
 const jobSearch = () => import('../routes/job-search/job-search.vue') // 岗位搜索
 const resume = () => import('../routes/resume/resume.vue') // 简历
 const userCollection = () => import('../routes/user-collection/user-collection.vue') // 我的收藏
+const collectedJob = () => import('../routes/user-collection/job/job.vue') // 我的收藏（职位）
+const collectedCorp = () => import('../routes/user-collection/corp/corp.vue') // 我的收藏（单位）
+const records = () => import('../routes/records/records.vue') // 求职管理
+const apply = () => import('../routes/records/apply/apply.vue') // 求职管理（应聘记录）
+const invitation = () => import('../routes/records/invitation/invitation.vue') // 求职管理（面试邀请）
 
 // 企业中心
 const corp = () => import('../routes/corp-index/corp-index.vue')
@@ -96,7 +101,30 @@ const router = new Router({
     path: '/userCollection',
     name: 'userCollection',
     component: userCollection,
-    meta: {ccmu17: 1}
+    meta: {ccmu17: 1},
+    children: [{
+      path: 'collectedJob',
+      name: 'collectedJob',
+      component: collectedJob
+    }, {
+      path: 'collectedCorp',
+      name: 'collectedCorp',
+      component: collectedCorp
+    }]
+  }, {
+    path: '/records',
+    name: 'records',
+    component: records,
+    meta: {ccmu17: 1},
+    children: [{
+      path: 'apply',
+      name: 'apply',
+      component: apply
+    }, {
+      path: 'invitation',
+      name: 'invitation',
+      component: invitation
+    }]
   }]
 })
 

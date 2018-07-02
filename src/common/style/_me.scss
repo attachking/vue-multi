@@ -34,6 +34,15 @@
   }
 }
 .job-list{
+  .checkbox{
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 19px;
+    height: 19px;
+    overflow: hidden;
+  }
   .item{
     padding: 20px 10px;
     @include clearFixed;
@@ -55,12 +64,13 @@
       height: 65px;
       overflow: hidden;
       float: left;
+      margin-left: 10px;
       img{
         width: 100%;
       }
     }
     .pos-info{
-      width: 860px;
+      width: 850px;
       float: right;
       & > p{
         padding: 5px 0 0 0;

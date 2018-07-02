@@ -160,6 +160,7 @@
 </template>
 <script>
 import {echo} from '../../../../common/js/utils'
+import event from '../../../../common/js/event'
 import Pagination from '../../../../components/pagination/pagination.vue'
 import Empty from '../../../../components/empty/empty.vue'
 
@@ -292,11 +293,15 @@ export default {
       if (Number(val.is_Collection) === 0) {
         this.collect(val.acb210)
       } else {
-        this.delCollect()
+        this.delCollect(val.acb210)
       }
     },
     collect(acb210) {
-      this.$post('/service/business/person/positionTalent/talentPositionSave.xf', {
+      if (!this.$userInfo.status) {
+        event.$emit('login')
+        return
+      }
+      this.$post('/service/business/person/positionTalent/saveTalentPositionInfo.xf', {
         aac001: this.$userInfo.aac001,
         acb210
       }).then(res => {
@@ -310,7 +315,7 @@ export default {
       })
     },
     delCollect(acb210) {
-      this.$post('/service/business/person/positionTalent/talentPositionDel.xf', {
+      this.$post('/service/business/person/positionTalent/delTalentPositionInfo.xf', {
         aac001: this.$userInfo.aac001,
         acb210
       }).then(res => {
@@ -373,8 +378,7 @@ export default {
       padding: 15px 0 0 0;
       .item{
         display: block;
-        float: left;
-        width: 415px;
+        width: 49%;
         height: 176px;
         margin-bottom: 15px;
         overflow: hidden;
@@ -383,7 +387,10 @@ export default {
           border-color: $--color-primary;
         }
         &:nth-child(2n-1){
-          margin-right: 15px;
+          float: left;
+        }
+        &:nth-child(2n){
+          float: right;
         }
         .top{
           height: 103px;
@@ -424,8 +431,9 @@ export default {
             }
           }
           .corp-info{
-            width: 325px;
-            float: right;
+            width: 340px;
+            float: left;
+            padding: 0 0 0 15px;
             a{
               display: inline-block;
               width: 100%;

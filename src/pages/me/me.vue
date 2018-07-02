@@ -44,6 +44,10 @@
               <i class="xffont font-shoucang"></i>
               <span>我的收藏</span>
             </router-link>
+            <router-link to="/records" class="item">
+              <i class="xffont font-jilu"></i>
+              <span>求职管理</span>
+            </router-link>
           </div>
         </div>
         <transition name="el-fade-in" mode="out-in">

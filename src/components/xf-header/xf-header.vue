@@ -20,9 +20,7 @@
               <img src="./head.png">
             </a>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>
-                <a href="me.html">个人中心</a>
-              </el-dropdown-item>
+              <el-dropdown-item command="me.html">个人中心</el-dropdown-item>
               <el-dropdown-item command="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -208,6 +206,8 @@ export default {
     handleCommand(cmd) {
       if (cmd === 'logout') {
         this.logout()
+      } else {
+        window.location.href = cmd
       }
     }
   },

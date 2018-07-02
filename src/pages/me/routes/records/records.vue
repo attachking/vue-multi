@@ -1,8 +1,8 @@
 <template>
-  <div class="user-collection">
+  <div class="records">
     <div class="card-tit">
-      <router-link class="item" to="/userCollection/collectedJob"><i class="xffont font-iconzhiwei"></i>收藏的职位</router-link>
-      <router-link class="item" to="/userCollection/collectedCorp"><i class="xffont font-gongsixinxi"></i>收藏的单位</router-link>
+      <router-link class="item" to="/records/apply"><i class="xffont font-iconzhiwei"></i>应聘记录</router-link>
+      <router-link class="item" to="/records/invitation"><i class="xffont font-youxiang"></i>面试邀请</router-link>
     </div>
     <transition name="el-fade-in" mode="out-in">
       <router-view></router-view>
@@ -16,8 +16,8 @@ export default {
   },
   methods: {
     handleRouter(router) {
-      if (router.name === 'userCollection') {
-        this.$router.replace({name: 'collectedJob'})
+      if (router.name === 'records') {
+        this.$router.replace({name: 'apply'})
       }
     }
   },
@@ -29,7 +29,7 @@ export default {
 </script>
 <style lang="scss" scoped>
   @import "../../../../common/style/variables";
-  .user-collection{
+  .records{
     padding: 20px 20px;
   }
 </style>

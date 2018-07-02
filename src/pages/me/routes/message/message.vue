@@ -14,9 +14,9 @@
         </div>
       </div>
       <div class="edit">
+        <el-checkbox class="all" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox>
         <el-button type="danger" icon="el-icon-delete" size="mini" class="btn" @click="delConfirm">删除</el-button>
         <el-button type="text" size="mini" class="btn" @click="signAll">标记为已读</el-button>
-        <el-checkbox class="all" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox>
       </div>
       <div class="page">
         <pagination :bean="pageBean" @current-change="handlePage"></pagination>
@@ -159,7 +159,7 @@ export default {
       overflow: hidden;
       width: 18px;
       position: absolute;
-      right: 20px;
+      left: 0;
       top: 0;
     }
     .el-checkbox{
@@ -172,7 +172,7 @@ export default {
       }
     }
     .item{
-      padding: 20px 15px;
+      padding: 20px 15px 20px 30px;
       &:not(:first-child),&:not(:last-child){
         border-bottom: 1px solid #ebebeb;
       }
@@ -187,7 +187,7 @@ export default {
       .title{
         font-size: 16px;
         display: inline-block;
-        width: 80%;
+        width: 100%;
         @include ellipsis;
       }
       .unread{
@@ -208,14 +208,10 @@ export default {
     }
   }
   .edit{
-    padding: 15px 24px;
+    padding: 15px 0;
     @include clearFixed;
     .btn{
       margin: 0 10px 0 0;
-      float: left;
-    }
-    .all{
-      float: right;
     }
   }
   .page{

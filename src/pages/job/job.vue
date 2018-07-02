@@ -6,43 +6,31 @@
         <div class="left">
           <div class="left-top">
             <div class="title">
-              <p class="pos-name">项目工程师</p>
+              <p class="pos-name">{{detail.cca113 || '--'}}</p>
               <p class="info">
-                <span class="salary">4000元以上</span>&nbsp;&nbsp;
-                <span>2人</span>&nbsp;|&nbsp;
-                <span>全职</span>&nbsp;|&nbsp;
-                <span>经验不限</span>&nbsp;|&nbsp;
-                <span>硕士研究生</span>
-                <span class="time">2017-03-08刷新</span>
+                <span class="salary">{{detail.acc034Name || '--'}}</span>&nbsp;&nbsp;
+                <span>{{detail.acb21r || 0}}人</span>&nbsp;|&nbsp;
+                <span>{{detail.acb21iName || '--'}}</span>&nbsp;|&nbsp;
+                <span>{{detail.acc218 || '--'}}</span>&nbsp;|&nbsp;
+                <span>{{detail.aac012 || '--'}}</span>
+                <span class="time">{{$dateFormat(detail.ccpr05, 'yyyy-MM-dd')}}刷新</span>
               </p>
               <div class="edit">
-                <i class="xffont font-jubao"></i>
-                <i class="xffont font-shoucang"></i>
-                <el-button type="primary" size="mini">投递简历</el-button>
+                <!--<i class="xffont font-jubao"></i>-->
+                <i class="xffont" :title="state.positionTalenState > 0 ? '已收藏' : '收藏'" :class="state.positionTalenState > 0 ? 'font-shoucang1' : 'font-shoucang'" @click="collect"></i>
+                <el-button type="primary" size="mini" :disabled="state.resumeState > 0" :title="state.resumeState > 0 ? '已投递' : '投递简历'" @click="confirmSend">投递简历</el-button>
               </div>
             </div>
             <div class="welfare">
-              <span>养老保险</span>
-              <span>养老保险</span>
-              <span>养老保险</span>
+              <span v-for="(val, key) in welfares" :key="key">{{val}}</span>
             </div>
             <div class="desc">
               <div class="tit">职位描述</div>
-              <div class="con">1.熟悉android操作系统,懂系统和软件升级、测试
-                2.熟悉当前平板电脑方案,并对各方案的优缺点比较熟悉
-                3.熟悉平板电脑生产流程,熟悉调试以及新机种导入生产,能分析出生产异常及提出对策
-                4.熟悉PADS或Protel电路设计软件,有多层PCB Layout设计经验,熟悉Offic办公软件;
-                5.BOM制作、新元器件选择、确认能力强;
-                6.熟悉MID、智能手机等数码产品方案,对产品方案的优劣有认识、掌握;
-                7.对新产品的导入、产品研发、进度跟进能力强;
-                8.有丰富的电子电路设计经验;
-                9.有较强的数码产品EMC、ESD问题处理能力;
-                10.有较强的文件管理能力,对新产品设计发行文件制作能力强;
-                11.较强的沟通能力,有项目管理经验者优先;</div>
+              <div class="con">{{detail.cca114}}</div>
             </div>
             <div class="desc">
               <div class="tit">工作地点</div>
-              <div class="con">郑州市中原区长椿路冬青街交汇处河南省电子商务产业园3号楼1层</div>
+              <div class="con">{{detail.bcb202}}</div>
             </div>
             <div class="desc">
               <div class="tit">联系电话</div>
@@ -53,42 +41,27 @@
             <p class="position-tit">
               <span>该单位招聘岗位</span>
               <span>
-                <a href="javascript:;">&lt;</a>&nbsp;
-                <span class="current-page">1</span>&nbsp;/&nbsp;<span>3</span>&nbsp;
-                <a href="javascript:;">&gt;</a>
+                <a href="javascript:;" @click="handlePage(0)">&lt;</a>&nbsp;
+                <span class="current-page">{{pageBean.currentPage}}</span>&nbsp;/&nbsp;<span>{{pageBean.totalPage}}</span>&nbsp;
+                <a href="javascript:;" @click="handlePage(0)">&gt;</a>
               </span>
             </p>
+            <empty v-if="pageBean.totalCount === 0"></empty>
             <div class="list">
-              <div class="item">
+              <div class="item" v-for="val in otherJob" :key="val.acb210">
                 <p>
-                  <a href="">项目工程师</a>
-                  <span>2016-8-5</span>
+                  <a :href="'job.html?acb210=' + val.acb210">{{val.cca113 || '--'}}</a>
+                  <span>$dateFormat(val.ccpr05, 'yyyy-MM-dd')}}</span>
                 </p>
                 <p>
                   <span>
-                    <span>河南省 郑州市 市辖区</span>&nbsp;&nbsp;|
-                    <span>2人</span>&nbsp;&nbsp;|
-                    <span>全职</span>&nbsp;&nbsp;|
-                    <span>经验不限</span>&nbsp;&nbsp;|
-                    <span>硕士研究生</span>
+                    <span>{{val.bcb202 || '--'}}</span>&nbsp;&nbsp;|
+                    <span>{{val.acb21r || 0}}人</span>&nbsp;&nbsp;|
+                    <span>{{val.acb21iName || '--'}}</span>&nbsp;&nbsp;|
+                    <span>{{val.acc218 || '--'}}</span>&nbsp;&nbsp;|
+                    <span>{{val.aac012 || '--'}}</span>
                   </span>
-                  <span class="salary">8000以上</span>
-                </p>
-              </div>
-              <div class="item">
-                <p>
-                  <a href="">项目工程师</a>
-                  <span>2016-8-5</span>
-                </p>
-                <p>
-                  <span>
-                    <span>河南省 郑州市 市辖区</span>&nbsp;&nbsp;|
-                    <span>2人</span>&nbsp;&nbsp;|
-                    <span>全职</span>&nbsp;&nbsp;|
-                    <span>经验不限</span>&nbsp;&nbsp;|
-                    <span>硕士研究生</span>
-                  </span>
-                  <span class="salary">8000以上</span>
+                  <span class="salary">{{val.acc034Name || '--'}}</span>
                 </p>
               </div>
             </div>
@@ -97,38 +70,38 @@
         <div class="right">
           <div class="right-top">
             <div class="contact-tit">
-              <img src="./static/logo.png" alt="">
-              <a href="">纳斯达工贸有限公司</a>
+              <img :src="corpLogo.ccmu15" alt="">
+              <a :href="'corp.html?aab001=' + corpInfo.aab001">{{corpInfo.aab004}}</a>
             </div>
             <div class="contact-con">
               <p>
                 <span class="label">网址：</span>
-                <a href="http://www.lyrpec.com" target="_blank">http://www.lyrpec.com</a>
+                <a :href="corpInfo.aae016" target="_blank">{{corpInfo.aae016 || '--'}}</a>
               </p>
               <p>
                 <span class="label">电话：</span>
-                <span>0379-63091742</span>
+                <span>{{corpInfo.aae005 || '--'}}</span>
               </p>
               <p>
                 <span class="label">邮箱：</span>
-                <span>lyrpec_bgs@163.com</span>
+                <span>{{corpInfo.aae015 || '--'}}</span>
               </p>
               <p>
                 <span class="label">地址：</span>
-                <span>郑州市中原区长椿路冬青街交汇   处河南省电子商务产业园3号楼1层</span>
+                <span>{{corpInfo.aae006 || '--'}}</span>
               </p>
             </div>
           </div>
-          <div class="right-middle">
+          <div class="right-middle" v-if="false">
             <img src="./static/qrcode.png" alt="">
             <p>扫描二维码在手机查看单位详情</p>
           </div>
           <div class="right-bottom">
             <div class="recommend-tit">推荐岗位</div>
             <div class="list">
-              <div class="item">
-                <a href="">项目经理</a>
-                <span>8000以上</span>
+              <div class="item" v-for="val in recommendJob" :key="val.acb210">
+                <a :href="'job.html?acb210=' + val.acb210">{{val.cca113 || '--'}}</a>
+                <span>{{val.acc034Name || '--'}}</span>
               </div>
             </div>
           </div>
@@ -143,28 +116,145 @@
 import XfHeader from '../../components/xf-header/xf-header.vue'
 import XfFooter from '../../components/xf-footer/xf-footer.vue'
 import RightMenu from '../../components/right-menu/right-menu.vue'
-import {queryParse} from '../../common/js/utils'
+import {queryParse, renderTitle} from '../../common/js/utils'
+import Empty from '../../components/empty/empty.vue'
 
 export default {
   components: {
+    Empty,
     RightMenu,
     XfFooter,
     XfHeader},
   data() {
     return {
       detail: {},
-      isCollect: false
+      isCollect: false,
+      welfares: [],
+      recommendJob: [], // 推荐职位
+      otherJob: [], // 该公司在招其他职位
+      pageBean: {},
+      searchData: {
+        acb210: '',
+        rowsNum: 6,
+        currentPage: 1
+      },
+      state: {
+        positionTalenState: 0,
+        resumeState: 0
+      },
+      editLoading: false,
+      corpInfo: {},
+      corpLogo: {},
+      currentSearch: {}
     }
   },
   methods: {
     getDetail(acb210) {
-      // this.$post('', {acb210})
+      this.$post('/service/business/corp/newPosition/getPositionDetail.xf', {
+        acb210,
+        aac001: this.$userInfo.aac001
+      }).then(res => {
+        renderTitle(res.result.positionInfo.cca113)
+        this.detail = res.result.positionInfo
+        this.welfares = res.result.positionInfo.acc214name ? res.result.positionInfo.acc214name.split(',') : []
+        this.corpInfo = res.result.corpInfo
+        this.corpLogo = res.result.corpLogo
+      })
     },
-    collect() {}
+    collect() {
+      if (this.editLoading) return
+      this.editLoading = true
+      let url = this.state.positionTalenState > 0 ? '/service/business/person/positionTalent/delTalentPositionInfo.xf' : '/service/business/person/positionTalent/saveTalentPositionInfo.xf'
+      this.$post(url, {
+        aac001: this.$userInfo.aac001,
+        acb210: this.currentSearch.acb210
+      }).then(res => {
+        this.editLoading = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getState()
+        }
+      }).catch(() => {
+        this.editLoading = false
+      })
+    },
+    getRecommendJob(acb210) {
+      this.$post('/service/business/corp/newPosition/getRecommendJob.xf', {
+        acb210,
+        rowsNum: 6,
+        currentPage: 1
+      }).then(res => {
+        this.recommendJob = res.result
+      })
+    },
+    getOtherJob() {
+      this.$post('/service/business/corp/newPosition/getPositionList.xf', this.searchData).then(res => {
+        this.otherJob = res.result || []
+        this.pageBean = res.pageBean
+      })
+    },
+    handlePage(page) {
+      if (page === 0) {
+        if (this.pageBean.hasPreviousPage) {
+          this.searchData.currentPage = this.pageBean.previousPage
+          this.getOtherJob()
+        }
+      } else {
+        if (this.pageBean.hasNextPage) {
+          this.searchData.currentPage = this.pageBean.nextPage
+          this.getOtherJob()
+        }
+      }
+    },
+    getState() {
+      if (this.$userInfo.status !== 1 || this.$userInfo.ccmu17 !== 1) return
+      this.$post('/service/business/corp/newPosition/getPositionState', {
+        aac001: this.$userInfo.aac001,
+        acb210: this.currentSearch.acb210
+      }).then(res => {
+        this.state = res.result
+      })
+    },
+    sendResume(acb210) {
+      this.editLoading = true
+      this.$post('/service/business/person/personSendResume/savePositionApplyInfo.xf', {
+        aac001: this.$userInfo.aac001,
+        acb210
+      }).then(res => {
+        this.editLoading = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getList()
+        }
+      }).catch(() => {
+        this.editLoading = false
+      })
+    },
+    confirmSend() {
+      if (this.editLoading) return
+      this.$confirm('确认投递?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.sendResume(this.currentSearch.acb210)
+      })
+    }
   },
   mounted() {
     const search = queryParse(location.search)
+    this.currentSearch = search
     this.getDetail(search.acb210)
+    this.getRecommendJob(search.acb210)
+    this.getState()
+    this.searchData.searchData = search.acb210
+    this.getOtherJob()
   }
 }
 </script>
@@ -225,6 +315,9 @@ export default {
                 cursor: pointer;
                 color: #f26b01;
               }
+              &.font-shoucang1{
+                color: #f26b01;
+              }
             }
           }
         }
@@ -237,6 +330,7 @@ export default {
             border: 1px solid #d9d9d9;
             color: $--color-primary;
             font-size: 14px;
+            margin: 0 5px 5px 0;
           }
         }
         .desc{
@@ -394,14 +488,14 @@ export default {
             }
             a{
               display: inline-block;
-              max-width: 75%;
+              max-width: 67%;
               @include ellipsis;
               font-size: 16px;
             }
             span{
               color: #f26b01;
               font-size: 14px;
-              width: 25%;
+              width: 33%;
               float: right;
             }
           }

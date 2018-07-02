@@ -25,6 +25,6 @@ export default {
     padding: 20px 20px;
   }
   .job-search{
-    padding: 0 43px;
+    padding: 0 0;
   }
 </style>
