@@ -183,7 +183,11 @@ export default {
       })
     },
     saveStorage(res) {
-      if (!res.result) return
+      if (!res.result) {
+        storage.out()
+        this.userInfo = {}
+        return
+      }
       storage.set(STORAGE_TYPE.ccmu17, res.result.ccmu17)
       storage.set(STORAGE_TYPE.aac001, res.result.aac001)
       if (res.result.token) storage.set(STORAGE_TYPE.token, res.result.token)

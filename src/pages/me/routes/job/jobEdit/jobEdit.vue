@@ -31,7 +31,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="专业要求" prop="acc01g">
-        <xf-cascader :options="dictionaries.TAB_CITY" v-model="form.acc01g" placeholder="请选择专业要求"></xf-cascader>
+        <xf-cascader :options="dictionaries.tab_major_type" v-model="form.acc01g" placeholder="请选择专业要求" clearable></xf-cascader>
         <!--<span class="tip red">不选择即为无专业要求</span>-->
       </el-form-item>
       <el-form-item label="福利待遇" prop="acc214">

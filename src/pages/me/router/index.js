@@ -26,12 +26,17 @@ const apply = () => import('../routes/records/apply/apply.vue') // 求职管理�
 const invitation = () => import('../routes/records/invitation/invitation.vue') // 求职管理（面试邀请）
 
 // 企业中心
-const corp = () => import('../routes/corp-index/corp-index.vue')
-const info = () => import('../routes/account/info/info.vue')
+const corp = () => import('../routes/corp-index/corp-index.vue') // 企业中心首页
+const info = () => import('../routes/account/info/info.vue') // 基本信息
 const job = () => import('../routes/job/job.vue') // 职位管理
 const jobList = () => import('../routes/job/jobList/jobList.vue') // 职位列表
 const jobEdit = () => import('../routes/job/jobEdit/jobEdit.vue') // 职位编辑
 const jobPreview = () => import('../routes/job/jobPreview/jobPreview.vue') // 职位预览
+const talent = () => import('../routes/talent/talent.vue') // 人才搜索
+const corpResume = () => import('../routes/corp-resume/corp-resume.vue') // 简历管理
+const received = () => import('../routes/corp-resume/received/received.vue') // 收到的简历
+const corpCollection = () => import('../routes/corp-resume/corp-collection/corp-collection.vue') // 我的收藏
+const invited = () => import('../routes/corp-resume/invited/invited.vue') // 我的收藏
 
 const router = new Router({
   routes: [{
@@ -124,6 +129,29 @@ const router = new Router({
       path: 'invitation',
       name: 'invitation',
       component: invitation
+    }]
+  }, {
+    path: '/talent',
+    name: 'talent',
+    component: talent,
+    meta: {ccmu17: 2}
+  }, {
+    path: '/corpResume',
+    name: 'corpResume',
+    component: corpResume,
+    meta: {ccmu17: 2},
+    children: [{
+      path: 'received',
+      name: 'received',
+      component: received
+    }, {
+      path: 'corpCollection',
+      name: 'corpCollection',
+      component: corpCollection
+    }, {
+      path: 'invited',
+      name: 'invited',
+      component: invited
     }]
   }]
 })

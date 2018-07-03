@@ -32,9 +32,17 @@
               <i class="xffont font-search"></i>
               <span>岗位搜索</span>
             </router-link>
+            <router-link to="/talent" class="item">
+              <i class="xffont font-search"></i>
+              <span>人才搜索</span>
+            </router-link>
             <router-link to="/resume" class="item">
               <i class="xffont font-jianli-copy"></i>
               <span>我的简历</span>
+            </router-link>
+            <router-link to="/corpResume" class="item">
+              <i class="xffont font-jianli-copy"></i>
+              <span>简历管理</span>
             </router-link>
             <router-link to="/job" class="item">
               <i class="xffont font-iconzhiwei"></i>

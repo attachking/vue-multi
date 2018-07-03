@@ -9,10 +9,25 @@ export const getPhoneOpen = function({commit, state}, name) {
 
 export const getDictionaries = function ({commit, state}, name) {
   post('/service/sys/config/config/getConditionList', {
-    tabStr: 'TAB_CITY,TAB_EDUCATION,TAB_AFFIL,TAB_NATION,TAB_NATURE,TAB_SEX,TAB_SALARY,CRAFT_AS,TAB_MARRIAGE,TAB_CERTIFICATE_TYPE,INDUSTRY_AS,TAB_UNITNATURE,TAB_PSCALE,TAB_SREQUIREMENT,TAB_WORKYEARS,TAB_WELFARE,tab_university_city'
+    tabStr: 'TAB_CITY,TAB_EDUCATION,TAB_AFFIL,TAB_NATION,TAB_NATURE,TAB_SEX,TAB_SALARY,CRAFT_AS,TAB_MARRIAGE,TAB_CERTIFICATE_TYPE,INDUSTRY_AS,TAB_UNITNATURE,TAB_PSCALE,TAB_SREQUIREMENT,TAB_WORKYEARS,TAB_WELFARE,tab_university_city,tab_major_type'
   }).then(res => {
     dispatchDictionary(res.result.TAB_CITY.children)
     dispatchDictionary(res.result.CRAFT_AS.children)
+    let tabMajorType = []
+    res.result.tab_major_type.forEach((item, i) => {
+      tabMajorType[i] = {
+        id: item.code,
+        text: item.name,
+        parentId: 0,
+        children: item.list.map(val => {
+          return {
+            id: val.code,
+            text: val.name,
+            parentId: item.code
+          }
+        })
+      }
+    })
     commit(types.SET_DICTIONARIES, {
       TAB_CITY: res.result.TAB_CITY.children,
       CRAFT_AS: res.result.CRAFT_AS.children,
@@ -30,7 +45,8 @@ export const getDictionaries = function ({commit, state}, name) {
       TAB_SREQUIREMENT: res.result.TAB_SREQUIREMENT,
       TAB_WORKYEARS: res.result.TAB_WORKYEARS,
       TAB_WELFARE: res.result.TAB_WELFARE,
-      tab_university_city: res.result.tab_university_city
+      tab_university_city: res.result.tab_university_city,
+      tab_major_type: tabMajorType
     })
   })
 }

@@ -126,10 +126,7 @@
             <el-input placeholder="请选择毕业院校" v-model="form1.aac180name" readonly @click.native="showSchool"></el-input>
           </el-form-item>
           <el-form-item prop="acc01g" label="专业类别">
-            <el-select v-model="form1.acc01g" filterable placeholder="请选择专业类别">
-              <!--<el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-              </el-option>-->
-            </el-select>
+            <xf-cascader :options="dictionaries.tab_major_type" v-model="form1.acc01g" placeholder="请选择专业类别" clearable></xf-cascader>
           </el-form-item>
           <el-form-item prop="aac040" label="专业名称">
             <el-input v-model.trim="form1.aac040" placeholder="请输入专业名称" clearable></el-input>
