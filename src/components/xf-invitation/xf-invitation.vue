@@ -35,6 +35,8 @@
 </template>
 <script>
 import event from '../../common/js/event'
+const SUCCESS_EVENT = 'invitation success'
+const ERROR_EVENT = 'invitation error'
 
 export default {
   name: 'xf-invitation',
@@ -96,26 +98,26 @@ export default {
       })
     },
     show(aac001) {
-      event.$off('invitation success')
-      event.$off('invitation error')
+      event.$off(SUCCESS_EVENT)
+      event.$off(ERROR_EVENT)
       this.aac001 = aac001
       this.getPositionList()
       this.dialogVisible = true
       return new Promise((resolve, reject) => {
-        event.$on('invitation success', () => {
-          event.$off('invitation success')
-          event.$off('invitation error')
+        event.$on(SUCCESS_EVENT, () => {
+          event.$off(SUCCESS_EVENT)
+          event.$off(ERROR_EVENT)
           resolve()
         })
-        event.$on('invitation error', err => {
-          event.$off('invitation success')
-          event.$off('invitation error')
+        event.$on(ERROR_EVENT, err => {
+          event.$off(SUCCESS_EVENT)
+          event.$off(ERROR_EVENT)
           reject(err)
         })
       })
     },
     handleClose(done) {
-      event.$emit('invitation error')
+      event.$emit(ERROR_EVENT)
       done()
     },
     onSubmit() {
@@ -134,7 +136,7 @@ export default {
                 type: 'success'
               })
               this.dialogVisible = false
-              event.$emit('invitation success')
+              event.$emit(SUCCESS_EVENT)
             }
           }).catch(() => {
             this.loading = false

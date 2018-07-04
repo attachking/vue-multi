@@ -18,9 +18,16 @@ const state = {
     TAB_PSCALE: [], // 企业规模
     TAB_SREQUIREMENT: [], // 食宿情况
     tab_university_city: [], // 省份字典表（用于选择院校）
-    tab_major_type: [] // 专业类别
+    tab_major_type: [], // 专业类别
+    TAB_SECURITY: [] // 密保问题
   },
-  phoneOpen: false
+  phoneOpen: false,
+  corpInfo: {}, // 企业信息,
+  authenInfo: { // 企业认证状态
+    authenState: 2, // 0为未认证，1为正在认证，2为已认证，3为认证失败，4、未绑定微信
+    infoState: 1 // 0为基本信息未完善
+  },
+  personalInfo: {} // 个人信息
 }
 
 export default state

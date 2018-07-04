@@ -1,7 +1,7 @@
 <template>
   <div class="job-edit">
     <el-form ref="form" :rules="rules" :model="form" label-width="100px" class="form" v-loading="formLoading">
-      <el-button type="primary" class="show-history" @click="showHistory">提取历史职位</el-button>
+      <el-button type="primary" class="show-history" @click="showHistory" v-if="!isEdit">提取历史职位</el-button>
       <el-form-item label="职位类别" prop="bca111">
         <xf-cascader placeholder="请选择职位类别" :options="dictionaries.CRAFT_AS" :show-all-levels="false" v-model="form.bca111" :text.sync="form.bca112"></xf-cascader>
       </el-form-item>
@@ -258,20 +258,28 @@ export default {
       },
       historyList: [],
       pageBean: {},
-      historyLoading: false
+      historyLoading: false,
+      isEdit: false
     }
   },
   methods: {
     handleRouter(router) {
       echo(this.form)
       if (router.query.acb210) {
+        // 修改职位
         this.getInfo(router.query.acb210)
+        this.isEdit = true
       } else {
         echo(this.form)
-        let now = new Date()
-        this.form.aae030 = this.$dateFormat(now, 'yyyy-MM-dd')
-        this.form.aae031 = this.$dateFormat(now.setTime(now.getTime() + 1000 * 60 * 60 * 24 * 90), 'yyyy-MM-dd')
+        this.resetTime()
+        this.isEdit = false
       }
+    },
+    // 重置开始/结束时间
+    resetTime() {
+      let now = new Date()
+      this.form.aae030 = this.$dateFormat(now, 'yyyy-MM-dd')
+      this.form.aae031 = this.$dateFormat(now.setTime(now.getTime() + 1000 * 60 * 60 * 24 * 90), 'yyyy-MM-dd')
     },
     onSubmit() {
       this.$refs.form.validate(valid => {
@@ -284,9 +292,12 @@ export default {
           if (this.$route.query.acb210) {
             form.acb210 = this.$route.query.acb210
           }
+          if (this.$route.query.acb330) {
+            form.acb330 = this.$route.query.acb330
+          }
           this.$post('/service/business/corp/corpPositon/savePositionInfo', form).then(res => {
             this.loading = false
-            if (res.error.result === 1) {
+            if (res.error && res.error.result === 1) {
               this.$alert(res.error.message, '提示', {
                 confirmButtonText: '确定',
                 callback: action => {
@@ -300,12 +311,16 @@ export default {
         }
       })
     },
-    getInfo(acb210) {
+    getInfo(acb210, resetTime) {
       this.formLoading = true
       this.$post('/service/business/corp/corpPositon/editPositionInfo', {acb210}).then(res => {
+        this.formLoading = false
         res.result.acc214 = res.result.acc214 ? res.result.acc214.split(',') : []
         echo(this.form, res.result)
-        this.formLoading = false
+        if (resetTime) {
+          // 如果是提取历史职位，则重置职位有效期
+          this.resetTime()
+        }
       }).catch(() => {
         this.formLoading = false
       })
@@ -327,7 +342,7 @@ export default {
     },
     pull(val) {
       this.dialogVisible = false
-      this.getInfo(val.acb210)
+      this.getInfo(val.acb210, true)
     },
     handleChange(page) {
       this.searchData.currentPage = page

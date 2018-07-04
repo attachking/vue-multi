@@ -8,8 +8,7 @@
             <div class="head">
               <img src="./static/head.png" alt="">
             </div>
-            <p class="name">张明宇</p>
-            <p class="other">20127710150</p>
+            <p class="name">{{name}}</p>
           </div>
           <div class="list">
             <router-link to="/corp" class="item">
@@ -48,6 +47,10 @@
               <i class="xffont font-iconzhiwei"></i>
               <span>职位管理</span>
             </router-link>
+            <router-link to="/jobFair" class="item">
+              <i class="xffont font-ai-user"></i>
+              <span>招聘会</span>
+            </router-link>
             <router-link to="/userCollection" class="item">
               <i class="xffont font-shoucang"></i>
               <span>我的收藏</span>
@@ -72,7 +75,7 @@
 import XfHeader from '../../components/xf-header/xf-header.vue'
 import XfFooter from '../../components/xf-footer/xf-footer.vue'
 import RightMenu from '../../components/right-menu/right-menu.vue'
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters, mapMutations} from 'vuex'
 
 export default {
   components: {
@@ -80,17 +83,70 @@ export default {
     XfFooter,
     XfHeader},
   data() {
-    return {}
+    return {
+      name: ''
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'corpInfo'
+    ])
   },
   methods: {
+    ...mapMutations({
+      setCorpInfo: 'SET_CORP_INFO',
+      setAuthenInfo: 'SET_AUTHEN_INFO',
+      setPersonalInfo: 'SET_PERSONAL_INFO'
+    }),
     ...mapActions([
       'getPhoneOpen',
       'getDictionaries'
-    ])
+    ]),
+    getCorpInfo() {
+      if (this.$userInfo.status !== 1 || this.$userInfo.ccmu17 !== 2) return
+      this.$post('/service/business/corp/corps/getCorpIndexInfo.xf', {
+        aab001: this.$userInfo.aab001
+      }).then(res => {
+        const o = res.result
+        for (let i in o) {
+          if (o.hasOwnProperty(i) && i !== 'corpInfo') {
+            o.corpInfo[i] = o[i]
+          }
+        }
+        this.setCorpInfo(res.result.corpInfo)
+        this.name = res.result.corpInfo.aab004
+      })
+    },
+    getAuthen() {
+      if (this.$userInfo.status !== 1 || this.$userInfo.ccmu17 !== 2) return
+      this.$post('/service/business/authen/authen/getAuthenInfo.xf', {
+        aab001: this.$userInfo.aab001
+      }).then(res => {
+        this.setAuthenInfo(res.result || {})
+      })
+    },
+    getPersonalInfo() {
+      if (this.$userInfo.status !== 1 || this.$userInfo.ccmu17 !== 1) return
+      this.$post('/service/business/person/personInfo/getPersonIndexInfo.xf', {
+        aac001: this.$userInfo.aac001
+      }).then(res => {
+        const o = res.result
+        for (let i in o) {
+          if (o.hasOwnProperty(i) && i !== 'personInfo') {
+            o.personInfo[i] = o[i]
+          }
+        }
+        this.setPersonalInfo(o.personInfo)
+        this.name = o.personInfo.aac003
+      })
+    }
   },
   created() {
     this.getPhoneOpen()
     this.getDictionaries()
+    this.getCorpInfo()
+    this.getPersonalInfo()
+    this.getAuthen()
   }
 }
 </script>
@@ -138,6 +194,7 @@ export default {
       }
       .name{
         color: $--color-primary;
+        padding: 5px 5px;
       }
       .other{
         color: #666;

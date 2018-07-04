@@ -37,6 +37,13 @@ const corpResume = () => import('../routes/corp-resume/corp-resume.vue') // 简�
 const received = () => import('../routes/corp-resume/received/received.vue') // 收到的简历
 const corpCollection = () => import('../routes/corp-resume/corp-collection/corp-collection.vue') // 我的收藏
 const invited = () => import('../routes/corp-resume/invited/invited.vue') // 我的收藏
+const jobFair = () => import('../routes/job-fair/job-fair.vue') // 招聘会
+const jobFairList = () => import('../routes/job-fair/job-fair-list/job-fair-list.vue') // 招聘会列表
+const stalls = () => import('../routes/job-fair/stalls/stalls.vue') // 招聘会摊位列表
+const reserved = () => import('../routes/job-fair/job-fair-reserved/job-fair-reserved.vue') // 已预定的招聘会列表
+const fairJob = () => import('../routes/job/jobEdit/jobEdit.vue') // 招聘会职位编辑
+const positionList = () => import('../routes/job-fair/position-list/position-list.vue') // 招聘会已发布职位
+const fairJobPreview = () => import('../routes/job/jobPreview/jobPreview.vue') // 招聘会预览职位
 
 const router = new Router({
   routes: [{
@@ -152,6 +159,36 @@ const router = new Router({
       path: 'invited',
       name: 'invited',
       component: invited
+    }]
+  }, {
+    path: '/jobFair',
+    name: 'jobFair',
+    component: jobFair,
+    meta: {ccmu17: 2},
+    children: [{
+      path: 'jobFairList',
+      name: 'jobFairList',
+      component: jobFairList
+    }, {
+      path: 'stalls',
+      name: 'stalls',
+      component: stalls
+    }, {
+      path: 'reserved',
+      name: 'reserved',
+      component: reserved
+    }, {
+      path: 'fairJob',
+      name: 'fairJob',
+      component: fairJob
+    }, {
+      path: 'positionList',
+      name: 'positionList',
+      component: positionList
+    }, {
+      path: 'fairJobPreview',
+      name: 'fairJobPreview',
+      component: fairJobPreview
     }]
   }]
 })

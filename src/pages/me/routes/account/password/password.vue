@@ -69,17 +69,20 @@
       <el-collapse-item name="question">
         <template slot="title">
           <div class="tit">
-            <i class="xffont font-shouji-copy"></i>密保问题
+            <i class="xffont font-shouji-copy"></i>密保问题 <span :class="info.ccmu04 ? 'green' : 'red'">（{{info.ccmu04 ? '已认证' : '未设置'}}）</span>
           </div>
         </template>
         <div class="form">
           <el-form ref="question" :model="form4" :rules="rules4" class="form" label-width="100px">
-            <el-form-item prop="oldCcmu05" label="原密保答案">
-              <el-input placeholder="请输入原密保答案" v-model.trim="form4.oldCcmu05" clearable @keydown.native.enter="onSubmit4"></el-input>
+            <el-form-item label="原密保问题" v-if="info.ccmu04">
+              <span>{{info.ccmu04}}</span>
+            </el-form-item>
+            <el-form-item prop="oldccmu05" label="原密保答案" v-if="info.ccmu04">
+              <el-input placeholder="请输入原密保答案" v-model.trim="form4.oldccmu05" clearable @keydown.native.enter="onSubmit4"></el-input>
             </el-form-item>
             <el-form-item prop="ccmu04" label="密保问题">
               <el-select placeholder="请选择密保问题" v-model="form4.ccmu04">
-                <el-option label="val.label" value="val.value"></el-option>
+                <el-option :label="val.name" :value="val.name" :key="val.code" v-for="val in dictionaries.TAB_SECURITY"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item prop="ccmu05" label="密保答案">
@@ -110,10 +113,19 @@
   </div>
 </template>
 <script>
+import {mapGetters} from 'vuex'
+import {reg} from '../../../../../common/js/utils'
+
 export default {
+  computed: {
+    ...mapGetters([
+      'dictionaries'
+    ])
+  },
   data() {
     let _this = this
     return {
+      info: {},
       activeNames: ['password'],
       lastNames: ['password'],
       emailDialog: false,
@@ -148,11 +160,16 @@ export default {
         }, {
           validator(rule, value, callback) {
             if (/^[a-zA-Z0-9_]*$/.test(value)) {
-              callback()
+              if (value === _this.form1.oldPassword) {
+                callback(new Error('新密码不能与旧密码相同'))
+              } else {
+                callback()
+              }
             } else {
               callback(new Error('只能输入数字、字母或下划线'))
             }
-          }
+          },
+          trigger: 'change'
         }],
         password2: [{
           required: true,
@@ -165,7 +182,8 @@ export default {
             } else {
               callback(new Error('两次输入不一致'))
             }
-          }
+          },
+          trigger: 'change'
         }]
       },
       // 绑定邮箱表单
@@ -179,7 +197,7 @@ export default {
           trigger: 'change'
         }, {
           validator(rule, value, callback) {
-            if (/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(value)) {
+            if (reg.email(value)) {
               callback()
             } else {
               callback(new Error('请输入正确的邮箱'))
@@ -209,7 +227,7 @@ export default {
           trigger: 'change'
         }, {
           validator(rule, value, callback) {
-            if (/^[1][3,4,5,7,8,9][0-9]{9}$/.test(value)) {
+            if (reg.phone(value)) {
               callback()
             } else {
               callback(new Error('请输入正确的手机号'))
@@ -218,12 +236,14 @@ export default {
         }]
       },
       form4: {
-        oldCcmu05: '', // 原密保答案
+        oldccmu05: '', // 原密保答案
         ccmu04: '', // 密保问题
-        ccmu05: '' // 新密保答案
+        ccmu05: '', // 新密保答案
+        ccmu17: this.$userInfo.ccmu17,
+        ccmu01: this.$userInfo.ccmu01
       },
       rules4: {
-        oldCcmu05: [{
+        oldccmu05: [{
           required: true,
           message: '请输入原密保答案',
           trigger: 'change'
@@ -257,6 +277,21 @@ export default {
     }
   },
   methods: {
+    getInfo() {
+      this.$post('/service/business/login/account/getAccountMsg', {
+        ccmu01: this.$userInfo.ccmu01
+      }).then(res => {
+        /*
+        * ccmu12:邮箱是否认证（0：否，1：是）
+        * ccmu13:手机是否认证（0：否，1：是）
+        * ccmu05state(0：未设置，1：已设置）
+        * ccmu08:邮箱
+        * ccmu09:手机
+        * ccmu04:密保问题
+        * */
+        this.info = res.result
+      })
+    },
     handleChange(e) {
       if (e.length > this.lastNames.length) {
         for (let i = 0; i < e.length; i++) {
@@ -302,7 +337,22 @@ export default {
     },
     onSubmit4() {
       this.$refs.question.validate(valid => {
-        if (valid) {}
+        if (valid) {
+          this.loading4 = true
+          this.$post('/service/business/login/account/accountSave', this.form4).then(res => {
+            this.loading4 = false
+            if (res.error && res.error.result === 1) {
+              this.$message({
+                message: res.error.message,
+                type: 'success'
+              })
+              this.cancel('question')
+              this.getInfo()
+            }
+          }).catch(() => {
+            this.loading4 = false
+          })
+        }
       })
     },
     senCode() {
@@ -331,11 +381,15 @@ export default {
       })
     },
     cancel(name) {
+      this.$refs[name].resetFields()
       let index = this.activeNames.findIndex(item => item === name)
       if (index !== -1) {
         this.activeNames.splice(index, 1)
       }
     }
+  },
+  created() {
+    this.getInfo()
   }
 }
 </script>
@@ -352,9 +406,16 @@ export default {
     }
   }
   .form{
+    padding: 15px 0 0 0;
     width: 400px;
     .el-select{
       width: 100%;
     }
+  }
+  .green{
+    color: green;
+  }
+  .red{
+    color: red;
   }
 </style>

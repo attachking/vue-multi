@@ -202,5 +202,11 @@ export function echo(target, resource) {
 export const reg = {
   tel(str) { // 手机号+固定电话正则
     return /^([0-9]{3,4}-)?[0-9]{7,8}$/.test(str) || /^1[345789]\d{9}$/.test(str)
+  },
+  phone(str) { // 手机号正则
+    return /^1[345789]\d{9}$/.test(str)
+  },
+  email(str) { // 邮箱
+    return /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(str)
   }
 }

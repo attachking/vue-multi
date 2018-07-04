@@ -9,7 +9,7 @@ export const getPhoneOpen = function({commit, state}, name) {
 
 export const getDictionaries = function ({commit, state}, name) {
   post('/service/sys/config/config/getConditionList', {
-    tabStr: 'TAB_CITY,TAB_EDUCATION,TAB_AFFIL,TAB_NATION,TAB_NATURE,TAB_SEX,TAB_SALARY,CRAFT_AS,TAB_MARRIAGE,TAB_CERTIFICATE_TYPE,INDUSTRY_AS,TAB_UNITNATURE,TAB_PSCALE,TAB_SREQUIREMENT,TAB_WORKYEARS,TAB_WELFARE,tab_university_city,tab_major_type'
+    tabStr: 'TAB_CITY,TAB_EDUCATION,TAB_AFFIL,TAB_NATION,TAB_NATURE,TAB_SEX,TAB_SALARY,CRAFT_AS,TAB_MARRIAGE,TAB_CERTIFICATE_TYPE,INDUSTRY_AS,TAB_UNITNATURE,TAB_PSCALE,TAB_SREQUIREMENT,TAB_WORKYEARS,TAB_WELFARE,tab_university_city,tab_major_type,TAB_SECURITY'
   }).then(res => {
     dispatchDictionary(res.result.TAB_CITY.children)
     dispatchDictionary(res.result.CRAFT_AS.children)
@@ -46,7 +46,8 @@ export const getDictionaries = function ({commit, state}, name) {
       TAB_WORKYEARS: res.result.TAB_WORKYEARS,
       TAB_WELFARE: res.result.TAB_WELFARE,
       tab_university_city: res.result.tab_university_city,
-      tab_major_type: tabMajorType
+      tab_major_type: tabMajorType,
+      TAB_SECURITY: res.result.TAB_SECURITY
     })
   })
 }

@@ -5,9 +5,10 @@
       ref="upload"
       accept="image/*"
       class="upload-demo"
-      action="https://jsonplaceholder.typicode.com/posts/"
+      :action="baseUrl + '/service/business/fm/pic/picInfo/uploadPicInfo'"
       :on-preview="handlePreview"
       :on-remove="handleRemove"
+      :on-success="onSuccess"
       :file-list="fileList"
       list-type="picture">
       <el-button size="small" type="primary" slot="trigger">选择文件</el-button>
@@ -50,10 +51,11 @@ export default {
         id: 2
       }],
       form: {
+        picSize: 5120,
         _token: this.$userInfo.token,
         ccmu17: this.$userInfo.ccmu17,
         userId: this.$userInfo.ccmu17 === 1 ? this.$userInfo.aac001 : this.$userInfo.aab001,
-        caoa03: ''
+        ccmu01: this.$userInfo.ccmu01
       },
       rules: {
         caoa03: [{
@@ -72,7 +74,6 @@ export default {
   },
   methods: {
     handleRemove(file) {
-      console.log(file)
       setTimeout(() => {
         console.log(this.fileList)
       }, 20)
@@ -85,7 +86,30 @@ export default {
         this.$refs.form.clearValidate()
       }, 20)
     },
-    onSubmit() {}
+    onSubmit() {},
+    getList() {
+      this.$post('/service/business/authen/authen/corpPic', {
+        ccmu01: this.$userInfo.ccmu01,
+        flag: this.$userInfo.ccmu17 === 1 ? 2 : 1
+      }).then(res => {
+        console.log(res)
+      })
+    },
+    onSuccess(res, file) {
+      if (res.error && res.error.result === 1) {
+        console.log(file)
+        this.fileList.push({
+          name: file.name,
+          url: res.result[0]
+        })
+      }
+    },
+    save() {
+      this.$post('')
+    }
+  },
+  created() {
+    this.getList()
   }
 }
 </script>

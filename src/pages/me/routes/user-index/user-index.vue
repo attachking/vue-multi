@@ -2,148 +2,280 @@
   <div class="user">
     <div class="title">
       <span>欢迎您！</span>
-      <span class="name normal">张明宇</span>
+      <span class="name normal">{{personalInfo.aac003 || '--'}}</span>
       <span class="tit-right">
         <span>
           <i class="xffont font-shouji-copy"></i>
-          <span class="normal">18695881292</span>
+          <span class="normal">{{personalInfo.aae005 || '--'}}</span>
         </span>&nbsp;&nbsp;
         <span>
           <i class="xffont font-youjian"></i>
-          <span class="normal">zhangmingyu1228@126.com</span>
+          <span class="normal">{{personalInfo.aae015 || '--'}}</span>
         </span>
       </span>
     </div>
     <div class="menu">
-      <div class="item">
+      <a class="item" href="#/records/apply">
         <div class="text">
-          <p class="big">22</p>
+          <p class="big">{{personalInfo.positionCounts || 0}}</p>
           <p>我申请的职位</p>
         </div>
-      </div>
-      <div class="item">
+      </a>
+      <a class="item" href="#/records/invitation">
         <div class="text">
-          <p class="big">08</p>
+          <p class="big">{{personalInfo.interviewCounts || 0}}</p>
           <p>我的面试邀请</p>
         </div>
-      </div>
-      <div class="item">
+      </a>
+      <a class="item" href="#/message">
         <div class="img">
-          <i class="xffont font-youjian"></i>
+          <el-badge :value="personalInfo.noticeCounts" :hidden="Number(personalInfo.noticeCounts) === 0">
+            <i class="xffont font-youjian"></i>
+          </el-badge>
           <p>我的消息</p>
         </div>
-      </div>
-      <div class="item">
-        <div class="img">
-          <i class="xffont font-suo"></i>
-          <p>保密简历</p>
-        </div>
-      </div>
-      <div class="item">
+      </a>
+      <a class="item" href="#/userCollection">
         <div class="img">
           <i class="xffont font-shoucang"></i>
           <p>我的收藏</p>
         </div>
-      </div>
-      <div class="item">
+      </a>
+      <a class="item" href="#/account/pics">
         <div class="img">
           <i class="xffont font-tupian-copy"></i>
           <p>我的风采</p>
         </div>
-      </div>
+      </a>
     </div>
     <div class="banner">
-      <img src="../../static/banner.png" alt="">
+      <img :src="ad" alt="">
     </div>
     <div class="job-fair">
       <div class="card-tit">
         <span class="item active"><i class="xffont font-zhiwei"></i>最新招聘会</span>
       </div>
       <div class="list">
-        <div class="item">
-          <a href="">2017年4月春风行动大型计算机专场招聘会</a>
+        <div class="item" v-for="val in jobFairList" :key="val.acb330">
+          <a href="" :title="val.acb331">{{val.acb331 || '--'}}</a>
           <p>
-            <i class="xffont font-zuobiao"></i><span>理工院教学楼</span>
-            <i class="xffont font-msnui-time"></i><span>2017-02-17</span>
+            <i class="xffont font-zuobiao"></i><span>{{val.acd200name || '--'}}</span>
           </p>
-          <el-button class="btn" type="primary" plain>参会企业</el-button>
-        </div>
-        <div class="item">
-          <a href="">2017年4月春风行动大型计算机专场招聘会</a>
           <p>
-            <i class="xffont font-zuobiao"></i><span>理工院教学楼</span>
-            <i class="xffont font-msnui-time"></i><span>2017-02-17</span>
+            <i class="xffont font-msnui-time"></i><span>{{$dateFormat(val.acb333, 'yyyy-MM-dd hh:mm')}} 至 {{$dateFormat(val.acb334, 'yyyy-MM-dd hh:mm')}}</span>
           </p>
           <el-button class="btn" type="primary" plain>参会企业</el-button>
         </div>
       </div>
+      <empty v-if="jobFairPageBean.totalCount === 0"></empty>
     </div>
     <div class="recommend">
       <div class="card-tit">
-        <span class="item" :class="currentTab === 1 ? 'active' : ''"><i class="xffont font-iconzhiwei"></i>推荐职位</span>
-        <span class="item" :class="currentTab === 2 ? 'active' : ''"><i class="xffont font-gongsixinxi"></i>推荐单位</span>
+        <span class="item" :class="currentTab === 1 ? 'active' : ''" @click="currentTab = 1"><i class="xffont font-iconzhiwei"></i>推荐职位</span>
+        <span class="item" :class="currentTab === 2 ? 'active' : ''" @click="currentTab = 2"><i class="xffont font-gongsixinxi"></i>推荐单位</span>
       </div>
       <transition name="el-zoom-in-top" mode="out-in">
         <div class="job-list" key="jobList" v-if="currentTab === 1">
-          <div class="item">
+          <div class="item" v-for="val in jobList" :key="val.acb210">
             <div class="logo">
-              <img src="../../static/logo.png" alt="">
+              <img :src="val.ccmu15">
             </div>
             <div class="pos-info">
               <p>
-                <a href="" class="pos-name">软件工程师</a>
-                <a href="" class="corp-name">百世物流科技（中国）有限公司</a>
-                <span class="salary">3000元以上</span>
+                <a :href="'job.html?acb210=' + val.acb210" class="pos-name" target="_blank" :title="val.cca113">{{val.cca113 || '--'}}</a>
+                <a :href="'corp.html?aab001=' + val.aab001" class="corp-name" target="_blank" :title="val.aab004">{{val.aab004 || '--'}}</a>
+                <span class="salary">{{val.acc034Name || '--'}}</span>
               </p>
               <p class="pos-detail">
               <span>
-                <span>地点：北京</span>&nbsp;|&nbsp;
-                <span>招聘人数：2 人</span>&nbsp;|&nbsp;
-                <span>经验：不限</span>&nbsp;|&nbsp;
-                <span>学历：大学本科</span>&nbsp;|&nbsp;
-                <span>工作性质：全职</span>
+                <span>地点：{{val.bcb202 || '--'}}</span>&nbsp;|&nbsp;
+                <span>招聘人数：{{val.acb21r || '--'}} 人</span>&nbsp;|&nbsp;
+                <span>经验：{{val.acc218 || '--'}}</span>&nbsp;|&nbsp;
+                <span>学历：{{val.aac012 || '--'}}</span>&nbsp;|&nbsp;
+                <span>工作性质：{{val.acb21iName || '--'}}</span>
               </span>
-                <span class="date">2016-8-2</span>
+                <span class="date">{{$dateFormat(val.ccpr05, 'yyyy-MM-dd')}}</span>
               </p>
             </div>
           </div>
-          <div class="item">
+          <empty v-if="jobPageBean.totalCount === 0"></empty>
+        </div>
+        <div class="job-list" key="corpList" v-if="currentTab === 2">
+          <div class="item" v-for="val in corpList" :key="val.aab001">
             <div class="logo">
-              <img src="../../static/logo.png" alt="">
+              <img :src="val.ccmu15">
             </div>
             <div class="pos-info">
               <p>
-                <a href="" class="pos-name">软件工程师</a>
-                <a href="" class="corp-name">百世物流科技（中国）有限公司</a>
-                <span class="salary">3000元以上</span>
+                <a :href="'corp.html?aab001=' + val.aab001" class="pos-name" target="_blank" :title="val.aab004">{{val.aab004 || '--'}}</a>
               </p>
               <p class="pos-detail">
-              <span>
-                <span>地点：北京</span>&nbsp;|&nbsp;
-                <span>招聘人数：2 人</span>&nbsp;|&nbsp;
-                <span>经验：不限</span>&nbsp;|&nbsp;
-                <span>学历：大学本科</span>&nbsp;|&nbsp;
-                <span>工作性质：全职</span>
-              </span>
-                <span class="date">2016-8-2</span>
+                <span>
+                  <span>行业：{{val.ccpr10name || '--'}}</span>&nbsp;|&nbsp;
+                  <span>地址：{{val.aaa021 || '--'}} 人</span>&nbsp;|&nbsp;
+                  <span>性质：{{val.aab019name || '--'}}</span>&nbsp;|&nbsp;
+                  <span>规模：{{val.aab056name || '--'}}</span>
+                </span>
               </p>
             </div>
-            <div class="job-control">
-              <i class="xffont font-shoucang"></i>
-              <i class="xffont font-send active"></i>
-            </div>
           </div>
+          <empty v-if="corpPageBean.totalCount === 0"></empty>
         </div>
       </transition>
     </div>
   </div>
 </template>
 <script>
+import {mapGetters} from 'vuex'
+import Empty from '../../../../components/empty/empty.vue'
+
 export default {
+  components: {Empty},
+  computed: {
+    ...mapGetters([
+      'personalInfo'
+    ])
+  },
   data() {
     return {
-      currentTab: 1
+      currentTab: 1,
+      jobFairList: [],
+      jobFairPageBean: {},
+      ad: '',
+      jobSearch: {
+        aac001: this.$userInfo.aac001,
+        currentPage: 1,
+        rowsNum: 5
+      },
+      jobList: [],
+      jobPageBean: {},
+      loading1: false,
+      corpSearch: {
+        aac001: this.$userInfo.aac001,
+        currentPage: 1,
+        rowsNum: 5
+      },
+      corpList: [],
+      corpPageBean: {},
+      loading2: false
     }
+  },
+  methods: {
+    getJobFair() {
+      this.$post('/service/business/jobfair/jobFairInfo/listJson.xf', {
+        aac001: this.$userInfo.aac001,
+        currentPage: 1,
+        rowsNum: 5
+      }).then(res => {
+        this.jobFairList = res.result
+        this.jobFairPageBean = res.pageBean
+      })
+    },
+    getAd() {
+      this.$post('/service/business/pic/picInfo/getPicDetail.xf', {
+        caoa04: 100
+      }).then(res => {
+        this.ad = res.result.caoa02
+      })
+    },
+    getJob() { // 获取推荐岗位
+      this.loading1 = true
+      this.$post('/service/business/search/jobRecommendList/getRecommendJobList.xf', this.jobSearch).then(res => {
+        this.loading1 = false
+        this.jobList = res.result
+        this.jobPageBean = res.pageBean
+      }).catch(() => {
+        this.loading1 = false
+      })
+    },
+    getCorp() { // 获取推荐单位
+      this.loading2 = true
+      this.$post('/service/business/corp/corps/getHotCorpList.xf', this.corpSearch).then(res => {
+        this.loading2 = false
+        this.corpList = res.result
+        this.corpPageBean = res.pageBean
+      }).catch(() => {
+        this.loading2 = false
+      })
+    },
+    collect(acb210) {
+      this.loading1 = true
+      this.$post('/service/business/person/positionTalent/saveTalentPositionInfo.xf', {
+        aac001: this.$userInfo.aac001,
+        acb210
+      }).then(res => {
+        this.loading1 = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getJob()
+        }
+      }).catch(() => {
+        this.loading1 = false
+      })
+    },
+    delCollect(acb210) {
+      this.loading1 = true
+      this.$post('/service/business/person/positionTalent/delTalentPositionInfo.xf', {
+        aac001: this.$userInfo.aac001,
+        acb210
+      }).then(res => {
+        this.loading1 = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getJob()
+        }
+      }).catch(() => {
+        this.loading1 = false
+      })
+    },
+    saveCorp(aab001) {
+      this.loading2 = true
+      this.$post('/service/business/person/personTalent/talentCorpSave.xf', {
+        aac001: this.$userInfo.aac001,
+        aab001
+      }).then(res => {
+        this.loading2 = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getCorp()
+        }
+      }).catch(() => {
+        this.loading2 = false
+      })
+    },
+    delCorp(aab001) {
+      this.loading2 = true
+      this.$post('/service/business/person/personTalent/getTalentCorpDel.xf', {
+        aac001: this.$userInfo.aac001,
+        aab001
+      }).then(res => {
+        this.loading2 = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getCorp()
+        }
+      }).catch(() => {
+        this.loading2 = false
+      })
+    }
+  },
+  created() {
+    this.getJobFair()
+    this.getAd()
+    this.getJob()
+    this.getCorp()
   }
 }
 </script>
@@ -184,13 +316,14 @@ export default {
     @include clearFixed;
     border: 1px solid #ebebeb;
     .item{
-      width: 16.666%;
+      width: 20%;
       float: left;
       height: 105px;
       margin: 10px 0;
       text-align: center;
       overflow: hidden;
       font-size: 14px;
+      display: block;
       .text{
         padding: 20px 0 0 0;
       }

@@ -15,7 +15,7 @@
       </div>
       <div class="edit">
         <el-checkbox class="all" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox>
-        <el-button type="danger" icon="el-icon-delete" size="mini" class="btn" @click="delConfirm">删除</el-button>
+        <el-button style="margin-left: 10px;" type="danger" icon="el-icon-delete" size="mini" class="btn" @click="delConfirm">删除</el-button>
         <el-button type="text" size="mini" class="btn" @click="signAll">标记为已读</el-button>
       </div>
       <div class="page">

@@ -64,7 +64,20 @@
         align="center"
         label="状态">
         <template slot-scope="scope">
-          <span>{{scope.row.isaccept === 2 ? '已接受' : scope.row.isaccept === 1 ? '已拒绝' : '未答复'}}</span>
+          <el-popover
+            placement="top-start"
+            title="备注"
+            width="200"
+            trigger="hover"
+            :disabled="!scope.row.ccps12"
+            :content="scope.row.ccps12">
+            <el-button
+              size="mini"
+              slot="reference"
+              type="text">
+              {{scope.row.isaccept === 2 ? '已接受' : scope.row.isaccept === 1 ? '已拒绝' : '未答复'}}
+            </el-button>
+          </el-popover>
         </template>
       </el-table-column>
       <el-table-column

@@ -2,3 +2,9 @@
 export const SET_DICTIONARIES = 'SET_DICTIONARIES'
 
 export const SET_PHONE_OPEN = 'SET_PHONE_OPEN'
+
+export const SET_CORP_INFO = 'SET_CORP_INFO'
+
+export const SET_AUTHEN_INFO = 'SET_AUTHEN_INFO'
+
+export const SET_PERSONAL_INFO = 'SET_PERSONAL_INFO'
