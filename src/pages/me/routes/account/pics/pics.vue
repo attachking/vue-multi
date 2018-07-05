@@ -5,14 +5,16 @@
       ref="upload"
       accept="image/*"
       class="upload-demo"
+      :limit="6"
       :action="baseUrl + '/service/business/fm/pic/picInfo/uploadPicInfo'"
       :on-preview="handlePreview"
       :on-remove="handleRemove"
       :on-success="onSuccess"
       :file-list="fileList"
+      :on-exceed="handleExceed"
       list-type="picture">
       <el-button size="small" type="primary" slot="trigger">选择文件</el-button>
-      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB，最多上传6张</div>
     </el-upload>
     <el-dialog
       title="详情"
@@ -22,9 +24,9 @@
         <img :src="currentPic.url" v-img="currentPic.url">
       </div>
       <div class="form">
-        <el-form ref="form" :model="form" inline :rules="rules" label-width="100px">
-          <el-form-item prop="caoa03" label="图片描述">
-            <el-input v-model.trim="form.caoa03" placeholder="请输入图片描述" clearable @keydown.native.enter="onSubmit"></el-input>
+        <el-form ref="form" :model="editForm" inline :rules="rules" label-width="100px">
+          <el-form-item prop="desc" label="图片描述">
+            <el-input v-model.trim="editForm.desc" placeholder="请输入图片描述" clearable @keydown.native.enter="onSubmit"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button size="small" type="primary" @click="onSubmit">修改</el-button>
@@ -41,17 +43,10 @@ export default {
   data() {
     return {
       baseUrl: BASE_URL,
-      fileList: [{
-        name: 'food.jpeg',
-        url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100',
-        id: 1
-      }, {
-        name: 'food2.jpeg',
-        url: 'http://222.143.25.138/zcyz/upload/user/1/2018/6/1529832693835.jpg',
-        id: 2
-      }],
+      fileList: [],
       form: {
         picSize: 5120,
+        remark: this.$userInfo.ccmu17 === 1 ? 2 : 3,
         _token: this.$userInfo.token,
         ccmu17: this.$userInfo.ccmu17,
         userId: this.$userInfo.ccmu17 === 1 ? this.$userInfo.aac001 : this.$userInfo.aab001,
@@ -69,43 +64,98 @@ export default {
         }]
       },
       dialogVisible: false,
-      currentPic: {}
+      currentPic: {},
+      itemForm: {
+        caoa01: '',
+        file: '',
+        remark: this.$userInfo.ccmu17 === 1 ? 2 : 3,
+        desc: '',
+        ccmu01: this.$userInfo.ccmu01
+      },
+      editForm: {
+        desc: ''
+      },
+      loading: false
     }
   },
   methods: {
     handleRemove(file) {
-      setTimeout(() => {
-        console.log(this.fileList)
-      }, 20)
+      this.del(file.id)
     },
     handlePreview(file) {
       this.currentPic = file
-      this.form.caoa03 = file.name
+      this.editForm.desc = file.name
+      this.itemForm.caoa01 = file.id
+      this.itemForm.file = file.url
       this.dialogVisible = true
       setTimeout(() => {
         this.$refs.form.clearValidate()
       }, 20)
     },
-    onSubmit() {},
+    onSubmit() {
+      this.itemForm.desc = encodeURIComponent(this.editForm.desc)
+      this.save('edit')
+    },
     getList() {
       this.$post('/service/business/authen/authen/corpPic', {
         ccmu01: this.$userInfo.ccmu01,
         flag: this.$userInfo.ccmu17 === 1 ? 2 : 1
       }).then(res => {
-        console.log(res)
+        res.result.reverse()
+        this.fileList = res.result.map(item => {
+          return {
+            url: item.caoa02,
+            name: item.caoa03,
+            id: item.caoa01
+          }
+        })
       })
     },
     onSuccess(res, file) {
       if (res.error && res.error.result === 1) {
-        console.log(file)
-        this.fileList.push({
-          name: file.name,
-          url: res.result[0]
-        })
+        this.itemForm.caoa01 = ''
+        this.itemForm.file = res.result[0]
+        this.itemForm.desc = encodeURIComponent(file.name)
+        this.save()
       }
     },
-    save() {
-      this.$post('')
+    save(remark) {
+      if (remark) this.loading = true
+      this.$post('/service/business/fm/pic/picInfo/savePicInfo', this.itemForm).then(res => {
+        this.loading = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getList()
+          if (remark) this.dialogVisible = false
+        }
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    del(id) {
+      this.$post('/service/business/authen/authen/delCorpPic', {
+        ccmu17: this.$userInfo.ccmu17,
+        id,
+        aab001: this.$userInfo.aab001,
+        aac001: this.$userInfo.aac001
+      }).then(res => {
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getList()
+        }
+      })
+    },
+    handleExceed(file, fileList) {
+      this.$message({
+        message: '最多上传6张',
+        type: 'warning'
+      })
     }
   },
   created() {

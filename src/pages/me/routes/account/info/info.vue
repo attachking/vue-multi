@@ -222,6 +222,19 @@ export default {
           max: 30,
           message: '最多不超过30个字符',
           trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            if (value === '') {
+              callback()
+              return
+            }
+            if (/^http/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('网址请以http://或https://开头'))
+            }
+          },
+          trigger: 'change'
         }],
         acb206: [{
           max: 1000,

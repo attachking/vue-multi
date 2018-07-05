@@ -27,7 +27,7 @@
     <empty v-if="pageBean.totalCount === 0"></empty>
     <div class="checkAll" v-if="list.length">
       <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox>
-      <el-button size="mini" @click="delAll">取消收藏</el-button>
+      <el-button size="mini" @click="delAll" style="margin-left: 10px;">取消收藏</el-button>
     </div>
     <div class="page">
       <pagination :bean="pageBean" @current-change="handlePage"></pagination>
@@ -70,7 +70,7 @@ export default {
     },
     delAll() {
       if (!this.checked.length) return
-      this.$confirm('确认投递?', '提示', {
+      this.$confirm('确认取消收藏?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

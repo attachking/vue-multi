@@ -33,7 +33,7 @@
     <empty v-if="pageBean.totalCount === 0"></empty>
     <div class="checkAll" v-if="list.length">
       <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox>
-      <el-button type="primary" size="mini" @click="confirmSend(0)">投递简历</el-button>
+      <el-button type="primary" size="mini" @click="confirmSend(0)" style="margin-left: 10px;">投递简历</el-button>
       <el-button size="mini" @click="delAll">取消收藏</el-button>
     </div>
     <div class="page">
@@ -115,7 +115,7 @@ export default {
       })
     },
     confirmSend(val) {
-      if (!this.checked.length) return
+      if (!this.checked.length && !val) return
       this.$confirm('确认投递?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

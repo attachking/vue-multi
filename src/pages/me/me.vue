@@ -59,6 +59,10 @@
               <i class="xffont font-jilu"></i>
               <span>求职管理</span>
             </router-link>
+            <router-link to="/project" class="item">
+              <i class="xffont font-icon-project"></i>
+              <span>项目申报</span>
+            </router-link>
           </div>
         </div>
         <transition name="el-fade-in" mode="out-in">
@@ -76,6 +80,7 @@ import XfHeader from '../../components/xf-header/xf-header.vue'
 import XfFooter from '../../components/xf-footer/xf-footer.vue'
 import RightMenu from '../../components/right-menu/right-menu.vue'
 import {mapActions, mapGetters, mapMutations} from 'vuex'
+import event from '../../common/js/event'
 
 export default {
   components: {
@@ -122,7 +127,9 @@ export default {
       this.$post('/service/business/authen/authen/getAuthenInfo.xf', {
         aab001: this.$userInfo.aab001
       }).then(res => {
-        this.setAuthenInfo(res.result || {})
+        res.result.authenState = Number(res.result.authenState) // 0为未认证，1为正在认证，2为已认证，3为认证失败，4、未绑定微信
+        res.result.infoState = Number(res.result.infoState) // 0为基本信息未完善
+        this.setAuthenInfo(res.result)
       })
     },
     getPersonalInfo() {
@@ -147,6 +154,9 @@ export default {
     this.getCorpInfo()
     this.getPersonalInfo()
     this.getAuthen()
+    event.$on('authen', () => {
+      this.getAuthen()
+    })
   }
 }
 </script>

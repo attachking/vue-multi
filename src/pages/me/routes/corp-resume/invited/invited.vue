@@ -71,12 +71,10 @@
             trigger="hover"
             :disabled="!scope.row.ccps12"
             :content="scope.row.ccps12">
-            <el-button
-              size="mini"
+            <span
+              :class="scope.row.isaccept === 2 ? 'green' : scope.row.isaccept === 1 ? 'red' : ''"
               slot="reference"
-              type="text">
-              {{scope.row.isaccept === 2 ? '已接受' : scope.row.isaccept === 1 ? '已拒绝' : '未答复'}}
-            </el-button>
+            >{{scope.row.isaccept === 2 ? '已接受' : scope.row.isaccept === 1 ? '已拒绝' : '未答复'}}</span>
           </el-popover>
         </template>
       </el-table-column>
@@ -212,5 +210,11 @@ export default {
   .page{
     padding: 15px 0;
     text-align: center;
+  }
+  .red{
+    color: red;
+  }
+  .green{
+    color: green;
   }
 </style>

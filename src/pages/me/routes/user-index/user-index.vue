@@ -54,6 +54,7 @@
     <div class="job-fair">
       <div class="card-tit">
         <span class="item active"><i class="xffont font-zhiwei"></i>最新招聘会</span>
+        <el-button type="text" class="more">更多&gt;</el-button>
       </div>
       <div class="list">
         <div class="item" v-for="val in jobFairList" :key="val.acb330">
@@ -73,9 +74,10 @@
       <div class="card-tit">
         <span class="item" :class="currentTab === 1 ? 'active' : ''" @click="currentTab = 1"><i class="xffont font-iconzhiwei"></i>推荐职位</span>
         <span class="item" :class="currentTab === 2 ? 'active' : ''" @click="currentTab = 2"><i class="xffont font-gongsixinxi"></i>推荐单位</span>
+        <el-button @click="change" type="text" class="more">换一批<i class="el-icon-refresh"></i></el-button>
       </div>
       <transition name="el-zoom-in-top" mode="out-in">
-        <div class="job-list" key="jobList" v-if="currentTab === 1">
+        <div class="job-list" key="jobList" v-if="currentTab === 1" v-loading="loading1">
           <div class="item" v-for="val in jobList" :key="val.acb210">
             <div class="logo">
               <img :src="val.ccmu15">
@@ -87,20 +89,24 @@
                 <span class="salary">{{val.acc034Name || '--'}}</span>
               </p>
               <p class="pos-detail">
-              <span>
-                <span>地点：{{val.bcb202 || '--'}}</span>&nbsp;|&nbsp;
-                <span>招聘人数：{{val.acb21r || '--'}} 人</span>&nbsp;|&nbsp;
-                <span>经验：{{val.acc218 || '--'}}</span>&nbsp;|&nbsp;
-                <span>学历：{{val.aac012 || '--'}}</span>&nbsp;|&nbsp;
-                <span>工作性质：{{val.acb21iName || '--'}}</span>
-              </span>
+                <span>
+                  <span>地点：{{val.bcb202 || '--'}}</span>&nbsp;|&nbsp;
+                  <span>招聘人数：{{val.acb21r || '--'}} 人</span>&nbsp;|&nbsp;
+                  <span>经验：{{val.acc218 || '--'}}</span>&nbsp;|&nbsp;
+                  <span>学历：{{val.aac012 || '--'}}</span>&nbsp;|&nbsp;
+                  <span>工作性质：{{val.acb21iName || '--'}}</span>
+                </span>
                 <span class="date">{{$dateFormat(val.ccpr05, 'yyyy-MM-dd')}}</span>
               </p>
+              <div class="job-control">
+                <i class="xffont" :class="Number(val.is_Collection) > 0 ? 'font-shoucang1' : 'font-shoucang'" @click="handleCollect(val)" :title="Number(val.is_Collection) > 0 ? '已收藏' : '收藏'"></i>
+                <i class="xffont font-send" :class="Number(val.is_Resume) > 0 ? 'active' : ''" @click="handleResume(val)" :title="Number(val.is_Resume) > 0 ? '已投递简历' : '投递简历'"></i>
+              </div>
             </div>
           </div>
           <empty v-if="jobPageBean.totalCount === 0"></empty>
         </div>
-        <div class="job-list" key="corpList" v-if="currentTab === 2">
+        <div class="job-list" key="corpList" v-if="currentTab === 2" v-loading="loading2">
           <div class="item" v-for="val in corpList" :key="val.aab001">
             <div class="logo">
               <img :src="val.ccmu15">
@@ -117,6 +123,9 @@
                   <span>规模：{{val.aab056name || '--'}}</span>
                 </span>
               </p>
+            </div>
+            <div class="job-control">
+              <i class="xffont" :class="Number(val.is_collection) > 0 ? 'font-shoucang1' : 'font-shoucang'" @click="handleSave(val)" :title="Number(val.is_collection) > 0 ? '已收藏' : '收藏'"></i>
             </div>
           </div>
           <empty v-if="corpPageBean.totalCount === 0"></empty>
@@ -172,7 +181,7 @@ export default {
       })
     },
     getAd() {
-      this.$post('/service/business/pic/picInfo/getPicDetail.xf', {
+      this.$post('/service/business/fm/pic/picInfo/getPicDetail', {
         caoa04: 100
       }).then(res => {
         this.ad = res.result.caoa02
@@ -234,9 +243,45 @@ export default {
         this.loading1 = false
       })
     },
+    sendResume(acb210) {
+      this.loading1 = true
+      this.$post('/service/business/person/personSendResume/savePositionApplyInfo.xf', {
+        aac001: this.$userInfo.aac001,
+        acb210
+      }).then(res => {
+        this.loading1 = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getJob()
+        }
+      }).catch(() => {
+        this.loading1 = false
+      })
+    },
+    handleCollect(val) {
+      if (Number(val.is_Collection) > 0) {
+        this.delCollect(val.acb210)
+      } else {
+        this.collect(val.acb210)
+      }
+    },
+    handleResume(val) {
+      if (Number(val.is_Resume) === 0) {
+        this.$confirm('确认投递?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.sendResume(val.acb210)
+        })
+      }
+    },
     saveCorp(aab001) {
       this.loading2 = true
-      this.$post('/service/business/person/personTalent/talentCorpSave.xf', {
+      this.$post('/service/business/person/personTalent/saveTalentCorpinfo.xf', {
         aac001: this.$userInfo.aac001,
         aab001
       }).then(res => {
@@ -254,7 +299,7 @@ export default {
     },
     delCorp(aab001) {
       this.loading2 = true
-      this.$post('/service/business/person/personTalent/getTalentCorpDel.xf', {
+      this.$post('/service/business/person/personTalent/delTalentCorpInfo.xf', {
         aac001: this.$userInfo.aac001,
         aab001
       }).then(res => {
@@ -269,6 +314,42 @@ export default {
       }).catch(() => {
         this.loading2 = false
       })
+    },
+    handleSave(val) {
+      if (Number(val.is_collection) > 0) {
+        this.delCorp(val.aab001)
+      } else {
+        this.saveCorp(val.aab001)
+      }
+    },
+    change() { // 换一批
+      if (this.currentTab === 1) {
+        if (this.jobPageBean.hasNextPage) {
+          this.jobSearch.currentPage = this.jobPageBean.nextPage
+          this.getJob()
+        } else if (this.jobSearch.currentPage === 1) {
+          this.$message({
+            message: '没有更多了',
+            type: 'warning'
+          })
+        } else {
+          this.jobSearch.currentPage = 1
+          this.getJob()
+        }
+      } else {
+        if (this.corpPageBean.hasNextPage) {
+          this.corpSearch.currentPage = this.corpPageBean.nextPage
+          this.getCorp()
+        } else if (this.corpSearch.currentPage === 1) {
+          this.$message({
+            message: '没有更多了',
+            type: 'warning'
+          })
+        } else {
+          this.corpSearch.currentPage = 1
+          this.getCorp()
+        }
+      }
     }
   },
   created() {
@@ -388,5 +469,9 @@ export default {
         }
       }
     }
+  }
+  .more{
+    margin: 0 10px 0 0;
+    float: right;
   }
 </style>

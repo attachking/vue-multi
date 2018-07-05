@@ -6,69 +6,53 @@
         <div class="left">
           <div class="left-top">
             <div class="logo">
-              <img src="./static/logo.png" alt="">
+              <img :src="corpInfo.ccmu15">
             </div>
             <div class="corp-tit">
-              <p>纳斯达工贸有限公司</p>
+              <p>{{corpInfo.aab004 || '--'}}</p>
               <p>
-                <span>北京市 市辖区 海淀区</span>&nbsp;&nbsp;|&nbsp;&nbsp;
-                <span>私企</span>&nbsp;&nbsp;|&nbsp;&nbsp;
-                <span>10--99人</span>
+                <span>{{corpInfo.aaa021 || '--'}}</span>&nbsp;&nbsp;|&nbsp;&nbsp;
+                <span>{{corpInfo.aab019name || '--'}}</span>&nbsp;&nbsp;|&nbsp;&nbsp;
+                <span>{{corpInfo.aab056name || '--'}}</span>
               </p>
             </div>
-            <div class="collect">
+            <div class="collect" v-if="ccmu17 !== 2">
               <i class="xffont" :class="isCollect ? 'font-shoucang1' : 'font-shoucang'" @click="collect"></i>
             </div>
           </div>
           <div class="left-middle">
             <p class="tit">单位介绍</p>
-            <div class="corp-info">深圳市纳斯达工贸有限公司, 成立于2007年, 专业生产平板电脑和数码相框的电子消费品, 同时为客户量身订制多媒体广告设备，并以先进的技术和完美的品质置于同行领先地位.
-              工厂位于布吉红门科技园, 面积6000平方米, 员工200多人, 由高尖技术人才组成的专家研发团队有20人。拥有多项产品专利，强大的研发能力一直是纳斯达的传统优势。
-              海纳百川，有容乃大。这正是纳斯达研发创新新征途的迷人风景和深沉内涵，纳斯达人懂得用智者的眼光来审视自身和看待行业与社会。兼容并蓄，恒则达。纳斯达人终将为纳斯达品牌打出“科技创新，于斯为盛”的盛名。
-              工厂位于布吉红门科技园, 面积6000平方米, 员工200多人, 由高尖技术人才组成的专家研发团队有20人。拥有多项产品专利，强大的研发能力一直是纳斯达的传统优势。
-              海纳百川，有容乃大。这正是纳斯达研发创新新征途的迷人风景和深沉内涵，纳斯达人懂得用智者的眼光来审视自身和看待行业与社会。兼容并蓄，恒则达。纳斯达人终将为纳斯达品牌打出“科技创新，于斯为盛”的盛名。</div>
+            <div class="corp-info">{{corpInfo.acb206 || '--'}}</div>
           </div>
           <div class="left-bottom">
             <p class="position-tit">
               <span>该单位招聘岗位</span>
               <span>
-                <a href="javascript:;">&lt;</a>&nbsp;
-                <span class="current-page">1</span>&nbsp;/&nbsp;<span>3</span>&nbsp;
-                <a href="javascript:;">&gt;</a>
+                <a href="javascript:;" @click="pre">&lt;</a>&nbsp;
+                <span class="current-page">{{jobPageBean.currentPage}}</span>&nbsp;/&nbsp;<span>{{jobPageBean.totalPage}}</span>&nbsp;
+                <a href="javascript:;" @click="next">&gt;</a>
               </span>
             </p>
-            <div class="list">
-              <div class="item">
+            <div class="list" v-loading="jobLoading">
+              <div class="item" v-for="val in jobList" :key="val.acb210">
                 <p>
-                  <a href="">项目工程师</a>
-                  <span>2016-8-5</span>
+                  <a :href="'job.html?acb210=' + val.acb210" :title="val.cca113" target="_blank">{{val.cca113}}</a>
+                  <span class="date">{{$dateFormat(val.ccpr05, 'yyyy-MM-dd')}}</span>
                 </p>
                 <p>
                   <span>
-                    <span>河南省 郑州市 市辖区</span>&nbsp;&nbsp;|
-                    <span>2人</span>&nbsp;&nbsp;|
-                    <span>全职</span>&nbsp;&nbsp;|
-                    <span>经验不限</span>&nbsp;&nbsp;|
-                    <span>硕士研究生</span>
+                    <span>{{val.bcb202name || '--'}}</span>&nbsp;&nbsp;|
+                    <span>{{val.acb21r || '--'}}人</span>&nbsp;&nbsp;|
+                    <span>{{val.acb21iName || '--'}}</span>&nbsp;&nbsp;|
+                    <span>{{val.acc218 || '--'}}</span>&nbsp;&nbsp;|
+                    <span>{{val.aac012 || '--'}}</span>
                   </span>
-                  <span class="salary">8000以上</span>
+                  <span class="salary">{{val.acc034Name}}</span>
                 </p>
-              </div>
-              <div class="item">
-                <p>
-                  <a href="">项目工程师</a>
-                  <span>2016-8-5</span>
-                </p>
-                <p>
-                  <span>
-                    <span>河南省 郑州市 市辖区</span>&nbsp;&nbsp;|
-                    <span>2人</span>&nbsp;&nbsp;|
-                    <span>全职</span>&nbsp;&nbsp;|
-                    <span>经验不限</span>&nbsp;&nbsp;|
-                    <span>硕士研究生</span>
-                  </span>
-                  <span class="salary">8000以上</span>
-                </p>
+                <div class="job-control">
+                  <i class="xffont" :class="Number(val.is_Collection) > 0 ? 'font-shoucang1' : 'font-shoucang'" @click="handleCollect(val)" :title="Number(val.is_Collection) > 0 ? '已收藏' : '收藏'"></i>
+                  <i class="xffont font-send" :class="Number(val.is_Resume) > 0 ? 'active' : ''" @click="handleResume(val)" :title="Number(val.is_Resume) > 0 ? '已投递简历' : '投递简历'"></i>
+                </div>
               </div>
             </div>
           </div>
@@ -79,45 +63,36 @@
             <div class="contact-con">
               <p>
                 <span class="label">网址：</span>
-                <a href="http://www.lyrpec.com" target="_blank">http://www.lyrpec.com</a>
+                <a :href="corpInfo.aae016" target="_blank">{{corpInfo.aae016}}</a>
               </p>
               <p>
                 <span class="label">电话：</span>
-                <span>0379-63091742</span>
+                <span>{{corpInfo.aae005 || '--'}}</span>
               </p>
               <p>
                 <span class="label">邮箱：</span>
-                <span>lyrpec_bgs@163.com</span>
+                <span>{{corpInfo.aae015 || '--'}}</span>
               </p>
               <p>
                 <span class="label">地址：</span>
-                <span>郑州市中原区长椿路冬青街交汇   处河南省电子商务产业园3号楼1层</span>
+                <span>{{corpInfo.aae006 || '--'}}</span>
               </p>
             </div>
           </div>
-          <div class="right-middle">
-            <img src="./static/qrcode.png" alt="">
+          <div class="right-middle" v-if="false">
+            <img src="./static/qrcode.png">
             <p>扫描二维码在手机查看单位详情</p>
           </div>
           <div class="right-bottom">
             <div class="recommend-tit">热门单位</div>
             <div class="list">
-              <div class="item">
+              <div class="item" v-for="val in corpList" :key="val.aab001">
                 <div class="pos-logo">
-                  <img src="./static/logo.png" alt="">
+                  <img :src="val.ccmu15">
                 </div>
                 <div class="recommend-info">
-                  <a href="">河南逸菲医疗科技有限公司</a>
-                  <span>51-100人</span>
-                </div>
-              </div>
-              <div class="item">
-                <div class="pos-logo">
-                  <img src="./static/logo.png" alt="">
-                </div>
-                <div class="recommend-info">
-                  <a href="">河南逸菲医疗科技有限公司</a>
-                  <span>51-100人</span>
+                  <a :href="'corp.html?aab001=' + val.aab001" :title="val.aab004">{{val.aab004 || '--'}}</a>
+                  <span>{{val.aab056name || '--'}}</span>
                 </div>
               </div>
             </div>
@@ -134,6 +109,7 @@ import XfHeader from '../../components/xf-header/xf-header.vue'
 import XfFooter from '../../components/xf-footer/xf-footer.vue'
 import RightMenu from '../../components/right-menu/right-menu.vue'
 import {queryParse} from '../../common/js/utils'
+import event from '../../common/js/event'
 
 export default {
   components: {
@@ -142,19 +118,227 @@ export default {
     XfHeader},
   data() {
     return {
-      detail: {},
-      isCollect: false
+      val: {},
+      corpInfo: {},
+      corpPic: [],
+      isCollect: false,
+      aab001: '',
+      loading: false,
+      ccmu17: this.$userInfo.ccmu17,
+      corpList: [],
+      corpPageBean: {},
+      jobLoading: false,
+      jobList: [],
+      jobSearch: {
+        aab001: '',
+        rowsNum: 8,
+        currentPage: 1,
+        aac001: this.$userInfo.aac001
+      },
+      jobPageBean: {}
     }
   },
   methods: {
     getDetail(aab001) {
-      // this.$post('', {aab001})
+      this.$post('/service/business/corp/corps/getCorpDetail.xf', {
+        aab001,
+        aac001: this.$userInfo.aac001
+      }).then(res => {
+        this.corpInfo = res.result.corpInfo
+        this.corpPic = res.result.corpPic
+      })
     },
-    collect() {}
+    collect() {
+      if (this.$userInfo.status !== 1) {
+        event.$emit('login')
+        return
+      }
+      if (this.isCollect) {
+        this.delCorp()
+      } else {
+        this.saveCorp()
+      }
+    },
+    getState() {
+      if (this.$userInfo.status !== 1 || this.$userInfo.ccmu17 !== 1) return
+      if (this.loading) return
+      this.loading = true
+      this.$post('/service/business/person/personTalent/getPersonTalentCorpList.xf', {
+        aab001: this.aab001,
+        aac001: this.$userInfo.aac001
+      }).then(res => {
+        this.loading = false
+        this.isCollect = !!Number(res.result.colState)
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    saveCorp() {
+      if (this.loading) return
+      this.loading = true
+      this.$post('/service/business/person/personTalent/saveTalentCorpinfo.xf', {
+        aac001: this.$userInfo.aac001,
+        aab001: this.aab001
+      }).then(res => {
+        this.loading = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getState()
+        }
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    delCorp() {
+      if (this.loading) return
+      this.loading = true
+      this.$post('/service/business/person/personTalent/delTalentCorpInfo.xf', {
+        aac001: this.$userInfo.aac001,
+        aab001: this.aab001
+      }).then(res => {
+        this.loading = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getState()
+        }
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    getCorpList() {
+      this.$post('/service/business/corp/corps/getHotCorpList.xf', {
+        rowsNum: 6,
+        currentPage: 1
+      }).then(res => {
+        this.corpList = res.result
+        this.corpPageBean = res.pageBean
+      })
+    },
+    pre() {
+      if (this.jobPageBean.currentPage <= 1) return
+      this.jobSearch.currentPage = this.jobPageBean.previousPage
+      this.getJob()
+    },
+    next() {
+      if (this.jobPageBean.currentPage >= this.jobPageBean.totalPage) return
+      this.jobSearch.currentPage = this.jobPageBean.nextPage
+      this.getJob()
+    },
+    getJob() {
+      this.jobLoading = true
+      this.$post('/service/business/corp/newPosition/getPositionList.xf', this.jobSearch).then(res => {
+        this.jobLoading = false
+        this.jobList = res.result || []
+        this.jobPageBean = res.pageBean
+      }).catch(() => {
+        this.jobLoading = false
+      })
+    },
+    handleCollectJob(val) {
+      if (this.$userInfo.status !== 1) {
+        event.$emit('login')
+        return
+      }
+      if (this.$userInfo.ccmu17 === 2) {
+        this.$message({
+          message: '只有用户可以收藏职位',
+          type: 'success'
+        })
+        return
+      }
+      if (val) {
+        this.collectJob(val.acb210)
+      } else {
+        this.delCollect(val.acb210)
+      }
+    },
+    collectJob(acb210) {
+      this.jobLoading = true
+      this.$post('/service/business/person/positionTalent/saveTalentPositionInfo.xf', {
+        aac001: this.$userInfo.aac001,
+        acb210
+      }).then(res => {
+        this.jobLoading = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getJob()
+        }
+      }).catch(() => {
+        this.jobLoading = false
+      })
+    },
+    delCollect(acb210) {
+      this.jobLoading = true
+      this.$post('/service/business/person/positionTalent/delTalentPositionInfo.xf', {
+        aac001: this.$userInfo.aac001,
+        acb210
+      }).then(res => {
+        this.jobLoading = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getJob()
+        }
+      }).catch(() => {
+        this.jobLoading = false
+      })
+    },
+    handleResume(val) {
+      if (this.$userInfo.status !== 1) {
+        event.$emit('login')
+        return
+      }
+      if (this.$userInfo.ccmu17 === 2) {
+        this.$message({
+          message: '只有用户可以收藏职位',
+          type: 'success'
+        })
+        return
+      }
+      this.$confirm('确定投递简历?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then()
+    },
+    sendResume(acb210) {
+      this.jobLoading = true
+      this.$post('/service/business/person/personSendResume/savePositionApplyInfo.xf', {
+        aac001: this.$userInfo.aac001,
+        acb210
+      }).then(res => {
+        this.jobLoading = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getJob()
+        }
+      }).catch(() => {
+        this.jobLoading = false
+      })
+    }
   },
-  mounted() {
+  created() {
     const search = queryParse(location.search)
     this.getDetail(search.aab001)
+    this.aab001 = search.aab001
+    this.jobSearch.aab001 = search.aab001
+    this.getState()
+    this.getCorpList()
+    this.getJob()
   }
 }
 </script>
@@ -262,11 +446,18 @@ export default {
         padding: 15px 25px;
         .item{
           padding: 20px 20px;
+          position: relative;
           &:not(:last-child){
             border-bottom: 1px dashed #ebebeb;
           }
           &:hover{
             background: #f3f3f3;
+            .salary,.date{
+              display: none !important;
+            }
+            .job-control{
+              display: block;
+            }
           }
           p{
             &:nth-child(1){
@@ -288,6 +479,24 @@ export default {
                 display: inline-block;
                 float: right;
               }
+            }
+          }
+          .job-control{
+            display: none;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            .xffont{
+              font-size: 22px;
+              margin: 0 5px 0 0;
+              &:hover{
+                cursor: pointer;
+                color: #f26b01;
+              }
+            }
+            .active,.font-shoucang1{
+              color: #f26b01;
             }
           }
         }

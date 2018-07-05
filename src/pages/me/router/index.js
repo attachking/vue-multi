@@ -44,6 +44,12 @@ const reserved = () => import('../routes/job-fair/job-fair-reserved/job-fair-res
 const fairJob = () => import('../routes/job/jobEdit/jobEdit.vue') // 招聘会职位编辑
 const positionList = () => import('../routes/job-fair/position-list/position-list.vue') // 招聘会已发布职位
 const fairJobPreview = () => import('../routes/job/jobPreview/jobPreview.vue') // 招聘会预览职位
+const fairCorpList = () => import('../routes/job-fair/fair-corp-list/fair-corp-list.vue') // 招聘会参会企业列表
+const authen = () => import('../routes/account/authen/authen.vue') // 企业认证
+const project = () => import('../routes/project/project.vue') // 项目申报
+const projectList = () => import('../routes/project/project-list/project-list.vue') // 项目申报列表
+const projectApply = () => import('../routes/project/project-apply/project-apply.vue') // 项目申报表单
+const projectDetail = () => import('../routes/project/project-detail/project-detail.vue') // 项目申报详情
 
 const router = new Router({
   routes: [{
@@ -75,6 +81,11 @@ const router = new Router({
       path: 'info',
       name: 'info',
       component: info,
+      meta: {ccmu17: 2}
+    }, {
+      path: 'authen',
+      name: 'authen',
+      component: authen,
       meta: {ccmu17: 2}
     }]
   }, {
@@ -189,6 +200,28 @@ const router = new Router({
       path: 'fairJobPreview',
       name: 'fairJobPreview',
       component: fairJobPreview
+    }, {
+      path: 'fairCorpList',
+      name: 'fairCorpList',
+      component: fairCorpList
+    }]
+  }, {
+    path: '/project',
+    name: 'project',
+    component: project,
+    meta: {ccmu17: 2},
+    children: [{
+      path: 'projectList',
+      name: 'projectList',
+      component: projectList
+    }, {
+      path: 'projectApply',
+      name: 'projectApply',
+      component: projectApply
+    }, {
+      path: 'projectDetail',
+      name: 'projectDetail',
+      component: projectDetail
     }]
   }]
 })

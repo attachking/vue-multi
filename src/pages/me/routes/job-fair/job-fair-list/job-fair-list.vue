@@ -12,7 +12,7 @@
         <p><i class="xffont font-zuobiao"></i>&nbsp;{{val.acd200name || '--'}}</p>
         <p><i class="xffont font-msnui-time"></i>&nbsp;{{$dateFormat(val.acb333, 'yyyy-MM-dd hh:mm')}} -- {{$dateFormat(val.acb334, 'yyyy-MM-dd hh:mm')}}</p>
         <div class="btn">
-          <el-button type="primary" plain>参会企业</el-button>
+          <el-button type="primary" plain @click="corps(val)">参会企业</el-button>
           <el-button type="primary" plain @click="book(val)">企业预定</el-button>
         </div>
       </div>
@@ -60,6 +60,14 @@ export default {
         query: {
           acb330: val.acb330,
           acb331: encodeURIComponent(val.acb331)
+        }
+      })
+    },
+    corps(val) {
+      this.$router.push({
+        name: 'fairCorpList',
+        query: {
+          acb330: val.acb330
         }
       })
     }

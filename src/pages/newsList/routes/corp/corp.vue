@@ -82,14 +82,23 @@
         <div class="count">在招职位数：<span>{{val.cnt || 0}}</span></div>
       </a>
     </div>
+    <empty v-if="pageBean.totalCount === 0"></empty>
+    <div class="page">
+      <pagination :bean="pageBean" @current-change="handlePage"></pagination>
+    </div>
   </div>
 </template>
 <script>
 import {echo} from '../../../../common/js/utils'
 import XfCascader from '../../../../components/xf-cascader/xf-cascader.vue'
+import Empty from '../../../../components/empty/empty.vue'
+import Pagination from '../../../../components/pagination/pagination.vue'
 
 export default {
-  components: {XfCascader},
+  components: {
+    Pagination,
+    Empty,
+    XfCascader},
   data() {
     return {
       form: {
@@ -116,7 +125,12 @@ export default {
   },
   methods: {
     onSubmit() {
+      this.form.currentPage = 1
+      this.getList()
+    },
+    getList() {
       this.loading = true
+      this.form.aac001 = this.$userInfo.aac001
       this.$post('/service/business/corp/corps/queryCorpList.xf', this.form).then(res => {
         this.loading = false
         this.list = res.result
@@ -134,6 +148,10 @@ export default {
         this.dictionaries = res.result
       })
     },
+    handlePage(page) {
+      this.form.currentPage = page
+      this.getList()
+    },
     onReset() {
       echo(this.form)
     },
@@ -146,6 +164,42 @@ export default {
             delete item.children
           }
         }
+      })
+    },
+    saveCorp(aab001) {
+      this.loading2 = true
+      this.$post('/service/business/person/personTalent/saveTalentCorpinfo.xf', {
+        aac001: this.$userInfo.aac001,
+        aab001
+      }).then(res => {
+        this.loading2 = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getCorp()
+        }
+      }).catch(() => {
+        this.loading2 = false
+      })
+    },
+    delCorp(aab001) {
+      this.loading2 = true
+      this.$post('/service/business/person/personTalent/delTalentCorpInfo.xf', {
+        aac001: this.$userInfo.aac001,
+        aab001
+      }).then(res => {
+        this.loading2 = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getCorp()
+        }
+      }).catch(() => {
+        this.loading2 = false
       })
     }
   },
@@ -242,5 +296,9 @@ export default {
         }
       }
     }
+  }
+  .page{
+    padding: 15px 0;
+    text-align: center;
   }
 </style>

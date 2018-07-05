@@ -201,7 +201,7 @@ export default {
       }
     },
     getAd() {
-      this.$post('/service/business/pic/picInfo/getPicDetail.xf', {
+      this.$post('/service/business/fm/pic/picInfo/getPicDetail', {
         caoa04: 100
       }).then(res => {
         this.ad = res.result.caoa02

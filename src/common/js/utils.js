@@ -47,6 +47,7 @@ const user = {
 
 export function post(url, params = {}, status = true) {
   // status是否需要提示
+  url = /^http/.test(url) ? url : BASE_URL + url
   params = Object.assign({}, {
     userId: user.ccmu17 === 1 ? user.aac001 : user.aab001,
     ccmu17: user.ccmu17,
@@ -56,7 +57,7 @@ export function post(url, params = {}, status = true) {
     $.ajax({
       method: 'post',
       data: params,
-      url: BASE_URL + url,
+      url: url,
       success(data) {
         resolve(data)
         if (data.error && data.error.result === 0 && status) {
@@ -192,7 +193,7 @@ export function echo(target, resource) {
     if (target.hasOwnProperty(i)) {
       if (resource && resource[i] !== null && typeof resource[i] !== 'undefined') {
         target[i] = resource[i]
-      } else {
+      } else if (i !== 'rowsNum' && i !== 'currentPage') {
         target[i] = ''
       }
     }
@@ -201,12 +202,15 @@ export function echo(target, resource) {
 
 export const reg = {
   tel(str) { // 手机号+固定电话正则
+    if (str === '') return true
     return /^([0-9]{3,4}-)?[0-9]{7,8}$/.test(str) || /^1[345789]\d{9}$/.test(str)
   },
   phone(str) { // 手机号正则
+    if (str === '') return true
     return /^1[345789]\d{9}$/.test(str)
   },
   email(str) { // 邮箱
+    if (str === '') return true
     return /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(str)
   }
 }
