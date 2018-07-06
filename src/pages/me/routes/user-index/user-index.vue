@@ -58,14 +58,19 @@
       </div>
       <div class="list">
         <div class="item" v-for="val in jobFairList" :key="val.acb330">
-          <a href="" :title="val.acb331">{{val.acb331 || '--'}}</a>
+          <a :href="'fair.html?acb330=' + val.acb330" :title="val.acb331" target="_blank">
+            <span :class="Number(val.status) === 1 ? 'green' : Number(val.status) === 2 ? 'red' : 'closed'">【{{Number(val.status) === 1 ? '进行中' : Number(val.status) === 2 ? '未开始' : '已结束'}}】</span>
+            {{val.acb331 || '--'}}
+          </a>
           <p>
             <i class="xffont font-zuobiao"></i><span>{{val.acd200name || '--'}}</span>
           </p>
           <p>
             <i class="xffont font-msnui-time"></i><span>{{$dateFormat(val.acb333, 'yyyy-MM-dd hh:mm')}} 至 {{$dateFormat(val.acb334, 'yyyy-MM-dd hh:mm')}}</span>
           </p>
-          <el-button class="btn" type="primary" plain>参会企业</el-button>
+          <a :href="'fair.html?acb330=' + val.acb330" target="_blank">
+            <el-button class="btn" type="primary" plain>查看详情</el-button>
+          </a>
         </div>
       </div>
       <empty v-if="jobFairPageBean.totalCount === 0"></empty>
@@ -178,6 +183,7 @@ export default {
       }).then(res => {
         this.jobFairList = res.result
         this.jobFairPageBean = res.pageBean
+        // status 1进行中 2未开始 3已结束
       })
     },
     getAd() {
@@ -189,7 +195,7 @@ export default {
     },
     getJob() { // 获取推荐岗位
       this.loading1 = true
-      this.$post('/service/business/search/jobRecommendList/getRecommendJobList.xf', this.jobSearch).then(res => {
+      this.$post('/service/business/search/jobRecommendList/getRecommendJobList.xf', this.jobSearch, false).then(res => {
         this.loading1 = false
         this.jobList = res.result
         this.jobPageBean = res.pageBean
@@ -439,7 +445,7 @@ export default {
   .job-fair{
     .list{
       .item{
-        padding: 20px 10px;
+        padding: 20px 10px 0 10px;
         position: relative;
         a{
           font-size: 16px;
@@ -473,5 +479,14 @@ export default {
   .more{
     margin: 0 10px 0 0;
     float: right;
+  }
+  .green{
+    color: green;
+  }
+  .red{
+    color: red;
+  }
+  .closed{
+    color: #666;
   }
 </style>

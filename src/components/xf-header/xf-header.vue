@@ -12,12 +12,12 @@
           </span>
         </a>
         <span class="login" v-if="!userInfo.status">
-          <a href="javascript:;" @click="login">登录</a>/<a href="javascript:;">注册</a>
+          <a href="javascript:;" @click="login">登录</a>/<a href="register.html">注册</a>
         </span>
         <div class="user-info" v-if="userInfo.status === 1">
           <el-dropdown placement="bottom" @command="handleCommand">
             <a class="img" href="me.html">
-              <img src="./head.png">
+              <img :src="userInfo.logo">
             </a>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item command="me.html">个人中心</el-dropdown-item>
@@ -46,9 +46,21 @@
         </el-form-item>
         <el-form-item class="less-margin">
           <el-checkbox label="自动登录" v-model="autoLogin"></el-checkbox>
+          <span class="forget">
+            <el-button type="text">忘记密码?</el-button>
+          </span>
         </el-form-item>
-        <el-form-item>
+        <el-form-item class="less-margin">
           <el-button type="primary" @click="onSubmit" class="submit" :loading="loading">登录</el-button>
+        </el-form-item>
+        <el-form-item class="less-margin">
+          <span class="forget">
+            还没有账号？
+            <a href="register.html">
+              <el-button type="text">注册</el-button>
+            </a>
+            新账号
+          </span>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -205,7 +217,11 @@ export default {
     },
     logout() {
       storage.out()
-      location.reload()
+      if (/me\.html/.test(location.href)) {
+        location.href = 'index.html'
+      } else {
+        location.reload()
+      }
     },
     handleCommand(cmd) {
       if (cmd === 'logout') {
@@ -220,6 +236,9 @@ export default {
     this.refreshLogin()
     event.$on('login', () => {
       this.login()
+    })
+    event.$on('refresh', () => {
+      this.refreshLogin()
     })
   }
 }
@@ -375,6 +394,7 @@ export default {
       display: inline-block;
       border-radius: 50%;
       vertical-align: middle;
+      border: 1px solid #ebebeb;
       &:hover{
         cursor: pointer;
       }
@@ -389,5 +409,9 @@ export default {
       max-width: 120px;
       @include ellipsis;
     }
+  }
+  .forget{
+    display: inline-block;
+    float: right;
   }
 </style>

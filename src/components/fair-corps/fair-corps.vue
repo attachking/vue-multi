@@ -15,7 +15,7 @@
         </div>
         <el-popover
           placement="left"
-          width="500"
+          width="650"
           :disabled="!val.jobNum"
           trigger="click">
           <el-table :data="val.positionList">
@@ -44,6 +44,13 @@
               label="招聘人数">
               <template slot-scope="scope">
                 <span class="ellipsis" :title="scope.row.acb21r">{{scope.row.acb21r || '--'}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              align="center"
+              label="薪资">
+              <template slot-scope="scope">
+                <span class="ellipsis red" :title="scope.row.acc034Name">{{scope.row.acc034Name || '--'}}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -172,5 +179,8 @@ export default {
     display: inline-block;
     max-width: 118px;
     @include ellipsis;
+  }
+  .red{
+    color: red;
   }
 </style>

@@ -58,8 +58,7 @@ export default {
       this.$router.push({
         name: 'stalls',
         query: {
-          acb330: val.acb330,
-          acb331: encodeURIComponent(val.acb331)
+          acb330: val.acb330
         }
       })
     },

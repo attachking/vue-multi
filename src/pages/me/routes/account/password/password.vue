@@ -28,7 +28,8 @@
       <el-collapse-item name="email">
         <template slot="title">
           <div class="tit">
-            <i class="xffont font-youjian"></i>邮箱认证
+            <i class="xffont font-youjian"></i>邮箱认证 <span :class="info.ccmu12 === 1 ? 'green' : 'red'">（{{info.ccmu12 === 1 ? '已认证' : '未认证'}}）</span>
+            <span>（认证的邮箱用于接收系统信息）</span>
           </div>
         </template>
         <div class="form">
@@ -43,7 +44,7 @@
           </el-form>
         </div>
       </el-collapse-item>
-      <el-collapse-item name="phone">
+      <el-collapse-item name="phone" v-if="false">
         <template slot="title">
           <div class="tit">
             <i class="xffont font-shouji-copy"></i>手机认证
@@ -69,7 +70,7 @@
       <el-collapse-item name="question">
         <template slot="title">
           <div class="tit">
-            <i class="xffont font-shouji-copy"></i>密保问题 <span :class="info.ccmu04 ? 'green' : 'red'">（{{info.ccmu04 ? '已认证' : '未设置'}}）</span>
+            <i class="xffont font-shouji-copy"></i>密保问题 <span :class="info.ccmu04 ? 'green' : 'red'">（{{info.ccmu04 ? '已设置' : '未设置'}}）</span>
           </div>
         </template>
         <div class="form">
@@ -100,10 +101,10 @@
       title="邮箱验证"
       :visible.sync="emailDialog"
       :close-on-click-modal="false"
-      width="400px">
-      <el-form ref="formEmailCode" inline :model="formEmailCode" :rules="emailCodeRules" class="form">
+      width="450px">
+      <el-form ref="formEmailCode" inline :model="formEmailCode" :rules="emailCodeRules" class="emailForm">
         <el-form-item prop="emailCode" label="邮箱">
-          <el-input v-model.trim="formEmailCode.emailCode" placeholder="请输入邮箱收到的验证码" clearable @keydown.native.enter="emailCodeSubmit"></el-input>
+          <el-input v-model.trim="formEmailCode.emailCode" style="width: 220px;" placeholder="请输入邮箱收到的验证码" clearable @keydown.native.enter="emailCodeSubmit"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="emailCodeSubmit" :loading="emailCodeLoading" size="mini">确定</el-button>
@@ -188,7 +189,9 @@ export default {
       },
       // 绑定邮箱表单
       form2: {
-        email: ''
+        email: '',
+        ccmu01: this.$userInfo.ccmu01,
+        flag: 0
       },
       rules2: {
         email: [{
@@ -197,12 +200,17 @@ export default {
           trigger: 'change'
         }, {
           validator(rule, value, callback) {
+            if (value === _this.info.ccmu08) {
+              callback(new Error('该邮箱已认证，无需重复认证'))
+              return
+            }
             if (reg.email(value)) {
               callback()
             } else {
               callback(new Error('请输入正确的邮箱'))
             }
-          }
+          },
+          trigger: 'blur'
         }]
       },
       // 邮箱验证码表单
@@ -213,6 +221,15 @@ export default {
         emailCode: [{
           required: true,
           message: '请输入验证码',
+          trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            if (/^[a-zA-Z\d]{3,10}$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('请输入正确的验证码'))
+            }
+          },
           trigger: 'change'
         }]
       },
@@ -232,7 +249,8 @@ export default {
             } else {
               callback(new Error('请输入正确的手机号'))
             }
-          }
+          },
+          trigger: 'change'
         }]
       },
       form4: {
@@ -290,6 +308,7 @@ export default {
         * ccmu04:密保问题
         * */
         this.info = res.result
+        this.form2.email = res.result.ccmu08 || ''
       })
     },
     handleChange(e) {
@@ -297,12 +316,17 @@ export default {
         for (let i = 0; i < e.length; i++) {
           let index = this.lastNames.findIndex(item => item === e[i])
           if (index === -1) {
-            this.$refs[e[i]].resetFields()
+            this.resetFields(e[i])
             break
           }
         }
       }
       this.lastNames = Array.prototype.slice.call(e)
+    },
+    resetFields(name) {
+      this.$refs[name].clearValidate()
+      if (name === 'email') return
+      this.$refs[name].resetFields()
     },
     onSubmit1() {
       this.$refs.password.validate(valid => {
@@ -326,7 +350,15 @@ export default {
     onSubmit2() {
       this.$refs.email.validate(valid => {
         if (valid) {
-          this.emailDialog = true
+          this.loading2 = true
+          this.$post('/service/business/login/account/emailSend', this.form2).then(res => {
+            this.loading2 = false
+            if (res.error && res.error.result === 1) {
+              this.emailDialog = true
+            }
+          }).catch(() => {
+            this.loading2 = false
+          })
         }
       })
     },
@@ -377,11 +409,28 @@ export default {
     },
     emailCodeSubmit() {
       this.$refs.formEmailCode.validate(valid => {
-        if (valid) {}
+        if (valid) {
+          this.$post('/service/business/login/account/updateEM', {
+            ccmu01: this.$userInfo.ccmu01,
+            valiCode: this.formEmailCode.emailCode,
+            email: this.form2.email
+          }).then(res => {
+            if (res.error && res.error.result === 1) {
+              this.$alert(res.error.message, '提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  this.emailDialog = false
+                  this.cancel('email')
+                  this.getInfo()
+                }
+              })
+            }
+          })
+        }
       })
     },
     cancel(name) {
-      this.$refs[name].resetFields()
+      this.resetFields(name)
       let index = this.activeNames.findIndex(item => item === name)
       if (index !== -1) {
         this.activeNames.splice(index, 1)

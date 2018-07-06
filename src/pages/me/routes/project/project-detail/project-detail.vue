@@ -14,7 +14,7 @@
         <span>{{info.projectProblem || '--'}}</span>
       </el-form-item>
       <el-form-item label="经费来源">
-        <span>{{info.projectFundresourse || '--'}}</span>
+        <span>{{info.fundSourceName || '--'}}</span>
       </el-form-item>
       <el-form-item label="合作方式">
         <span>{{info.projectWorktype || '--'}}</span>
@@ -49,6 +49,24 @@ export default {
     return {
       info: {}
     }
+  },
+  methods: {
+    getInfo() {
+      this.$post('/service/business/project/enterpriseProject/getProjectDetails', {
+        projectid: this.$route.query.projectid
+      }).then(res => {
+        this.info = res.result
+      })
+    }
+  },
+  created() {
+    this.getInfo()
   }
 }
 </script>
+<style lang="scss" scoped>
+  @import "../../../../../common/style/variables";
+  .project-detail{
+    padding: 20px 0 0 0;
+  }
+</style>

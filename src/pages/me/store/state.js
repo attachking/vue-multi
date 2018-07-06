@@ -19,7 +19,8 @@ const state = {
     TAB_SREQUIREMENT: [], // 食宿情况
     tab_university_city: [], // 省份字典表（用于选择院校）
     tab_major_type: [], // 专业类别
-    TAB_SECURITY: [] // 密保问题
+    TAB_SECURITY: [], // 密保问题
+    TAB_FUND_SOURCE: [] // 经费来源(项目申报)
   },
   phoneOpen: false,
   corpInfo: {}, // 企业信息,

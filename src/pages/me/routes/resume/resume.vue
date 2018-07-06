@@ -26,7 +26,7 @@
             <span>{{info1.aac005name || '--'}}</span>
           </el-form-item>
           <el-form-item label="联系电话">
-            <span>{{info1.aae005}}</span>
+            <span>{{info1.aae005 || '--'}}</span>
           </el-form-item>
           <el-form-item label="身高">
             <span>{{info1.aac034 ? info1.aac034 + 'cm' : '--'}}</span>

@@ -37,14 +37,13 @@ export default {
   @import "../../common/style/variables";
   .register{
     background: url("../../common/img/bg.png") no-repeat;
-    padding: 30px 0;
+    padding: 90px 0;
     background-size: 100% 100%;
     min-height: 650px;
   }
   .register-con{
-    width: 40%;
-    height: 450px;
-    margin: 40px 30%;
+    width: 760px;
+    margin: 0 auto;
     background: #fff;
     border-radius: 8px;
     .title{

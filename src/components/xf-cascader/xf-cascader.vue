@@ -80,6 +80,7 @@ export default {
       if (!value) {
         this.val = []
       } else {
+        value += ''
         this.back = new BackCascader({
           list: this.options,
           id: value
@@ -107,6 +108,11 @@ export default {
   created() {
     this.handleValue(this.value)
     this.$watch('value', this.handleValue)
+    this.$watch('options', () => {
+      setTimeout(() => {
+        this.handleValue(this.value)
+      }, 20)
+    })
   }
 }
 </script>

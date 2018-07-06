@@ -15,10 +15,10 @@
                 <span>{{detail.aac012 || '--'}}</span>
                 <span class="time">{{$dateFormat(detail.ccpr05, 'yyyy-MM-dd')}}刷新</span>
               </p>
-              <div class="edit">
+              <div class="edit" v-if="ccmu17 !== 2">
                 <!--<i class="xffont font-jubao"></i>-->
-                <i class="xffont" :title="state.positionTalenState > 0 ? '已收藏' : '收藏'" :class="state.positionTalenState > 0 ? 'font-shoucang1' : 'font-shoucang'" @click="collect"></i>
-                <el-button type="primary" size="mini" :disabled="state.resumeState > 0" :title="state.resumeState > 0 ? '已投递' : '投递简历'" @click="confirmSend">投递简历</el-button>
+                <i class="xffont" :title="state.positionTalenState > 0 ? '已收藏' : '收藏'" :class="state.positionTalenState > 0 ? 'font-shoucang1' : 'font-shoucang'" @click="collect(currentSearch.acb210, state.positionTalenState)"></i>
+                <el-button type="primary" size="mini" :disabled="state.resumeState > 0" :title="state.resumeState > 0 ? '已投递' : '投递简历'" @click="confirmSend(currentSearch.acb210, state.resumeState)">投递简历</el-button>
               </div>
             </div>
             <div class="welfare">
@@ -43,26 +43,30 @@
               <span>
                 <a href="javascript:;" @click="handlePage(0)">&lt;</a>&nbsp;
                 <span class="current-page">{{pageBean.currentPage}}</span>&nbsp;/&nbsp;<span>{{pageBean.totalPage}}</span>&nbsp;
-                <a href="javascript:;" @click="handlePage(0)">&gt;</a>
+                <a href="javascript:;" @click="handlePage(1)">&gt;</a>
               </span>
             </p>
             <empty v-if="pageBean.totalCount === 0"></empty>
             <div class="list">
               <div class="item" v-for="val in otherJob" :key="val.acb210">
                 <p>
-                  <a :href="'job.html?acb210=' + val.acb210">{{val.cca113 || '--'}}</a>
-                  <span>$dateFormat(val.ccpr05, 'yyyy-MM-dd')}}</span>
+                  <a :href="'job.html?acb210=' + val.acb210" :title="val.cca113" target="_blank">{{val.cca113}}</a>
+                  <span class="date">{{$dateFormat(val.ccpr05, 'yyyy-MM-dd')}}</span>
                 </p>
                 <p>
                   <span>
                     <span>{{val.bcb202 || '--'}}</span>&nbsp;&nbsp;|
-                    <span>{{val.acb21r || 0}}人</span>&nbsp;&nbsp;|
+                    <span>{{val.acb21r || '--'}}人</span>&nbsp;&nbsp;|
                     <span>{{val.acb21iName || '--'}}</span>&nbsp;&nbsp;|
                     <span>{{val.acc218 || '--'}}</span>&nbsp;&nbsp;|
                     <span>{{val.aac012 || '--'}}</span>
                   </span>
-                  <span class="salary">{{val.acc034Name || '--'}}</span>
+                  <span class="salary">{{val.acc034Name}}</span>
                 </p>
+                <div class="job-control">
+                  <i class="xffont" :class="Number(val.is_Collection) > 0 ? 'font-shoucang1' : 'font-shoucang'" @click="collect(val.acb210, val.is_Collection)" :title="Number(val.is_Collection) > 0 ? '已收藏' : '收藏'"></i>
+                  <i class="xffont font-send" :class="Number(val.is_Resume) > 0 ? 'active' : ''" @click="confirmSend(val.acb210, val.is_Resume)" :title="Number(val.is_Resume) > 0 ? '已投递简历' : '投递简历'"></i>
+                </div>
               </div>
             </div>
           </div>
@@ -117,6 +121,7 @@ import XfHeader from '../../components/xf-header/xf-header.vue'
 import XfFooter from '../../components/xf-footer/xf-footer.vue'
 import RightMenu from '../../components/right-menu/right-menu.vue'
 import {queryParse, renderTitle} from '../../common/js/utils'
+import event from '../../common/js/event'
 import Empty from '../../components/empty/empty.vue'
 
 export default {
@@ -135,6 +140,7 @@ export default {
       pageBean: {},
       searchData: {
         acb210: '',
+        aac001: this.$userInfo.aac001,
         rowsNum: 6,
         currentPage: 1
       },
@@ -145,7 +151,8 @@ export default {
       editLoading: false,
       corpInfo: {},
       corpLogo: {},
-      currentSearch: {}
+      currentSearch: {},
+      ccmu17: this.$userInfo.ccmu17
     }
   },
   methods: {
@@ -161,13 +168,24 @@ export default {
         this.corpLogo = res.result.corpLogo
       })
     },
-    collect() {
+    collect(acb210, state) {
+      if (this.$userInfo.status !== 1) {
+        event.$emit('login')
+        return
+      }
+      if (this.$userInfo.ccmu17 !== 1) {
+        this.$message({
+          message: '只有求职者才能投递简历',
+          type: 'warning'
+        })
+        return
+      }
       if (this.editLoading) return
       this.editLoading = true
-      let url = this.state.positionTalenState > 0 ? '/service/business/person/positionTalent/delTalentPositionInfo.xf' : '/service/business/person/positionTalent/saveTalentPositionInfo.xf'
+      let url = state > 0 ? '/service/business/person/positionTalent/delTalentPositionInfo.xf' : '/service/business/person/positionTalent/saveTalentPositionInfo.xf'
       this.$post(url, {
         aac001: this.$userInfo.aac001,
-        acb210: this.currentSearch.acb210
+        acb210
       }).then(res => {
         this.editLoading = false
         if (res.error && res.error.result === 1) {
@@ -236,24 +254,36 @@ export default {
         this.editLoading = false
       })
     },
-    confirmSend() {
+    confirmSend(acb210, state) {
       if (this.editLoading) return
+      if (this.$userInfo.status !== 1) {
+        event.$emit('login')
+        return
+      }
+      if (Number(state) > 0) return
+      if (this.$userInfo.ccmu17 !== 1) {
+        this.$message({
+          message: '只有求职者才能投递简历',
+          type: 'warning'
+        })
+        return
+      }
       this.$confirm('确认投递?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.sendResume(this.currentSearch.acb210)
+        this.sendResume(acb210)
       })
     }
   },
-  mounted() {
+  created() {
     const search = queryParse(location.search)
     this.currentSearch = search
     this.getDetail(search.acb210)
     this.getRecommendJob(search.acb210)
     this.getState()
-    this.searchData.searchData = search.acb210
+    this.searchData.acb210 = search.acb210
     this.getOtherJob()
   }
 }
@@ -377,11 +407,18 @@ export default {
         padding: 15px 25px;
         .item{
           padding: 20px 20px;
+          position: relative;
           &:not(:last-child){
             border-bottom: 1px dashed #ebebeb;
           }
           &:hover{
             background: #f3f3f3;
+            .salary,.date{
+              display: none !important;
+            }
+            .job-control{
+              display: block;
+            }
           }
           p{
             &:nth-child(1){
@@ -403,6 +440,24 @@ export default {
                 display: inline-block;
                 float: right;
               }
+            }
+          }
+          .job-control{
+            display: none;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            .xffont{
+              font-size: 22px;
+              margin: 0 5px 0 0;
+              &:hover{
+                cursor: pointer;
+                color: #f26b01;
+              }
+            }
+            .active,.font-shoucang1{
+              color: #f26b01;
             }
           }
         }

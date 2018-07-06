@@ -14,7 +14,9 @@
         <el-input type="textarea" :rows="5" v-model="form.projectProblem" placeholder="请输入项目需研究或解决的问题"></el-input>
       </el-form-item>
       <el-form-item label="经费来源" prop="projectFundresourse">
-        <el-input v-model="form.projectFundresourse" placeholder="请输入经费来源"></el-input>
+        <el-select v-model="form.projectFundresourse" placeholder="请选择经费来源" clearable>
+          <el-option :label="val.name" :value="val.code" :key="val.code" v-for="val in dictionaries.TAB_FUND_SOURCE"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="合作方式" prop="projectWorktype">
         <el-input v-model="form.projectWorktype" placeholder="请输入合作方式"></el-input>
@@ -72,7 +74,8 @@ export default {
         projectCategory: '', // 项目类别
         projectIntroduction: '', // 项目介绍
         projectProblem: '', // 项目需研究或解决的问题
-        projectFundresourse: '', // 经费来源
+        projectFundresourse: '', // 经费来源code
+        fundSourceName: '', // 经费来源
         projectWorktype: '', // 合作方式
         projectTreatment: '', // 待遇
         projectApprovalunit: '', // 立项单位
@@ -122,7 +125,7 @@ export default {
         }],
         projectFundresourse: [{
           required: true,
-          message: '请输入项目经费来源',
+          message: '请选择项目经费来源',
           trigger: 'change'
         }, {
           max: 100,
@@ -241,10 +244,15 @@ export default {
     },
     handleRouter(route) {
       if (route.query.projectid) {
-        // 1
+        this.getDetail(route.query.projectid)
       } else {
         echo(this.form)
       }
+    },
+    getDetail(projectid) {
+      this.$post('/service/business/project/enterpriseProject/getProjectDetails', {projectid}).then(res => {
+        echo(this.form, res.result)
+      })
     }
   },
   created() {

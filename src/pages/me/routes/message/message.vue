@@ -13,7 +13,8 @@
           <p>{{val.ccmc04}}</p>
         </div>
       </div>
-      <div class="edit">
+      <empty v-if="pageBean.totalCount === 0"></empty>
+      <div class="edit" v-if="pageBean.totalCount > 0">
         <el-checkbox class="all" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange"></el-checkbox>
         <el-button style="margin-left: 10px;" type="danger" icon="el-icon-delete" size="mini" class="btn" @click="delConfirm">删除</el-button>
         <el-button type="text" size="mini" class="btn" @click="signAll">标记为已读</el-button>
@@ -32,9 +33,12 @@
 </template>
 <script>
 import Pagination from '../../../../components/pagination/pagination.vue'
+import Empty from '../../../../components/empty/empty.vue'
 
 export default {
-  components: {Pagination},
+  components: {
+    Empty,
+    Pagination},
   data() {
     return {
       searchData: {

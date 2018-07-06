@@ -16,6 +16,7 @@
       <el-button size="small" type="primary" slot="trigger">选择文件</el-button>
       <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB，最多上传6张</div>
     </el-upload>
+    <empty v-if="!fileList.length"></empty>
     <el-dialog
       title="详情"
       :visible.sync="dialogVisible"
@@ -38,8 +39,10 @@
 </template>
 <script>
 import {BASE_URL} from '../../../../../common/js/config'
+import Empty from '../../../../../components/empty/empty.vue'
 
 export default {
+  components: {Empty},
   data() {
     return {
       baseUrl: BASE_URL,
@@ -83,8 +86,16 @@ export default {
       this.del(file.id)
     },
     handlePreview(file) {
+      // caoa07 0未审核，1审核成功，2审核失败   caoa08失败原因
+      if (file.caoa07 === 2) {
+        this.$alert(`失败原因：${file.reason || '--'}，重新审核请删除后重新上传`, '详细信息', {
+          confirmButtonText: '确定',
+          callback: action => {}
+        })
+        return
+      }
       this.currentPic = file
-      this.editForm.desc = file.name
+      this.editForm.desc = file.realname
       this.itemForm.caoa01 = file.id
       this.itemForm.file = file.url
       this.dialogVisible = true
@@ -105,8 +116,12 @@ export default {
         this.fileList = res.result.map(item => {
           return {
             url: item.caoa02,
-            name: item.caoa03,
-            id: item.caoa01
+            name: `${item.caoa03}（${item.caoa07 === 0 ? '未审核' : item.caoa07 === 1 ? '已审核' : '审核失败'}）`,
+            id: item.caoa01,
+            realname: item.caoa03,
+            status: item.caoa07 === 1 ? 0 : 1,
+            caoa07: item.caoa07,
+            reason: item.caoa08
           }
         })
       })

@@ -6,9 +6,18 @@
         <div class="menu">
           <div class="info">
             <div class="head">
-              <img src="./static/head.png" alt="">
+              <a href="#/account/head">
+                <img :src="ccmu17 === 1 ? personalInfo.ccmu15 : corpInfo.ccmu15">
+              </a>
             </div>
-            <p class="name">{{name}}</p>
+            <p class="name" v-if="isPerfect && loginStatus">{{name}}</p>
+            <p class="tip" v-if="!isPerfect && loginStatus">
+              点击
+              <router-link :to="ccmu17 === 1 ? '/resume' : '/account/info'">
+                <el-button type="text">前往</el-button>
+              </router-link>
+              完善基本信息
+            </p>
           </div>
           <div class="list">
             <router-link to="/corp" class="item">
@@ -89,12 +98,16 @@ export default {
     XfHeader},
   data() {
     return {
-      name: ''
+      name: '',
+      isPerfect: '', // 是否完善基本信息 0否1是
+      ccmu17: this.$userInfo.ccmu17,
+      loginStatus: !!this.$userInfo.status
     }
   },
   computed: {
     ...mapGetters([
-      'corpInfo'
+      'corpInfo',
+      'personalInfo'
     ])
   },
   methods: {
@@ -129,6 +142,7 @@ export default {
       }).then(res => {
         res.result.authenState = Number(res.result.authenState) // 0为未认证，1为正在认证，2为已认证，3为认证失败，4、未绑定微信
         res.result.infoState = Number(res.result.infoState) // 0为基本信息未完善
+        this.isPerfect = res.result.infoState
         this.setAuthenInfo(res.result)
       })
     },
@@ -144,6 +158,7 @@ export default {
           }
         }
         this.setPersonalInfo(o.personInfo)
+        this.isPerfect = Number(o.personInfo.isPerfect)
         this.name = o.personInfo.aac003
       })
     }
@@ -156,6 +171,10 @@ export default {
     this.getAuthen()
     event.$on('authen', () => {
       this.getAuthen()
+    })
+    event.$on('refresh', () => {
+      this.getPersonalInfo()
+      this.getCorpInfo()
     })
   }
 }
@@ -180,7 +199,7 @@ export default {
     width: 200px;
     float: left;
     .info{
-      padding: 15px 0 35px 0;
+      padding: 15px 0 15px 0;
       .head{
         width: 112px;
         height: 112px;

@@ -5,11 +5,12 @@ Vue.use(Router)
 
 // 路由组件懒加载,每个路由组件单独生成一个js,需要时通过创建script标签引入,需要配置webpack的output.chunkFilename
 // import(url)返回的是一个Promise对象实例
-const module = () => import('../routes/module/module.vue')
+const module = () => import('../routes/module/module.vue') // 文字新闻列表
 const photo = () => import('../routes/photo/photo.vue')
-const pic = () => import('../routes/pic/pic.vue')
-const corp = () => import('../routes/corp/corp.vue')
-const job = () => import('../routes/job/job.vue')
+const pic = () => import('../routes/pic/pic.vue') // 图片新闻列表
+const corp = () => import('../routes/corp/corp.vue') // 企业搜索列表
+const job = () => import('../routes/job/job.vue') // 职位搜索列表
+const fair = () => import('../routes/fair/fair.vue') // 招聘会列表
 
 const router = new Router({
   routes: [{
@@ -32,6 +33,10 @@ const router = new Router({
     path: '/job',
     name: 'job',
     component: job
+  }, {
+    path: '/fair',
+    name: 'fair',
+    component: fair
   }]
 })
 

@@ -228,7 +228,7 @@ export default {
               callback()
               return
             }
-            if (/^http/.test(value)) {
+            if (/^http(s?):\/\//.test(value)) {
               callback()
             } else {
               callback(new Error('网址请以http://或https://开头'))

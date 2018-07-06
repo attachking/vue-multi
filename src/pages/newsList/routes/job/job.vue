@@ -126,29 +126,34 @@
         </div>
       </transition>
     </div>
-    <div class="list" ref="list">
-      <div class="item" v-for="val in list" :key="val.acb210">
-        <div class="top">
-          <p>
-            <a :href="'job.html?acb210=' + val.acb210" target="_blank">{{val.cca113}}</a>
-            <span class="salary">{{val.acc034Name}}</span>
-          </p>
-          <p>{{val.aac012 || '--'}} / {{val.acb21r || 0}}人 / {{val.acb21iName || '--'}}</p>
-          <p>[ {{$dateFormat(val.ccpr05, 'yyyy-MM-dd hh:mm:ss')}} 发布 ]</p>
-        </div>
-        <div class="bottom">
-          <div class="img">
-            <img src="../corp/corp.png" alt="">
-          </div>
-          <div class="corp-info">
-            <a :href="'corp.html?aab001=' + val.aab001" target="_blank">{{val.aab004}}</a>
+    <div class="list" ref="list" v-loading="loading">
+      <div>
+        <div class="item" v-for="val in list" :key="val.acb210">
+          <div class="top">
             <p>
-              <!--行业-->
-              <span>{{val.ccpr10name || '--'}}</span>&nbsp;/&nbsp;
-              <span>{{val.bcb202 || '--'}}</span>
+              <a :href="'job.html?acb210=' + val.acb210" target="_blank">{{val.cca113}}</a>
+              <span class="salary">{{val.acc034Name}}</span>
             </p>
+            <p>{{val.aac012 || '--'}} / {{val.acb21r || 0}}人 / {{val.acb21iName || '--'}}</p>
+            <p>[ {{$dateFormat(val.ccpr05, 'yyyy-MM-dd hh:mm:ss')}} 发布 ]</p>
           </div>
-          <i class="xffont" v-if="ccmu17 === 1" @click="collectSingle(val)" :class="Number(val.is_Collection) === 0 ? 'font-shoucang' : 'font-shoucang1'"></i>
+          <div class="bottom">
+            <div class="img">
+              <img src="../corp/corp.png" alt="">
+            </div>
+            <div class="corp-info">
+              <a :href="'corp.html?aab001=' + val.aab001" target="_blank">{{val.aab004}}</a>
+              <p>
+                <!--行业-->
+                <span>{{val.ccpr10name || '--'}}</span>&nbsp;/&nbsp;
+                <span>{{val.bcb202 || '--'}}</span>
+              </p>
+            </div>
+            <div class="edit">
+              <i class="xffont" v-if="ccmu17 !== 2" @click="collectSingle(val)" :class="Number(val.is_Collection) === 0 ? 'font-shoucang' : 'font-shoucang1'" :title="Number(val.is_Collection) === 0 ? '收藏' : '已收藏'"></i>
+              <i class="xffont font-send" v-if="ccmu17 !== 2" :class="Number(val.is_Resume) > 0 ? 'active' : ''" @click="handleResume(val)" :title="Number(val.is_Resume) > 0 ? '已投递简历' : '投递简历'"></i>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -205,7 +210,8 @@ export default {
       acb202: [],
       aab056: [],
       pageBean: {},
-      list: []
+      list: [],
+      loading: false
     }
   },
   methods: {
@@ -238,16 +244,13 @@ export default {
         ccmu17: this.$userInfo.ccmu17
       }, this.form)
       form.bca112 = encodeURIComponent(form.bca112)
-      const loading = this.$loading({
-        target: this.$refs.list,
-        fullscreen: false
-      })
+      this.loading = true
       this.$post('/service/business/corp/newPosition/queryPositionList.xf', form).then(res => {
+        this.loading = false
         this.pageBean = res.pageBean
         this.list = res.result
-        loading.close()
       }).catch(() => {
-        loading.close()
+        this.loading = false
       })
     },
     getDictionaries() { // 字典表
@@ -301,10 +304,12 @@ export default {
         event.$emit('login')
         return
       }
+      this.loading = true
       this.$post('/service/business/person/positionTalent/saveTalentPositionInfo.xf', {
         aac001: this.$userInfo.aac001,
         acb210
       }).then(res => {
+        this.loading = false
         if (res.error && res.error.result === 1) {
           this.$message({
             message: res.error.message,
@@ -312,13 +317,17 @@ export default {
           })
           this.getList()
         }
+      }).catch(() => {
+        this.loading = false
       })
     },
     delCollect(acb210) {
+      this.loading = true
       this.$post('/service/business/person/positionTalent/delTalentPositionInfo.xf', {
         aac001: this.$userInfo.aac001,
         acb210
       }).then(res => {
+        this.loading = false
         if (res.error && res.error.result === 1) {
           this.$message({
             message: res.error.message,
@@ -326,6 +335,53 @@ export default {
           })
           this.getList()
         }
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    handleResume(val) {
+      if (this.$userInfo.status !== 1) {
+        event.$emit('login')
+        return
+      }
+      if (this.$userInfo.ccmu17 === 2) {
+        this.$message({
+          message: '只有求职者可以收藏职位',
+          type: 'warning'
+        })
+        return
+      }
+      if (Number(val.is_Resume) > 0) {
+        this.$message({
+          message: '您已经投递过简历了',
+          type: 'warning'
+        })
+        return
+      }
+      this.$confirm('确定投递简历?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(res => {
+        this.sendResume(val.acb210)
+      })
+    },
+    sendResume(acb210) {
+      this.loading = true
+      this.$post('/service/business/person/personSendResume/savePositionApplyInfo.xf', {
+        aac001: this.$userInfo.aac001,
+        acb210
+      }).then(res => {
+        this.loading = false
+        if (res.error && res.error.result === 1) {
+          this.$message({
+            message: res.error.message,
+            type: 'success'
+          })
+          this.getJob()
+        }
+      }).catch(() => {
+        this.loading = false
       })
     }
   },
@@ -376,6 +432,7 @@ export default {
     .list{
       @include clearFixed;
       padding: 15px 0 0 0;
+      overflow: hidden;
       .item{
         display: block;
         width: 49%;
@@ -445,14 +502,16 @@ export default {
               color: #666;
             }
           }
-          .xffont{
+          .edit{
             position: absolute;
             right: 18px;
             bottom: 18px;
-            font-size: 22px;
-            &:hover{
-              cursor: pointer;
-              color: #f26b01;
+            .xffont{
+              font-size: 22px;
+              &:hover{
+                cursor: pointer;
+                color: #f26b01;
+              }
             }
           }
           .font-shoucang1{

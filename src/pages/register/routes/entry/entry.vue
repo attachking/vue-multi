@@ -53,11 +53,14 @@ export default {
 
 <style lang="scss" scoped>
   @import "../../../../common/style/variables";
+  .center{
+    padding: 0 0 30px 0;
+  }
   .centerBox {
     width: 100%;
-    height: 450px;
-    padding: 50px 70px 40px;
+    padding: 50px 70px 40px 70px;
     text-align: center;
+    @include clearFixed;
     .findJob {
       width: 50%;
       float: left;
@@ -78,10 +81,16 @@ export default {
       border-radius: 3px;
       text-align: center;
       outline:none;
+      margin: 20px 0;
+      &:hover{
+        cursor: pointer;
+        background: $--color-primary;
+        color: #fff;
+      }
     }
     p {
-      color: #585858;
-      margin: 5px 0px;
+      color: #666;
+      margin: 20px 0;
     }
     img {
       width: 232px;

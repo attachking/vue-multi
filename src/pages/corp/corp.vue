@@ -41,7 +41,7 @@
                 </p>
                 <p>
                   <span>
-                    <span>{{val.bcb202name || '--'}}</span>&nbsp;&nbsp;|
+                    <span>{{val.bcb202 || '--'}}</span>&nbsp;&nbsp;|
                     <span>{{val.acb21r || '--'}}人</span>&nbsp;&nbsp;|
                     <span>{{val.acb21iName || '--'}}</span>&nbsp;&nbsp;|
                     <span>{{val.acc218 || '--'}}</span>&nbsp;&nbsp;|
@@ -50,7 +50,7 @@
                   <span class="salary">{{val.acc034Name}}</span>
                 </p>
                 <div class="job-control">
-                  <i class="xffont" :class="Number(val.is_Collection) > 0 ? 'font-shoucang1' : 'font-shoucang'" @click="handleCollect(val)" :title="Number(val.is_Collection) > 0 ? '已收藏' : '收藏'"></i>
+                  <i class="xffont" :class="Number(val.is_Collection) > 0 ? 'font-shoucang1' : 'font-shoucang'" @click="handleCollectJob(val)" :title="Number(val.is_Collection) > 0 ? '已收藏' : '收藏'"></i>
                   <i class="xffont font-send" :class="Number(val.is_Resume) > 0 ? 'active' : ''" @click="handleResume(val)" :title="Number(val.is_Resume) > 0 ? '已投递简历' : '投递简历'"></i>
                 </div>
               </div>
@@ -108,7 +108,7 @@
 import XfHeader from '../../components/xf-header/xf-header.vue'
 import XfFooter from '../../components/xf-footer/xf-footer.vue'
 import RightMenu from '../../components/right-menu/right-menu.vue'
-import {queryParse} from '../../common/js/utils'
+import {queryParse, renderTitle} from '../../common/js/utils'
 import event from '../../common/js/event'
 
 export default {
@@ -146,6 +146,7 @@ export default {
       }).then(res => {
         this.corpInfo = res.result.corpInfo
         this.corpPic = res.result.corpPic
+        renderTitle(res.result.corpInfo.aab004)
       })
     },
     collect() {
@@ -247,12 +248,12 @@ export default {
       }
       if (this.$userInfo.ccmu17 === 2) {
         this.$message({
-          message: '只有用户可以收藏职位',
-          type: 'success'
+          message: '只有求职者可以收藏职位',
+          type: 'warning'
         })
         return
       }
-      if (val) {
+      if (Number(val.is_Collection) === 0) {
         this.collectJob(val.acb210)
       } else {
         this.delCollect(val.acb210)
@@ -301,8 +302,15 @@ export default {
       }
       if (this.$userInfo.ccmu17 === 2) {
         this.$message({
-          message: '只有用户可以收藏职位',
-          type: 'success'
+          message: '只有求职者可以收藏职位',
+          type: 'warning'
+        })
+        return
+      }
+      if (Number(val.is_Resume) > 0) {
+        this.$message({
+          message: '您已经投递过简历了',
+          type: 'warning'
         })
         return
       }
@@ -310,7 +318,9 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then()
+      }).then(res => {
+        this.sendResume(val.acb210)
+      })
     },
     sendResume(acb210) {
       this.jobLoading = true

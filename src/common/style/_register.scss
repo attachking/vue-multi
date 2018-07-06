@@ -1,0 +1,23 @@
+@import "./variables";
+.register-form{
+  .img-box{
+    .el-input{
+      width: 205px;
+    }
+  }
+  .el-form-item{
+    margin-bottom: 0;
+    padding: 10px 0;
+    border-bottom: 1px solid #ebebeb;
+  }
+  .el-input{
+    input{
+      outline: none;
+      border: none;
+    }
+  }
+  .el-form-item__error {
+    top: 78%;
+    left: 16px;
+  }
+}

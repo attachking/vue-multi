@@ -7,34 +7,35 @@
             <p>找工作</p> | <span>专注互联网职业机会</span>
           </div>
           <div class="topRight">
-            <router-link to="/boss">
-              <a href="">我要招人></a>
-            </router-link>
+            <router-link to="/boss">我要招人&gt;</router-link>
           </div>
         </div>
         <div class="leftBox">
-          <form action="">
-            <div class="phoneNum">
-              <input type="text" class="input" v-model.trim="phoneNumber" placeholder="请输入手机号">
-            </div>
-            <div class="imgCode">
-              <input type="text" class="input" v-model.trim="imgCode" placeholder="请证明你不是机器人">
-              <img :src="img" alt="" @click="getImgCode">
-            </div>
-            <div class="phoneCode">
-              <input type="text" class="input" v-model.trim="phoneCode" placeholder="请输入手机验证码">
+          <el-form ref="form" :model="form" :rules="rules" class="register-form">
+            <el-form-item prop="phone">
+              <el-input v-model="form.phone" placeholder="请输入常用手机号"></el-input>
+            </el-form-item>
+            <el-form-item class="img-box" prop="valiCode">
+              <el-input v-model="form.valiCode" placeholder="请证明你不是机器人"></el-input>
+              <img class="imgCode" :src="img" @click="getImgCode" title="点击更换验证码">
+            </el-form-item>
+            <el-form-item class="img-box" prop="phoneCode">
+              <el-input v-model="form.phoneCode" placeholder="请输入验证码"></el-input>
               <el-button type="text" @click="getCode" class="get-code" :loading="loadingCode">{{codeText}}</el-button>
-            </div>
-          </form>
-          <el-button type="primary" @click="onSubmit" class="submit" :loading="loading">注册</el-button>
-          <p class="agreed" style="margin-left: -40px;">注册代表你已同意
+            </el-form-item>
+          </el-form>
+          <div class="text-center">
+            <el-button type="primary" @click="onSubmit" class="submit" :loading="loading">注册</el-button>
+          </div>
+          <p class="agreed text-center">注册代表你已同意
             <a href="javascript:;" @click="dialogVisible = true">[用户使用协议]</a>
           </p>
         </div>
+        <div class="middleBox"></div>
         <div class="rightBox">
           <p>
             已有账号：
-            <a href="javascript:;">直接登录
+            <a href="javascript:;" @click="login">直接登录
               <i class="xffont font-xiayibu"></i>
             </a>
           </p>
@@ -51,16 +52,64 @@
 </template>
 
 <script>
-import {renderTitle} from '../../../../common/js/utils'
+import {renderTitle, reg} from '../../../../common/js/utils'
+import event from '../../../../common/js/event'
 
 export default {
   data() {
     return {
+      form: {
+        phone: '',
+        valiCode: '',
+        phoneCode: '' // 手机验证码
+      },
+      rules: {
+        phone: [{
+          required: true,
+          message: '请输入手机号',
+          trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            if (reg.phone(value)) {
+              callback()
+            } else {
+              callback(new Error('请输入正确的手机号'))
+            }
+          },
+          trigger: 'change'
+        }],
+        valiCode: [{
+          required: true,
+          message: '请输入右侧的图片验证码',
+          trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            if (/^[a-zA-Z\d]{3,5}$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('验证码格式不正确'))
+            }
+          },
+          trigger: 'change'
+        }],
+        phoneCode: [{
+          required: true,
+          message: '请输入手机验证码',
+          trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            if (/^[a-zA-Z\d]{3,8}$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('验证码格式不正确'))
+            }
+          },
+          trigger: 'change'
+        }]
+      },
       img: '',
       dialogVisible: false,
       phoneNumber: '',
-      imgCode: '',
-      phoneCode: '',
       valiId: '',
       codeText: '获取验证码',
       sendable: true,
@@ -76,45 +125,37 @@ export default {
       })
     },
     getCode() {
-      if (this.phoneNumber === '') {
-        this.$message({
-          showClose: true,
-          message: '请输入手机号',
-          type: 'warning'
-        })
-        return
-      }
-      if (!/^[1][3,4,5,7,8,9][0-9]{9}$/.test(this.phoneNumber)) {
-        this.$message({
-          showClose: true,
-          message: '格式不正确，请重新输入',
-          type: 'warning'
-        })
-        return
-      }
-      if (this.sendable) {
-        this.loadingCode = true
-        this.$post('/service/business/login/account/verificationCode', {
-          phone: this.phoneNumber,
-          remark: 1,
-          valiCode: this.imgCode,
-          valiId: this.valiId
-        }).then(res => {
-          this.loadingCode = false
-          if (res.error.result === 1) {
-            this.stop()
-            this.$message({
-              message: res.error.message,
-              type: 'success'
-            })
-          }
-          if (res.error.result === 0) {
-            this.getImgCode()
-          }
-        }).catch(() => {
-          this.loadingCode = false
-        })
-      }
+      this.$refs.form.validateField('phone', valid => {
+        if (!valid) {
+          this.$refs.form.validateField('valiCode', valid => {
+            if (!valid) {
+              if (this.sendable) {
+                this.loadingCode = true
+                this.$post('/service/business/login/account/verificationCode', {
+                  phone: this.form.phone,
+                  remark: 1, // 1：注册时发送  2：注册成功发送  0：认证时发送
+                  valiCode: this.form.valiCode,
+                  valiId: this.valiId
+                }).then(res => {
+                  this.loadingCode = false
+                  if (res.error.result === 1) {
+                    this.stop()
+                    this.$message({
+                      message: res.error.message,
+                      type: 'success'
+                    })
+                  }
+                  if (res.error.result === 0) {
+                    this.getImgCode()
+                  }
+                }).catch(() => {
+                  this.loadingCode = false
+                })
+              }
+            }
+          })
+        }
+      })
     },
     stop() {
       this.sendable = false
@@ -135,20 +176,25 @@ export default {
     onSubmit() {
       this.loading = true
       this.$post('/service/business/login/account/userRegister', {
-        aae005: this.phoneNumber,
-        phoneCode: this.phoneCode,
-        remark: 2
+        aae005: this.form.phone,
+        phoneCode: this.form.phoneCode,
+        remark: 2 // 单位1，用户2
       }).then(res => {
         this.loading = false
         if (res.error.result === 1) {
-          this.$message({
-            message: res.error.message,
-            type: 'success'
+          this.$alert(`${res.error.message}`, '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.login()
+            }
           })
         }
       }).catch(() => {
         this.loading = false
       })
+    },
+    login() {
+      event.$emit('login')
     }
   },
   created() {
@@ -157,14 +203,13 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
   @import "../../../../common/style/variables";
   .centerBox {
     width: 100%;
     height: 450px;
-    padding: 50px 70px 40px;
-    text-align: center;
+    padding: 50px 70px 40px 70px;
+    @include clearFixed;
   }
   /*找工作*/
   .top{
@@ -191,29 +236,8 @@ export default {
     }
   }
   .leftBox{
-    float:left;
-    width:65%;
-    text-align: center;
-    border-right:1px dotted #ccc;
-    div{
-      padding: 20px 0 20px 10px;
-      width:90%;
-      border-bottom: 1px solid #e9e9e9;
-      text-align: left;
-      .input{
-        border:none;
-        outline:none;
-        vertical-align: middle;
-      }
-      .get-code{
-        vertical-align: middle;
-        color:$--color-primary;
-        font-size:14px;
-        display: inline-block;
-        float: right;
-        padding: 0 0;
-      }
-    }
+    width: 50%;
+    float: left;
   }
   .rightBox{
     width:35%;
@@ -222,11 +246,13 @@ export default {
   }
   .agreed{
     font-size:14px;
-    margin-left:-20px;
     margin-top: 15px;
     a{
       color:$--color-primary;
     }
+  }
+  .text-center{
+    text-align: center;
   }
   .rightBox{
     float:right;
@@ -244,8 +270,35 @@ export default {
     margin-top:30px;
   }
   .imgCode{
-    img{
-      float: right;
+    width: 90px;
+    vertical-align: middle;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+  .get-code{
+    float: right;
+    margin-right: 10px;
+  }
+  .middleBox{
+    float: left;
+    height: 310px;
+    margin: 0 44px;
+    border-left: 1px solid #ebebeb;
+    position: relative;
+    &:after{
+      height: 22px;
+      width: 22px;
+      content: 'or';
+      display: block;
+      position: absolute;
+      left: -11px;
+      top: 50%;
+      background: #fff;
+      z-index: 5;
+      color: #999;
+      font-size: 14px;
+      text-align: center;
     }
   }
 </style>
