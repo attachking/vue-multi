@@ -31,14 +31,15 @@
       <div class="goLogin">
         <p>
           已有账号，请
-          <a href="">登录</a>
+          <a href="javascript:;" @click="login">登录</a>
         </p>
       </div>
     </div>
   </div>
 </template>
-
 <script>
+import event from '../../../../common/js/event'
+
 export default {
   data() {
     return {
@@ -46,11 +47,12 @@ export default {
     }
   },
   methods: {
-    getCode() {}
+    login() {
+      event.$emit('login')
+    }
   }
 }
 </script>
-
 <style lang="scss" scoped>
   @import "../../../../common/style/variables";
   .center{
@@ -107,6 +109,7 @@ export default {
     text-align: center;
     p {
       color: #777777;
+      font-size: 14px;
       a {
         color: $--color-primary;
       }

@@ -21,7 +21,9 @@
         <div class="xf-footer-qrcode">
           <img src="../../../static/assets/qrcode/weibo.png">
         </div>
-        <p>官方微博</p>
+        <p>
+          <a href="https://weibo.com/u/6535737664" target="_blank">官方微博</a>
+        </p>
       </div>
     </div>
   </div>
@@ -73,6 +75,12 @@ export default {
         p{
           margin: 10px 0 0 0;
           text-align: center;
+          a{
+            color: #fff;
+            &:hover{
+              color: $--color-primary;
+            }
+          }
         }
       }
     }

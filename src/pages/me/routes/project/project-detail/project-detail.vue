@@ -1,11 +1,14 @@
 <template>
   <div class="project-detail">
     <el-form label-width="100px" class="demo-table-expand">
+      <el-form-item label="立项单位">
+        <span>{{info.aab004 || '--'}}</span>
+      </el-form-item>
       <el-form-item label="项目名称">
         <span>{{info.projectName || '--'}}</span>
       </el-form-item>
       <el-form-item label="项目类别">
-        <span>{{info.projectCategory || '--'}}</span>
+        <span>{{info.projectCategoryName || '--'}}</span>
       </el-form-item>
       <el-form-item label="项目介绍">
         <span>{{info.projectIntroduction || '--'}}</span>
@@ -17,13 +20,13 @@
         <span>{{info.fundSourceName || '--'}}</span>
       </el-form-item>
       <el-form-item label="合作方式">
-        <span>{{info.projectWorktype || '--'}}</span>
+        <span>{{info.projectWorktypeName || '--'}}</span>
       </el-form-item>
       <el-form-item label="待遇">
-        <span>{{info.projectTreatment || '--'}}</span>
+        <span>{{info.projectTreatmentName || '--'}}</span>
       </el-form-item>
-      <el-form-item label="立项单位">
-        <span>{{info.projectApprovalunit || '--'}}</span>
+      <el-form-item label="参与单位">
+        <span class="no-wrap">{{info.projectJoinUnit || '--'}}</span>
       </el-form-item>
       <el-form-item label="工作地点">
         <span>{{info.projectWorkaddress || '--'}}</span>
@@ -39,6 +42,9 @@
       </el-form-item>
       <el-form-item label="邮箱">
         <span>{{info.projectEmail || '--'}}</span>
+      </el-form-item>
+      <el-form-item label="备注">
+        <span>{{info.remark || '--'}}</span>
       </el-form-item>
     </el-form>
   </div>

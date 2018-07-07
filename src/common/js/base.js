@@ -30,7 +30,7 @@ export default {
           }
           const shade = $('<div class="preview-shade"></div>')
           const imgBox = $('<div class="preview-img"></div>')
-          const rotate = $('<span class="xffont xf-shuaxin preview-rotate"></span>')
+          const rotate = $('<span class="el-icon-refresh preview-rotate"></span>')
           const image = $(`<img src="${el.dataset.url}">`)
           imgBox.append(image).append(rotate)
           $('body').append(shade).append(imgBox)
@@ -52,7 +52,7 @@ export default {
             } else {
               window.event.cancelBubble = true
             }
-            currentRotate += 90
+            currentRotate -= 90
             image.css('transform', `rotate(${currentRotate}deg)`)
           })
         }, false)

@@ -24,6 +24,14 @@
             <p class="tit">单位介绍</p>
             <div class="corp-info">{{corpInfo.acb206 || '--'}}</div>
           </div>
+          <div class="left-middle">
+            <p class="tit">单位风采</p>
+            <el-carousel :interval="8000" type="card" height="200px" class="slider">
+              <el-carousel-item v-for="val in corpPic" :key="val.caoa01">
+                <img :src="val.caoa02" :title="val.caoa03" v-img="val.caoa02">
+              </el-carousel-item>
+            </el-carousel>
+          </div>
           <div class="left-bottom">
             <p class="position-tit">
               <span>该单位招聘岗位</span>
@@ -214,7 +222,7 @@ export default {
     },
     getCorpList() {
       this.$post('/service/business/corp/corps/getHotCorpList.xf', {
-        rowsNum: 6,
+        rowsNum: 8,
         currentPage: 1
       }).then(res => {
         this.corpList = res.result
@@ -352,7 +360,7 @@ export default {
   }
 }
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   @import "../../common/style/variables";
   .module{
     width: 100%;
@@ -374,7 +382,7 @@ export default {
       .left-top{
         height: 160px;
         @include clearFixed;
-        padding: 20px 30px;
+        padding: 20px 10px 20px 30px;
         background: #fff;
         border-radius: 5px;
         .logo{
@@ -400,7 +408,7 @@ export default {
         }
         .collect{
           width: 35px;
-          float: left;
+          float: right;
           .xffont{
             font-size: 22px;
             &:hover{
@@ -610,5 +618,10 @@ export default {
   .tit{
     color: $--color-primary;
     font-size: 18px;
+  }
+  .slider{
+    img{
+      width: 100%;
+    }
   }
 </style>

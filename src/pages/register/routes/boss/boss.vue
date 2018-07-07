@@ -7,7 +7,7 @@
             <p>招人</p> | <span>互联网人才都在这里</span>
           </div>
           <div class="topRight">
-            <router-link to="/boss">我要找工作&gt;</router-link>
+            <router-link to="/user">我要找工作&gt;</router-link>
           </div>
         </div>
         <div class="leftBox">
@@ -199,7 +199,7 @@ export default {
   },
   created() {
     this.getImgCode()
-    renderTitle('个人注册')
+    renderTitle('单位注册')
   }
 }
 </script>
@@ -207,7 +207,6 @@ export default {
   @import "../../../../common/style/variables";
   .centerBox {
     width: 100%;
-    height: 450px;
     padding: 50px 70px 40px 70px;
     @include clearFixed;
   }

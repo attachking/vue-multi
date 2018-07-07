@@ -14,7 +14,7 @@
         width="150"
         label="项目类别">
         <template slot-scope="scope">
-          <span class="ellipsis" :title="scope.row.projectCategory">{{scope.row.projectCategory || '--'}}</span>
+          <span class="ellipsis" :title="scope.row.projectCategoryName">{{scope.row.projectCategoryName || '--'}}</span>
         </template>
       </el-table-column>
       <el-table-column

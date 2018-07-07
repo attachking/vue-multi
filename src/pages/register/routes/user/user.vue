@@ -207,7 +207,6 @@ export default {
   @import "../../../../common/style/variables";
   .centerBox {
     width: 100%;
-    height: 450px;
     padding: 50px 70px 40px 70px;
     @include clearFixed;
   }

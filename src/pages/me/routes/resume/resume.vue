@@ -183,15 +183,15 @@
         </el-form>
         <!--求职意向表单-->
         <el-form ref="formIntention" :model="form2" :rules="rules2" class="form" label-width="100px" key="formIntention" v-if="formIntention">
-          <el-form-item prop="bca112" label="意向岗位" style="width: 100%;">
+          <el-form-item prop="bca111" label="意向岗位" style="width: 100%;">
             <xf-cascader v-model="form2.bca111" :text.sync="form2.bca112" placeholder="请选择意向岗位" :options="dictionaries.CRAFT_AS"></xf-cascader>
-            <!--<xf-cascader v-model="form2.bca112" placeholder="第二意向岗位" change-on-select :options="dictionaries.CRAFT_AS"></xf-cascader>
-            <xf-cascader v-model="form2.bca112" placeholder="第三意向岗位" change-on-select :options="dictionaries.CRAFT_AS"></xf-cascader>-->
+            <xf-cascader v-model="form2.bcaa11" :text.sync="form2.bcaa12" placeholder="第二意向岗位" :options="dictionaries.CRAFT_AS"></xf-cascader>
+            <xf-cascader v-model="form2.bcab11" :text.sync="form2.bcab12" placeholder="第三意向岗位" :options="dictionaries.CRAFT_AS"></xf-cascader>
           </el-form-item>
-          <el-form-item prop="bcb202" label="工作地点" style="width: 100%;">
-            <xf-cascader v-model="form2.acb202" :fulltext.sync="form2.bcb202" placeholder="请选择意向工作地点" change-on-select :options="dictionaries.TAB_CITY"></xf-cascader>
-            <!--<xf-cascader v-model="form2.bcb202" placeholder="第二意向工作地点" change-on-select :options="dictionaries.TAB_CITY"></xf-cascader>
-            <xf-cascader v-model="form2.bcb202" placeholder="第三意向工作地点" change-on-select :options="dictionaries.TAB_CITY"></xf-cascader>-->
+          <el-form-item prop="acb202" label="工作地点" style="width: 100%;">
+            <xf-cascader v-model="form2.acb202" :fulltext.sync="form2.bcb202" placeholder="请选择意向工作地点" :options="dictionaries.TAB_CITY2"></xf-cascader>
+            <xf-cascader v-model="form2.acb203" :fulltext.sync="form2.bcb203" placeholder="第二意向工作地点" :options="dictionaries.TAB_CITY2"></xf-cascader>
+            <xf-cascader v-model="form2.acb204" :fulltext.sync="form2.bcb204" placeholder="第三意向工作地点" :options="dictionaries.TAB_CITY2"></xf-cascader>
           </el-form-item>
           <el-form-item prop="acc034" label="期望薪资">
             <el-select v-model="form2.acc034" placeholder="请选择期望薪资">
@@ -674,8 +674,16 @@ export default {
       form2: {
         bca111: '', // 期望岗位code
         bca112: '', // 期望岗位
+        bcaa11: '', // 第二期望岗位
+        bcaa12: '', // 第二期望岗位
+        bcab11: '', // 第三期望岗位
+        bcab12: '', // 第三期望岗位
         bcb202: '', // 期望地点
         acb202: '', // 期望地点code
+        bcb203: '', // 第二期望地点
+        acb203: '', // 第二期望地点code
+        bcb204: '', // 第三期望地点
+        acb204: '', // 第三期望地点code
         acc034: '', // 期望月薪
         aac013: '' // 求职性质
       },

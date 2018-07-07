@@ -5,7 +5,9 @@
         <el-input v-model="form.projectName" placeholder="请输入项目名称"></el-input>
       </el-form-item>
       <el-form-item label="项目类别" prop="projectCategory">
-        <el-input v-model="form.projectCategory" placeholder="请输入项目类别"></el-input>
+        <el-select v-model="form.projectCategory" placeholder="请选择项目类别" clearable>
+          <el-option :label="val.name" :value="val.code" :key="val.code" v-for="val in dictionaries.TAB_PROJECT_TYPE"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="项目介绍" prop="projectIntroduction">
         <el-input type="textarea" :rows="5" v-model="form.projectIntroduction" placeholder="请输入项目介绍"></el-input>
@@ -19,13 +21,20 @@
         </el-select>
       </el-form-item>
       <el-form-item label="合作方式" prop="projectWorktype">
-        <el-input v-model="form.projectWorktype" placeholder="请输入合作方式"></el-input>
+        <el-select v-model="form.projectWorktype" placeholder="请选择合作方式" clearable>
+          <el-option :label="val.name" :value="val.code" :key="val.code" v-for="val in dictionaries.TAB_COOPERATION_TYPE"></el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="待遇" prop="projectTreatment">
-        <el-input v-model="form.projectTreatment" placeholder="请输入待遇"></el-input>
+        <el-select v-model="form.projectTreatment" placeholder="请选择待遇" clearable>
+          <el-option :label="val.name" :value="val.code" :key="val.code" v-for="val in dictionaries.TAB_SALARY"></el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="立项单位" prop="projectApprovalunit">
-        <el-input v-model="form.projectApprovalunit" placeholder="请输入立项单位"></el-input>
+      <!--<el-form-item label="立项单位" prop="aab004">
+        <el-input v-model="form.aab004" placeholder="请输入立项单位"></el-input>
+      </el-form-item>-->
+      <el-form-item label="参与单位" prop="projectJoinUnit">
+        <el-input type="textarea" :rows="5" v-model="form.projectJoinUnit" placeholder="请输入参与单位"></el-input>
       </el-form-item>
       <el-form-item label="工作地点" prop="projectWorkCode">
         <xf-cascader
@@ -47,6 +56,9 @@
       </el-form-item>
       <el-form-item label="邮箱" prop="projectEmail">
         <el-input v-model="form.projectEmail" placeholder="请输入邮箱"></el-input>
+      </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input v-model="form.remark" placeholder="请输入备注"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit" :loading="loading">提交</el-button>
@@ -78,13 +90,15 @@ export default {
         fundSourceName: '', // 经费来源
         projectWorktype: '', // 合作方式
         projectTreatment: '', // 待遇
-        projectApprovalunit: '', // 立项单位
+        aab004: '', // 立项单位
+        projectJoinUnit: '', // 参与单位
         projectWorkCode: '', // 工作地点code
         projectWorkaddress: '', // 工作地点
         projectContacts: '', // 联系人
         projectPhone: '', // 手机
         projectTel: '', // 固定电话
-        projectEmail: '' // 邮箱
+        projectEmail: '', // 邮箱
+        remark: '' // 备注信息
       },
       rules: {
         projectName: [{
@@ -150,11 +164,18 @@ export default {
           message: '最多100个字符',
           trigger: 'change'
         }],
-        projectApprovalunit: [{
+        /*
+        aab004: [{
           required: true,
           message: '请输入立项单位',
           trigger: 'change'
         }, {
+          max: 100,
+          message: '最多100个字符',
+          trigger: 'change'
+        }],
+        */
+        projectJoinUnit: [{
           max: 100,
           message: '最多100个字符',
           trigger: 'change'
@@ -213,6 +234,11 @@ export default {
               callback(new Error('请输入正确的邮箱'))
             }
           },
+          trigger: 'change'
+        }],
+        remark: [{
+          max: 500,
+          message: '最多500个字符',
           trigger: 'change'
         }]
       }

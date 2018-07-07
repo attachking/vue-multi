@@ -46,9 +46,9 @@
         </el-form-item>
         <el-form-item class="less-margin">
           <el-checkbox label="自动登录" v-model="autoLogin"></el-checkbox>
-          <span class="forget">
+          <a class="forget" href="reset.html">
             <el-button type="text">忘记密码?</el-button>
-          </span>
+          </a>
         </el-form-item>
         <el-form-item class="less-margin">
           <el-button type="primary" @click="onSubmit" class="submit" :loading="loading">登录</el-button>
@@ -179,7 +179,12 @@ export default {
             }
             if (res.error.result === 1) { // 登陆成功
               this.saveStorage(res)
-              location.reload()
+              // 如果是在注册页、重置密码页进行登录的，则自动跳转至个人中心
+              if (/(register\.html)|(reset\.html)/.test(location.href)) {
+                location.href = 'me.html'
+              } else {
+                location.reload()
+              }
             }
           }).catch(() => {
             this.loading = false

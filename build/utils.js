@@ -111,12 +111,22 @@ var PAGE_PATH = path.resolve(__dirname, '../src/pages')
 // 用于做相应的merge处理
 var merge = require('webpack-merge')
 
+// 项目较大时同时编译所有页面响应速度比较慢，设置process.env.PAGE可指定编译单个页面
+function getEntry() {
+  const SINGLE_PAGE = process.env.PAGE
+  const production = process.env.NODE_ENV === 'production'
+  if (!production && SINGLE_PAGE) {
+    return SINGLE_PAGE
+  } else {
+    return '*'
+  }
+}
 
 //多入口配置
 // 通过glob模块读取pages文件夹下的所有对应文件夹下的js后缀文件，如果该文件存在
 // 那么就作为入口处理
 exports.entries = function () {
-  var entryFiles = glob.sync(PAGE_PATH + '/*/*.js')
+  var entryFiles = glob.sync(PAGE_PATH + `/*/${getEntry()}.js`)
   var map = {}
   entryFiles.forEach((filePath) => {
     var filename = filePath.substring(filePath.lastIndexOf('\/') + 1, filePath.lastIndexOf('.'))
@@ -128,7 +138,7 @@ exports.entries = function () {
 //多页面输出配置
 // 与上面的多页面入口配置相同，读取pages文件夹下的对应的html后缀文件，然后放入数组中
 exports.htmlPlugin = function () {
-  let entryHtml = glob.sync(PAGE_PATH + '/*/*.html')
+  let entryHtml = glob.sync(PAGE_PATH + `/*/${getEntry()}.html`)
   let arr = []
   entryHtml.forEach((filePath) => {
     let filename = filePath.substring(filePath.lastIndexOf('\/') + 1, filePath.lastIndexOf('.'))

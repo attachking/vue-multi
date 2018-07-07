@@ -3,6 +3,7 @@ const state = {
   dictionaries: { // 字典表
     TAB_AFFIL: [], // 政治面貌
     TAB_CITY: [], // 城市
+    TAB_CITY2: [], // 只有两级
     TAB_WELFARE: [], // 福利
     TAB_WORKYEARS: [], // 工作年限
     CRAFT_AS: [], // 职位
@@ -20,7 +21,9 @@ const state = {
     tab_university_city: [], // 省份字典表（用于选择院校）
     tab_major_type: [], // 专业类别
     TAB_SECURITY: [], // 密保问题
-    TAB_FUND_SOURCE: [] // 经费来源(项目申报)
+    TAB_FUND_SOURCE: [], // 经费来源(项目申报)
+    TAB_PROJECT_TYPE: [], // 项目类别
+    TAB_COOPERATION_TYPE: [] // 合作方式
   },
   phoneOpen: false,
   corpInfo: {}, // 企业信息,

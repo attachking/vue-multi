@@ -20,57 +20,9 @@
             </p>
           </div>
           <div class="list">
-            <router-link to="/corp" class="item">
-              <i class="xffont font-yidiandiantubiao04"></i>
-              <span>企业中心</span>
-            </router-link>
-            <router-link to="/user" class="item">
-              <i class="xffont font-yidiandiantubiao04"></i>
-              <span>个人中心</span>
-            </router-link>
-            <router-link to="/message" class="item">
-              <i class="xffont font-xiaoxi"></i>
-              <span>我的消息</span>
-            </router-link>
-            <router-link to="/account" class="item">
-              <i class="xffont font-shezhi"></i>
-              <span>账号管理</span>
-            </router-link>
-            <router-link to="/jobSearch" class="item">
-              <i class="xffont font-search"></i>
-              <span>岗位搜索</span>
-            </router-link>
-            <router-link to="/talent" class="item">
-              <i class="xffont font-search"></i>
-              <span>人才搜索</span>
-            </router-link>
-            <router-link to="/resume" class="item">
-              <i class="xffont font-jianli-copy"></i>
-              <span>我的简历</span>
-            </router-link>
-            <router-link to="/corpResume" class="item">
-              <i class="xffont font-jianli-copy"></i>
-              <span>简历管理</span>
-            </router-link>
-            <router-link to="/job" class="item">
-              <i class="xffont font-iconzhiwei"></i>
-              <span>职位管理</span>
-            </router-link>
-            <router-link to="/jobFair" class="item">
-              <i class="xffont font-ai-user"></i>
-              <span>招聘会</span>
-            </router-link>
-            <router-link to="/userCollection" class="item">
-              <i class="xffont font-shoucang"></i>
-              <span>我的收藏</span>
-            </router-link>
-            <router-link to="/records" class="item">
-              <i class="xffont font-jilu"></i>
-              <span>求职管理</span>
-            </router-link>
-            <router-link to="/project" class="item">
-              <i class="xffont font-icon-project"></i>
-              <span>项目申报</span>
+            <router-link :to="val.menuUrl" class="item" v-for="val in menu" :key="val.menuUrl">
+              <i class="xffont" :class="val.menuIcon"></i>
+              <span>{{val.menuName}}</span>
             </router-link>
           </div>
         </div>
@@ -101,7 +53,8 @@ export default {
       name: '',
       isPerfect: '', // 是否完善基本信息 0否1是
       ccmu17: this.$userInfo.ccmu17,
-      loginStatus: !!this.$userInfo.status
+      loginStatus: !!this.$userInfo.status,
+      menu: []
     }
   },
   computed: {
@@ -161,10 +114,19 @@ export default {
         this.isPerfect = Number(o.personInfo.isPerfect)
         this.name = o.personInfo.aac003
       })
+    },
+    getMenu() {
+      this.$post('/service/sys/config/menu/getMenuList.xf', {
+        menuType: this.$userInfo.ccmu17
+      }).then(res => {
+        this.menu = res.result
+      })
     }
   },
   created() {
+    if (this.$userInfo.status !== 1) return
     this.getPhoneOpen()
+    this.getMenu()
     this.getDictionaries()
     this.getCorpInfo()
     this.getPersonalInfo()
