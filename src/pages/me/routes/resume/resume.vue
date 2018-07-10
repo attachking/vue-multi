@@ -3,66 +3,75 @@
     <div class="card-tit">
       <span class="item active"><i class="xffont font-jianli-copy"></i>基本信息</span>
       <el-button title="修改" icon="el-icon-edit" size="mini" circle @click="toggle('formBase')"></el-button>
+      <a :href="'personalInfo.html?aac001=' + info1.aac001" target="_blank">
+        <el-button type="primary" size="mini" round style="float: right; margin: 3px 60px 0 0">预览简历</el-button>
+      </a>
+      <el-switch
+        style="float: right; margin: 8px 60px 0 0"
+        v-model="secret"
+        active-text="保密"
+        inactive-text="公开">
+      </el-switch>
     </div>
     <div class="container">
       <transition name="el-fade-in" mode="out-in" @enter="handleEnter('formBase')">
         <el-form label-position="left" inline class="demo-table-expand" v-if="!formBase" key="baseList">
           <el-form-item label="姓名">
-            <span>{{info1.aac003 || '--'}}</span>
+            <span class="fix-width">{{info1.aac003 || '--'}}</span>
           </el-form-item>
           <el-form-item label="身份证号">
-            <span>{{info1.aac002 || '--'}}</span>
+            <span class="fix-width">{{info1.aac002 || '--'}}</span>
           </el-form-item>
           <el-form-item label="出生日期">
-            <span>{{info1.aac006 || '--'}}</span>
+            <span class="fix-width">{{info1.aac006 || '--'}}</span>
           </el-form-item>
           <el-form-item label="年龄">
-            <span>{{info1.age || '--'}}</span>
+            <span class="fix-width">{{info1.age || '--'}}</span>
           </el-form-item>
           <el-form-item label="性别">
-            <span>{{info1.aac004name || '--'}}</span>
+            <span class="fix-width">{{info1.aac004name || '--'}}</span>
           </el-form-item>
           <el-form-item label="民族">
-            <span>{{info1.aac005name || '--'}}</span>
+            <span class="fix-width">{{info1.aac005name || '--'}}</span>
           </el-form-item>
           <el-form-item label="联系电话">
-            <span>{{info1.aae005 || '--'}}</span>
+            <span class="fix-width">{{info1.aae005 || '--'}}</span>
           </el-form-item>
-          <el-form-item label="身高">
-            <span>{{info1.aac034 ? info1.aac034 + 'cm' : '--'}}</span>
+          <!--<el-form-item label="身高">
+            <span class="fix-width">{{info1.aac034 ? info1.aac034 + 'cm' : '&#45;&#45;'}}</span>
           </el-form-item>
           <el-form-item label="体重">
-            <span>{{info1.aac035 ? info1.aac035 + 'kg' : '--'}}</span>
-          </el-form-item>
+            <span class="fix-width">{{info1.aac035 ? info1.aac035 + 'kg' : '&#45;&#45;'}}</span>
+          </el-form-item>-->
           <el-form-item label="学历">
-            <span>{{info1.aac011 || '--'}}</span>
+            <span class="fix-width">{{info1.aac011 || '--'}}</span>
           </el-form-item>
           <el-form-item label="政治面貌">
-            <span>{{info1.aac024name || '--'}}</span>
+            <span class="fix-width">{{info1.aac024name || '--'}}</span>
           </el-form-item>
           <el-form-item label="婚姻状况">
-            <span>{{info1.aac017name || '--'}}</span>
+            <span class="fix-width">{{info1.aac017name || '--'}}</span>
           </el-form-item>
           <el-form-item label="毕业院校">
-            <span>{{info1.aac180name || '--'}}</span>
+            <span class="fix-width">{{info1.aac180name || '--'}}</span>
           </el-form-item>
           <el-form-item label="专业类别">
-            <span>--</span>
+            <span class="fix-width">--</span>
           </el-form-item>
           <el-form-item label="专业名称">
-            <span>{{info1.aac040 || '--'}}</span>
+            <span class="fix-width">{{info1.aac040 || '--'}}</span>
           </el-form-item>
           <el-form-item label="毕业时间">
-            <span>{{info1.aac181 || '--'}}</span>
+            <span class="fix-width">{{info1.aac181 || '--'}}</span>
           </el-form-item>
           <el-form-item label="户口所在地">
-            <span>{{info1.aab305name || '--'}}</span>
-          </el-form-item>
-          <el-form-item label="现居住地">
-            <span>{{info1.aab301 || '--'}}</span>
+            <span class="fix-width">{{info1.aab305name || '--'}}</span>
           </el-form-item>
           <el-form-item label="邮箱">
-            <span>{{info1.aae015 || '--'}}</span>
+            <span class="fix-width">{{info1.aae015 || '--'}}</span>
+          </el-form-item>
+          <el-form-item label="现居住地">
+            <span class="fix-width">{{info1.aab301 || '--'}}</span>
           </el-form-item>
         </el-form>
         <el-form ref="formBase" :model="form1" inline :rules="rules1" class="base-form" label-width="100px" key="formBase" v-if="formBase">
@@ -97,7 +106,7 @@
           <el-form-item prop="aae005" label="联系电话">
             <el-input v-model.trim="form1.aae005" placeholder="请输入联系电话" clearable></el-input>
           </el-form-item>
-          <el-form-item prop="aac034" label="身高">
+          <!--<el-form-item prop="aac034" label="身高">
             <el-input v-model.trim="form1.aac034" placeholder="请输入身高" clearable>
               <template slot="append">cm</template>
             </el-input>
@@ -106,7 +115,7 @@
             <el-input v-model.trim="form1.aac035" placeholder="请输入体重" clearable>
               <template slot="append">kg</template>
             </el-input>
-          </el-form-item>
+          </el-form-item>-->
           <el-form-item prop="aac011" label="学历">
             <el-select v-model="form1.aac011" placeholder="请选择学历" clearable>
               <el-option v-for="item in dictionaries.TAB_EDUCATION" :key="item.code" :label="item.name" :value="item.code"></el-option>
@@ -279,10 +288,10 @@
             <el-form-item label="公司名称">
               <span>{{val.aac045 || '--'}}</span>
             </el-form-item>
-            <el-form-item label="职位名称">
+            <el-form-item label="岗位名称">
               <span>{{val.aac0b3 || '--'}}</span>
             </el-form-item>
-            <el-form-item label="职位描述">
+            <el-form-item label="岗位描述">
               <span class="max-text">{{val.aac0b4 || '--'}}</span>
             </el-form-item>
             <div class="item-edit">
@@ -314,11 +323,11 @@
           <el-form-item prop="aac045" label="单位名称">
             <el-input v-model.trim="form4.aac045" placeholder="请输入单位名称" clearable></el-input>
           </el-form-item>
-          <el-form-item prop="aac0b3" label="职位名称">
-            <el-input v-model.trim="form4.aac0b3" placeholder="请输入职位名称" clearable></el-input>
+          <el-form-item prop="aac0b3" label="岗位名称">
+            <el-input v-model.trim="form4.aac0b3" placeholder="请输入岗位名称" clearable></el-input>
           </el-form-item>
-          <el-form-item prop="aac0b4" label="职位描述">
-            <el-input type="textarea" :rows="4" v-model.trim="form4.aac0b4" placeholder="请输入职位名称" clearable></el-input>
+          <el-form-item prop="aac0b4" label="岗位描述">
+            <el-input type="textarea" :rows="4" v-model.trim="form4.aac0b4" placeholder="请输入岗位名称" clearable></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit4" :loading="loading4" size="mini">确定</el-button>
@@ -532,13 +541,15 @@
 <script>
 import {mapGetters} from 'vuex'
 import {echo} from '../../../../common/js/utils'
+import event from '../../../../common/js/event'
 import XfCascader from '../../../../components/xf-cascader/xf-cascader.vue'
 
 export default {
   components: {XfCascader},
   computed: {
     ...mapGetters([
-      'dictionaries'
+      'dictionaries',
+      'personalInfo'
     ])
   },
   data() {
@@ -812,7 +823,7 @@ export default {
         }],
         aac0b3: [{
           required: true,
-          message: '请输入职位名称',
+          message: '请输入岗位名称',
           trigger: 'change'
         }, {
           max: 25,
@@ -821,7 +832,7 @@ export default {
         }],
         aac0b4: [{
           required: true,
-          message: '请输入职位描述',
+          message: '请输入岗位描述',
           trigger: 'change'
         }, {
           max: 25,
@@ -973,7 +984,8 @@ export default {
       schoolList: [],
       remoteLoading: false,
       addressList: [],
-      addressLoading: false
+      addressLoading: false,
+      secret: false
     }
   },
   methods: {
@@ -1037,10 +1049,10 @@ export default {
           this.loading2 = true
           this.$post('/service/business/search/stuApplyJob/jobIntentionSave.xf', form).then(res => {
             this.loading2 = false
-            if (res.result.result === 1) {
+            if (res.error.result === 1) {
               this.formIntention = false
               this.$message({
-                message: res.result.message,
+                message: res.error.message,
                 type: 'success'
               })
               this.getBase()
@@ -1436,12 +1448,35 @@ export default {
       }).catch(() => {
         this.addressLoading = false
       })
+    },
+    handleSecret(acb208) {
+      if (!this.info2.acc200) return
+      this.$post('/service/business/search/stuApplyJob/resumeOpenSecrecy.xf', {
+        acc200: this.info2.acc200,
+        acb208 // 1保密，0公开
+      }).then(res => {
+        if (res.result && res.result.result === 1) {
+          this.$message({
+            message: res.result.message,
+            type: 'success'
+          })
+          setTimeout(() => {
+            event.$emit('refresh')
+          }, 500)
+        }
+      })
     }
   },
   created() {
     this.getBase()
     this.getCert()
     this.getTrainList()
+    this.secret = this.personalInfo.resumeState === 1
+    this.$watch('secret', newVal => {
+      setTimeout(() => {
+        this.handleSecret(newVal ? 1 : 0)
+      }, 20)
+    })
   }
 }
 </script>
@@ -1586,6 +1621,11 @@ export default {
   .max-text{
     display: inline-block;
     max-width: 700px;
+    word-break: break-all;
+  }
+  .fix-width{
+    display: inline-block;
+    max-width: 330px;
     word-break: break-all;
   }
 </style>

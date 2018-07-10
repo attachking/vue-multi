@@ -29,19 +29,19 @@
         align="center"
         label="姓名">
         <template slot-scope="scope">
-          <a target="_blank" href="">{{scope.row.aac003 || '--'}}</a>
+          <a target="_blank" :href="'personalInfo.html?aac001=' + scope.row.aac001">{{scope.row.aac003 || '--'}}</a>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
-        label="意向职位">
+        label="意向岗位">
         <template slot-scope="scope">
           <span>{{scope.row.aca112 || '--'}}</span>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
-        label="邀请职位">
+        label="邀请岗位">
         <template slot-scope="scope">
           <span>{{scope.row.cca113 || '--'}}</span>
         </template>

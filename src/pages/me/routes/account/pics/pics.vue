@@ -110,6 +110,8 @@ export default {
     getList() {
       this.$post('/service/business/authen/authen/corpPic', {
         ccmu01: this.$userInfo.ccmu01,
+        aac001: this.$userInfo.aac001,
+        aab001: this.$userInfo.aab001,
         flag: this.$userInfo.ccmu17 === 1 ? 2 : 1
       }).then(res => {
         res.result.reverse()

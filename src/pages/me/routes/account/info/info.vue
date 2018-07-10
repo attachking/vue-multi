@@ -3,11 +3,11 @@
   <div class="corp-info" ref="info">
     <transition name="el-fade-in" mode="out-in" @enter="handleEnter">
       <el-form ref="form" v-if="formShow" :rules="rules" :model="form" label-width="100px" class="form" key="form">
-        <el-form-item label="企业名" prop="aab004">
-          <el-input v-model="form.aab004" placeholder="请输入企业名"></el-input>
+        <el-form-item label="单位名" prop="aab004">
+          <el-input v-model="form.aab004" placeholder="请输入单位名"></el-input>
         </el-form-item>
-        <el-form-item label="企业性质" prop="aab019">
-          <el-select v-model="form.aab019" placeholder="请选择企业性质">
+        <el-form-item label="单位性质" prop="aab019">
+          <el-select v-model="form.aab019" placeholder="请选择单位性质">
             <el-option v-for="item in dictionaries.TAB_UNITNATURE" :key="item.code" :label="item.name" :value="item.code"></el-option>
           </el-select>
         </el-form-item>
@@ -17,7 +17,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="人员规模" prop="aab056">
-          <el-select v-model="form.aab056" placeholder="请选择企业性质">
+          <el-select v-model="form.aab056" placeholder="请选择人员规模">
             <el-option v-for="item in dictionaries.TAB_PSCALE" :key="item.code" :label="item.name" :value="item.code"></el-option>
           </el-select>
         </el-form-item>
@@ -54,10 +54,10 @@
       </el-form>
       <el-form label-width="100px" v-if="!formShow" class="infoForm" key="list">
         <el-button type="primary" icon="el-icon-edit" size="mini" class="edit-btn" @click="formShow = true">编辑</el-button>
-        <el-form-item label="企业名">
+        <el-form-item label="单位名">
           <span>{{info.aab004 || '--'}}</span>
         </el-form-item>
-        <el-form-item label="企业性质">
+        <el-form-item label="单位性质">
           <span>{{info.aab019name || '--'}}</span>
         </el-form-item>
         <el-form-item label="行业类型">
@@ -141,7 +141,7 @@ export default {
       rules: {
         aab004: [{
           required: true,
-          message: '请输入企业名称',
+          message: '请输入单位名称',
           trigger: 'change'
         }, {
           max: 20,
@@ -150,7 +150,7 @@ export default {
         }],
         aab019: [{
           required: true,
-          message: '请选择企业性质',
+          message: '请选择单位性质',
           trigger: 'change'
         }],
         ccpr10: [{

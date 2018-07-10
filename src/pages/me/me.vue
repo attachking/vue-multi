@@ -10,7 +10,10 @@
                 <img :src="ccmu17 === 1 ? personalInfo.ccmu15 : corpInfo.ccmu15">
               </a>
             </div>
-            <p class="name" v-if="isPerfect && loginStatus">{{name}}</p>
+            <p class="name" v-if="isPerfect && loginStatus">
+              <span>{{name}}</span>
+              <i class="xffont font-anquanshezhi" :class="Number(authenInfo.authenState) === 2 ? 'authened' : 'unAuthen'" :title="Number(authenInfo.authenState) === 2 ? '认证已通过' : '企业未认证'"></i>
+            </p>
             <p class="tip" v-if="!isPerfect && loginStatus">
               点击
               <router-link :to="ccmu17 === 1 ? '/resume' : '/account/info'">
@@ -60,7 +63,8 @@ export default {
   computed: {
     ...mapGetters([
       'corpInfo',
-      'personalInfo'
+      'personalInfo',
+      'authenInfo'
     ])
   },
   methods: {
@@ -165,7 +169,6 @@ export default {
       .head{
         width: 112px;
         height: 112px;
-        padding: 5px;
         border-radius: 50%;
         overflow: hidden;
         margin: 0 auto;
@@ -186,6 +189,16 @@ export default {
       .name{
         color: $--color-primary;
         padding: 5px 5px;
+        i{
+          vertical-align: top;
+          font-size: 14px;
+        }
+        .unAuthen{
+          color: #666;
+        }
+        .authened{
+          color: $--color-primary;
+        }
       }
       .other{
         color: #666;

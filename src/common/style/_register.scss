@@ -8,7 +8,9 @@
   .el-form-item{
     margin-bottom: 0;
     padding: 10px 0;
-    border-bottom: 1px solid #ebebeb;
+    &:not(:last-child){
+      border-bottom: 1px solid #ebebeb;
+    }
   }
   .el-input{
     input{

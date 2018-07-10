@@ -4,14 +4,21 @@
     <div class="title">
       <div class="left">
         <p :title="info.acb331">{{info.acb331 || '--'}}</p>
-        <p><i class="xffont font-zuobiao"></i>&nbsp;{{info.acd200name || '--'}}</p>
+        <p class="address">
+          <span>
+            <i class="xffont font-zuobiao"></i>&nbsp;{{info.acd200name || '--'}}
+          </span>
+          <span>
+            摊位号：<span class="red">{{$route.query.ace201}}</span>
+          </span>
+        </p>
         <p><i class="xffont font-msnui-time"></i>&nbsp;{{$dateFormat(info.acb333, 'yyyy-MM-dd hh:mm')}} 至 {{$dateFormat(info.acb334, 'yyyy-MM-dd hh:mm')}}</p>
       </div>
       <div class="right">
         <router-link :to="'/jobFair/fairJob?acb330=' + acb330">
-          <el-button type="success" plain>发布职位</el-button>
+          <el-button type="success" plain>发布岗位</el-button>
         </router-link>
-        <el-button type="primary" plain @click="history">提取有效职位</el-button>
+        <el-button type="primary" plain @click="history">提取有效岗位</el-button>
       </div>
     </div>
     <el-table
@@ -19,7 +26,7 @@
       stripe
       style="width: 100%">
       <el-table-column
-        label="职位名称"
+        label="岗位名称"
         width="150">
         <template slot-scope="scope">
           <span>{{scope.row.cca113 || '--'}}</span>
@@ -55,7 +62,7 @@
       </el-table-column>
       <el-table-column
         align="center"
-        label="职位状态">
+        label="岗位状态">
         <template slot-scope="scope">
           <span>{{Number(scope.row.acb208) === 3 ? '审核不通过' : Number(scope.row.acb208) === 4 ? '待审核' : Number(scope.row.acb208) === 2 ? '已过期' : '审核通过'}}</span>
         </template>
@@ -67,9 +74,9 @@
           <span>
             <i class="el-icon-view edit" title="预览" @click="preview(scope.row)"></i>
             <i class="el-icon-edit edit" title="修改" @click="edit(scope.row)"></i>
-            <i class="xffont font-weibiaoti519 edit" title="暂停职位" v-if="Number(scope.row.acb208) === 0" @click="pause(scope.row, 0)"></i>
-            <i class="el-icon-caret-right edit" title="启用职位" v-if="Number(scope.row.acb208) === 1" @click="pause(scope.row, 1)"></i>
-            <i class="el-icon-refresh edit" title="刷新职位" v-if="Number(scope.row.acb208) === 0" @click="refresh(scope.row)"></i>
+            <i class="xffont font-weibiaoti519 edit" title="暂停岗位" v-if="Number(scope.row.acb208) === 0" @click="pause(scope.row, 0)"></i>
+            <i class="el-icon-caret-right edit" title="启用岗位" v-if="Number(scope.row.acb208) === 1" @click="pause(scope.row, 1)"></i>
+            <i class="el-icon-refresh edit" title="刷新岗位" v-if="Number(scope.row.acb208) === 0" @click="refresh(scope.row)"></i>
           </span>
         </template>
       </el-table-column>
@@ -78,7 +85,7 @@
       <pagination :bean="pageBean" @current-change="handlePage"></pagination>
     </div>
     <el-dialog
-      title="提取有效职位"
+      title="提取有效岗位"
       :visible.sync="dialogVisible"
       :before-close="handleClose"
       width="800px">
@@ -88,7 +95,7 @@
         v-loading="historyLoading"
         style="width: 100%">
         <el-table-column
-          label="职位名称"
+          label="岗位名称"
           width="150">
           <template slot-scope="scope">
             <span>{{ scope.row.cca113 }}</span>
@@ -136,7 +143,7 @@
           align="center"
           label="操作">
           <template slot-scope="scope">
-            <el-tooltip effect="dark" :content="Number(scope.row.is_Check) === 0 ? '提取职位' : '已提取，点击取消'" placement="left">
+            <el-tooltip effect="dark" :content="Number(scope.row.is_Check) === 0 ? '提取岗位' : '已提取，点击取消'" placement="left">
               <el-button :type="Number(scope.row.is_Check) === 0 ? '' : 'danger'" :icon="Number(scope.row.is_Check) === 0 ? 'el-icon-download' : 'el-icon-delete'" size="mini" @click="pull(scope.row)" circle></el-button>
             </el-tooltip>
           </template>
@@ -160,6 +167,7 @@ export default {
       searchData: {
         acb330: this.$route.query.acb330,
         aab001: this.$userInfo.aab001,
+        cczy01: this.$route.query.cczy01,
         rowsNum: 10,
         currentPage: 1
       },
@@ -173,6 +181,7 @@ export default {
       historyPageBean: {},
       historySearch: {
         aab001: this.$userInfo.aab001,
+        cczy01: this.$route.query.cczy01,
         rowsNum: 6,
         currentPage: 1,
         remark: 1,
@@ -282,6 +291,7 @@ export default {
       this.$post('/service/business/corp/newPosition/applyForJobFair.xf', {
         aab001: this.$userInfo.aab001,
         acb330: this.$route.query.acb330,
+        cczy01: this.$route.query.cczy01,
         acb210Str: `${Number(val.is_Check) === 0 ? 1 : 0},${val.acb210}`
       }).then(res => {
         this.historyLoading = false
@@ -328,6 +338,14 @@ export default {
           color: #666;
         }
       }
+      .address{
+        & > span{
+          display: inline-block;
+          &:first-child{
+            padding-right: 20px;
+          }
+        }
+      }
     }
     .right{
       width: 250px;
@@ -344,5 +362,8 @@ export default {
       cursor: pointer;
       color: $--color-primary;
     }
+  }
+  .red{
+    color: red;
   }
 </style>

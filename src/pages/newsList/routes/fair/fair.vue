@@ -13,7 +13,7 @@
         <p>
           <i class="xffont font-msnui-time"></i><span>{{$dateFormat(val.acb333, 'yyyy-MM-dd hh:mm')}} 至 {{$dateFormat(val.acb334, 'yyyy-MM-dd hh:mm')}}</span>
           <span class="count">参会单位：<span class="red">{{val.corpNum}}</span> 家</span>
-          <span class="count">发布职位数：<span class="red">{{val.jobNum}}</span></span>
+          <span class="count">发布岗位数：<span class="red">{{val.jobNum}}</span></span>
         </p>
         <a :href="'fair.html?acb330=' + val.acb330" target="_blank">
           <el-button class="btn" type="primary" plain>查看详情</el-button>

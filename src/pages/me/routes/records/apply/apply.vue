@@ -6,14 +6,14 @@
       v-loading="loading"
       style="width: 100%">
       <el-table-column
-        label="职位名称"
+        label="岗位名称"
         width="150">
         <template slot-scope="scope">
           <a target="_blank" :href="'job.html?acb210=' + scope.row.acb210">{{scope.row.cca113 || '--'}}</a>
         </template>
       </el-table-column>
       <el-table-column
-        label="企业名称">
+        label="单位名称">
         <template slot-scope="scope">
           <a target="_blank" :href="'corp.html?aab001=' + scope.row.aab001">{{scope.row.aab004 || '--'}}</a>
         </template>

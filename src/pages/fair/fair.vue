@@ -21,20 +21,20 @@
           </div>
           <div>
             <p><span class="num">4</span>个</p>
-            <p>招聘职位</p>
+            <p>招聘岗位</p>
           </div>
         </div>
       </div>
       <div class="bottom">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane name="first">
-            <span slot="label" class="tab"><i class="xffont font-admin"></i>&nbsp;企业预定</span>
+            <span slot="label" class="tab"><i class="xffont font-admin"></i>&nbsp;单位预定</span>
             <div class="tab-con">
               <xf-talls :acb330="acb330" :status="detail.status"></xf-talls>
             </div>
           </el-tab-pane>
           <el-tab-pane name="second">
-            <span slot="label" class="tab"><i class="xffont font-gongsixinxi"></i>&nbsp;参会企业</span>
+            <span slot="label" class="tab"><i class="xffont font-gongsixinxi"></i>&nbsp;参会单位</span>
             <div class="tab-con">
               <fair-corps :fair="acb330"></fair-corps>
             </div>

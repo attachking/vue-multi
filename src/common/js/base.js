@@ -1,22 +1,11 @@
-import {post, dateFormat, STORAGE_TYPE, storage} from './utils'
+import {post, dateFormat, getUserInfo} from './utils'
 import $ from 'jquery'
 
 export default {
   install: (Vue) => {
     Vue.prototype.$post = post
     Vue.prototype.$dateFormat = dateFormat
-    Vue.prototype.$userInfo = (() => { // 用户登录信息
-      return {
-        ccmu17: Number(storage.get(STORAGE_TYPE.ccmu17)),
-        aac001: storage.get(STORAGE_TYPE.aac001),
-        aab001: storage.get(STORAGE_TYPE.aab001),
-        ccmu01: storage.get(STORAGE_TYPE.ccmu01),
-        logo: storage.get(STORAGE_TYPE.logo),
-        status: Number(storage.get(STORAGE_TYPE.status)),
-        token: storage.get(STORAGE_TYPE.token),
-        name: storage.get(STORAGE_TYPE.name)
-      }
-    })()
+    Vue.prototype.$userInfo = getUserInfo()
     // 自定义指令
     Vue.directive('img', {
       bind(el, binding, vnode) {

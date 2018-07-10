@@ -2,7 +2,7 @@
   <div class="received">
     <el-form inline class="demo-form-inline">
       <el-form-item>
-        <el-select v-model="form.bca111" placeholder="请选择职位分类" clearable>
+        <el-select v-model="form.bca111" placeholder="请选择岗位分类" clearable>
           <el-option :label="val.bca112" :value="val.bca111" :key="val.bca111" v-for="val in positionList"></el-option>
         </el-select>
       </el-form-item>
@@ -36,12 +36,12 @@
         align="center"
         label="姓名">
         <template slot-scope="scope">
-          <a target="_blank" href="">{{scope.row.aac003 || '--'}}</a>
+          <a target="_blank" :href="'personalInfo.html?aac001=' + scope.row.aac001">{{scope.row.aac003 || '--'}}</a>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
-        label="应聘职位">
+        label="应聘岗位">
         <template slot-scope="scope">
           <span>{{scope.row.cca113 || '--'}}</span>
         </template>
@@ -93,7 +93,7 @@
         align="center"
         label="状态">
         <template slot-scope="scope">
-          <span :class="scope.row.ccpj05 === 0 ? 'green' : scope.row.ccpj05 === 2 ? 'warn' : 'red'">{{scope.row.ccpj05Name || '--'}}</span>
+          <span :class="scope.row.ccpj03 === 0 ? '' : scope.row.ccpj05 === 0 ? 'green' : scope.row.ccpj05 === 2 ? 'warn' : 'red'">{{scope.row.ccpj03 === 0 ? scope.row.ccpj03Name : (scope.row.ccpj05Name || '--')}}</span>
         </template>
       </el-table-column>
       <el-table-column

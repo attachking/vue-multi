@@ -51,7 +51,7 @@
               </el-select>
             </el-form-item>
             <el-form-item>
-              <el-select v-model="aab056" clearable collapse-tags multiple placeholder="福利待遇">
+              <el-select v-model="acc214" clearable collapse-tags multiple placeholder="福利待遇">
                 <el-option
                   v-for="item in dictionaries.TAB_WELFARE"
                   :key="item.code"
@@ -131,7 +131,7 @@
         <div class="item" v-for="val in list" :key="val.acb210">
           <div class="top">
             <p>
-              <a :href="'job.html?acb210=' + val.acb210" target="_blank">{{val.cca113}}</a>
+              <a :href="'job.html?acb210=' + val.acb210" target="_blank">{{val.cca113}} <i class="xffont font-tubiao- red" title="重点推荐" v-if="Number(val.acb21z) === 3"></i></a>
               <span class="salary">{{val.acc034Name}}</span>
             </p>
             <p>{{val.aac012 || '--'}} / {{val.acb21r || 0}}人 / {{val.acb21iName || '--'}}</p>
@@ -139,13 +139,11 @@
           </div>
           <div class="bottom">
             <div class="img">
-              <img src="../corp/corp.png" alt="">
+              <img :src="val.ccmu15" alt="">
             </div>
             <div class="corp-info">
               <a :href="'corp.html?aab001=' + val.aab001" target="_blank">{{val.aab004}}</a>
               <p>
-                <!--行业-->
-                <span>{{val.ccpr10name || '--'}}</span>&nbsp;/&nbsp;
                 <span>{{val.bcb202 || '--'}}</span>
               </p>
             </div>
@@ -208,7 +206,7 @@ export default {
       showMore: false,
       bca111: [],
       acb202: [],
-      aab056: [],
+      acc214: [],
       pageBean: {},
       list: [],
       loading: false
@@ -238,7 +236,7 @@ export default {
       this.getList()
     },
     getList() {
-      this.form.aab056 = Array.prototype.slice.call(this.aab056).sort((a, b) => a - b).join(',')
+      this.form.acc214 = Array.prototype.slice.call(this.acc214).sort((a, b) => a - b).join(',')
       const form = Object.assign({
         aac001: this.$userInfo.aac001,
         ccmu17: this.$userInfo.ccmu17
@@ -289,7 +287,7 @@ export default {
     onReset() {
       this.bca111 = []
       this.acb202 = []
-      this.aab056 = []
+      this.acc214 = []
       echo(this.form)
     },
     collectSingle(val) {
@@ -346,7 +344,7 @@ export default {
       }
       if (this.$userInfo.ccmu17 === 2) {
         this.$message({
-          message: '只有求职者可以收藏职位',
+          message: '只有求职者可以收藏岗位',
           type: 'warning'
         })
         return
@@ -378,7 +376,7 @@ export default {
             message: res.error.message,
             type: 'success'
           })
-          this.getJob()
+          this.getList()
         }
       }).catch(() => {
         this.loading = false
@@ -524,5 +522,10 @@ export default {
   .page{
     margin: 10px 0;
     text-align: center;
+  }
+  .red{
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
   }
 </style>

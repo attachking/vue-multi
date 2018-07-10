@@ -1,12 +1,12 @@
 <template>
   <div class="job-edit">
     <el-form ref="form" :rules="rules" :model="form" label-width="100px" class="form" v-loading="formLoading">
-      <el-button type="primary" class="show-history" @click="showHistory" v-if="!isEdit">提取历史职位</el-button>
-      <el-form-item label="职位类别" prop="bca111">
-        <xf-cascader placeholder="请选择职位类别" :options="dictionaries.CRAFT_AS" :show-all-levels="false" v-model="form.bca111" :text.sync="form.bca112"></xf-cascader>
+      <el-button type="primary" class="show-history" @click="showHistory" v-if="!isEdit">提取历史岗位</el-button>
+      <el-form-item label="岗位类别" prop="bca111">
+        <xf-cascader placeholder="请选择岗位类别" :options="dictionaries.CRAFT_AS" :show-all-levels="false" v-model="form.bca111" :text.sync="form.bca112"></xf-cascader>
       </el-form-item>
-      <el-form-item label="职位名称" prop="cca113">
-        <el-input v-model.trim="form.cca113" placeholder="请输入职位名称" clearable></el-input>
+      <el-form-item label="岗位名称" prop="cca113">
+        <el-input v-model.trim="form.cca113" placeholder="请输入岗位名称" clearable></el-input>
       </el-form-item>
       <el-form-item label="招聘人数" prop="acb21r">
         <el-input v-model.trim="form.acb21r" placeholder="请输入招聘人数" clearable></el-input>
@@ -65,8 +65,8 @@
       <el-form-item label="优惠政策" prop="favouredPolicy">
         <el-input v-model="form.favouredPolicy" placeholder="请输入优惠政策" clearable></el-input>
       </el-form-item>
-      <el-form-item label="职位描述" prop="cca114">
-        <el-input type="textarea" :rows="6" v-model="form.cca114" placeholder="请输入职位描述"></el-input>
+      <el-form-item label="岗位描述" prop="cca114">
+        <el-input type="textarea" :rows="6" v-model="form.cca114" placeholder="请输入岗位描述"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit" :loading="loading">提交</el-button>
@@ -74,7 +74,7 @@
       </el-form-item>
     </el-form>
     <el-dialog
-      title="提取历史职位"
+      title="提取历史岗位"
       :visible.sync="dialogVisible"
       width="800px">
       <el-table
@@ -83,7 +83,7 @@
         v-loading="historyLoading"
         style="width: 100%">
         <el-table-column
-          label="职位名称"
+          label="岗位名称"
           width="150">
           <template slot-scope="scope">
             <span>{{ scope.row.cca113 }}</span>
@@ -294,6 +294,9 @@ export default {
           }
           if (this.$route.query.acb330) {
             form.acb330 = this.$route.query.acb330
+          }
+          if (this.$route.query.cczy01) {
+            form.acb330 = this.$route.query.cczy01
           }
           this.$post('/service/business/corp/corpPositon/savePositionInfo', form).then(res => {
             this.loading = false

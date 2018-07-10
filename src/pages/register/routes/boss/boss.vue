@@ -4,7 +4,7 @@
       <div class="centerBox">
         <div class="top">
           <div class="topLeft">
-            <p>招人</p> | <span>互联网人才都在这里</span>
+            <p>找人才</p> | <span>大量人才简历一览无余</span>
           </div>
           <div class="topRight">
             <router-link to="/user">我要找工作&gt;</router-link>
@@ -23,13 +23,13 @@
               <el-input v-model="form.phoneCode" placeholder="请输入验证码"></el-input>
               <el-button type="text" @click="getCode" class="get-code" :loading="loadingCode">{{codeText}}</el-button>
             </el-form-item>
+            <el-form-item class="agreed">
+              <el-checkbox v-model="checked">同意<a href="javascript:;" @click="dialogVisible = true">用户使用协议</a></el-checkbox>
+            </el-form-item>
           </el-form>
           <div class="text-center">
-            <el-button type="primary" @click="onSubmit" class="submit" :loading="loading">注册</el-button>
+            <el-button type="primary" @click="onSubmit" class="submit" :loading="loading" :disabled="!checked">注册</el-button>
           </div>
-          <p class="agreed text-center">注册代表你已同意
-            <a href="javascript:;" @click="dialogVisible = true">[用户使用协议]</a>
-          </p>
         </div>
         <div class="middleBox"></div>
         <div class="rightBox">
@@ -58,6 +58,7 @@ import event from '../../../../common/js/event'
 export default {
   data() {
     return {
+      checked: false,
       form: {
         phone: '',
         valiCode: '',
@@ -245,7 +246,7 @@ export default {
   }
   .agreed{
     font-size:14px;
-    margin-top: 15px;
+    padding: 10px 10px;
     a{
       color:$--color-primary;
     }
@@ -266,7 +267,6 @@ export default {
   }
   .submit{
     width: 90%;
-    margin-top:30px;
   }
   .imgCode{
     width: 90px;

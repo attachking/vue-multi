@@ -1,7 +1,7 @@
 <template>
   <div class="user-collection">
     <div class="card-tit">
-      <router-link class="item" to="/userCollection/collectedJob"><i class="xffont font-iconzhiwei"></i>收藏的职位</router-link>
+      <router-link class="item" to="/userCollection/collectedJob"><i class="xffont font-iconzhiwei"></i>收藏的岗位</router-link>
       <router-link class="item" to="/userCollection/collectedCorp"><i class="xffont font-gongsixinxi"></i>收藏的单位</router-link>
     </div>
     <transition name="el-fade-in" mode="out-in">

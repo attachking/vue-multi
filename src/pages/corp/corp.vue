@@ -389,6 +389,9 @@ export default {
           height: 120px;
           width: 120px;
           float: left;
+          img{
+            width: 100%;
+          }
         }
         .corp-tit{
           width: 666px;

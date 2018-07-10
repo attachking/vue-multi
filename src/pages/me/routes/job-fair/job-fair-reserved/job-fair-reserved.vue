@@ -12,8 +12,8 @@
       <span class="tip">已预定 <span class="red">{{count}}</span> 场招聘会</span>
     </div>
     <div class="list" v-loading="loading">
-      <div class="item" v-for="val in list" :key="val.acb330">
-        <a href="" target="_blank" :title="val.acb331">{{val.acb331 || '--'}}</a>
+      <div class="item" v-for="(val, key) in list" :key="key">
+        <a :href="'fair.html?acb330=' + val.acb330" target="_blank" :title="val.acb331">{{val.acb331 || '--'}}</a>
         <p>
           <i class="xffont font-zuobiao"></i>&nbsp;{{val.acd200name || '--'}}&nbsp;&nbsp;&nbsp;
           摊位号：<span class="red">{{val.ace201 || '--'}}</span>&nbsp;&nbsp;&nbsp;
@@ -21,8 +21,8 @@
         </p>
         <p><i class="xffont font-msnui-time"></i>&nbsp;{{$dateFormat(val.acb333, 'yyyy-MM-dd hh:mm')}} -- {{$dateFormat(val.acb334, 'yyyy-MM-dd hh:mm')}}</p>
         <div class="btn">
-          <el-button type="primary" plain @click="publish(val)">发布职位</el-button>
-          <el-button type="primary" plain @click="history(val)">已发布职位</el-button>
+          <el-button type="primary" plain @click="publish(val)">发布岗位</el-button>
+          <el-button type="primary" plain @click="history(val)">已发布岗位</el-button>
         </div>
       </div>
     </div>
@@ -80,7 +80,9 @@ export default {
       this.$router.push({
         name: 'positionList',
         query: {
-          acb330: val.acb330
+          acb330: val.acb330,
+          cczy01: val.cczy01,
+          ace201: val.ace201
         }
       })
     },
@@ -88,7 +90,8 @@ export default {
       this.$router.push({
         name: 'fairJob',
         query: {
-          acb330: val.acb330
+          acb330: val.acb330,
+          cczy01: val.cczy01
         }
       })
     }

@@ -4,26 +4,25 @@
       <div class="centerBox">
         <div class="findJob">
           <h3>找工作</h3>
-          <p>专注互联网职业机会</p>
+          <p>海量工作岗位一网全知</p>
           <div class="jobImg">
             <img src="./job.png" alt="">
           </div>
           <div class="jobInput">
-            <!--相当于a标签-->
             <router-link to="/user">
               <input type="button" value="去找工作">
             </router-link>
           </div>
         </div>
         <div class="findWorker">
-          <h3>招人</h3>
-          <p>互联网人都在这里</p>
+          <h3>找人才</h3>
+          <p>大量人才简历一览无余</p>
           <div class="workerImg">
             <img src="./worker.png" alt="">
           </div>
           <div class="workerInput">
             <router-link to="/boss">
-              <input type="button" value="去发布职位">
+              <input type="button" value="去发布岗位">
             </router-link>
           </div>
         </div>

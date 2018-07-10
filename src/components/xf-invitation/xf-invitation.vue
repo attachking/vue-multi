@@ -6,8 +6,8 @@
     :before-close="handleClose"
     width="480px">
     <el-form ref="form" class="form" :rules="rules" :model="form" label-width="100px" v-loading="formLoading">
-      <el-form-item label="选择职位" prop="acb210">
-        <el-select v-model="form.acb210" placeholder="请选择职位" filterable>
+      <el-form-item label="选择岗位" prop="acb210">
+        <el-select v-model="form.acb210" placeholder="请选择岗位" filterable>
           <el-option v-for="item in list" :key="item.acb210" :label="item.cca113" :value="item.acb210"></el-option>
         </el-select>
       </el-form-item>
@@ -130,16 +130,19 @@ export default {
           this.loading = true
           this.$post('/service/business/search/stuApplyJob/corpInterviewInvitation.xf', form).then(res => {
             this.loading = false
-            if (res.result && res.result.result === 1) {
+            if (res.error && res.error.result === 1) {
               this.$message({
-                message: res.result.message,
+                message: res.error.message,
                 type: 'success'
               })
               this.dialogVisible = false
               event.$emit(SUCCESS_EVENT)
+            } else {
+              event.$emit(ERROR_EVENT)
             }
           }).catch(() => {
             this.loading = false
+            event.$emit(ERROR_EVENT)
           })
         }
       })

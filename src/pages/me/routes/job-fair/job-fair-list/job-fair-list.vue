@@ -8,12 +8,12 @@
     </div>
     <div class="list" v-loading="loading">
       <div class="item" v-for="val in list" :key="val.acb330">
-        <a href="" target="_blank" :title="val.acb331">{{val.acb331 || '--'}}</a>
+        <a :href="'fair.html?acb330=' + val.acb330" target="_blank" :title="val.acb331">{{val.acb331 || '--'}}</a>
         <p><i class="xffont font-zuobiao"></i>&nbsp;{{val.acd200name || '--'}}</p>
         <p><i class="xffont font-msnui-time"></i>&nbsp;{{$dateFormat(val.acb333, 'yyyy-MM-dd hh:mm')}} -- {{$dateFormat(val.acb334, 'yyyy-MM-dd hh:mm')}}</p>
         <div class="btn">
-          <el-button type="primary" plain @click="corps(val)">参会企业</el-button>
-          <el-button type="primary" plain @click="book(val)">企业预定</el-button>
+          <el-button type="primary" plain @click="corps(val)">参会单位</el-button>
+          <el-button type="primary" plain @click="book(val)">单位预定</el-button>
         </div>
       </div>
     </div>

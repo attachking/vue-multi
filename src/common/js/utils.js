@@ -214,3 +214,16 @@ export const reg = {
     return /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(str)
   }
 }
+
+export function getUserInfo() { // 获取用户信息
+  return {
+    ccmu17: Number(storage.get(STORAGE_TYPE.ccmu17)),
+    aac001: storage.get(STORAGE_TYPE.aac001),
+    aab001: storage.get(STORAGE_TYPE.aab001),
+    ccmu01: storage.get(STORAGE_TYPE.ccmu01),
+    logo: storage.get(STORAGE_TYPE.logo),
+    status: Number(storage.get(STORAGE_TYPE.status)),
+    token: storage.get(STORAGE_TYPE.token),
+    name: storage.get(STORAGE_TYPE.name)
+  }
+}

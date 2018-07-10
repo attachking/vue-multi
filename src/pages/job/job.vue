@@ -25,7 +25,7 @@
               <span v-for="(val, key) in welfares" :key="key">{{val}}</span>
             </div>
             <div class="desc">
-              <div class="tit">职位描述</div>
+              <div class="tit">岗位描述</div>
               <div class="con">{{detail.cca114}}</div>
             </div>
             <div class="desc">

@@ -1,14 +1,14 @@
 <template>
   <div class="job-list">
     <el-form inline class="demo-form-inline">
-      <el-form-item label="职位审核状态">
+      <el-form-item label="岗位审核状态">
         <el-select v-model="form.abb773" placeholder="不限" clearable>
           <el-option label="未审核" value="0"></el-option>
           <el-option label="审核通过" value="1"></el-option>
           <el-option label="审核未通过" value="2"></el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="职位发布状态">
+      <el-form-item label="岗位发布状态">
         <el-select v-model="form.acb208" placeholder="不限" clearable>
           <el-option label="使用中" value="0"></el-option>
           <el-option label="暂停" value="1"></el-option>
@@ -23,7 +23,7 @@
       stripe
       style="width: 100%">
       <el-table-column
-        label="职位名称"
+        label="岗位名称"
         width="150">
         <template slot-scope="scope">
           <span>{{ scope.row.cca113 }}</span>
@@ -48,7 +48,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="职位状态">
+        label="岗位状态">
         <template slot-scope="scope">
           <span>{{scope.row.ecb208}}</span>
         </template>
@@ -66,9 +66,9 @@
           <span>
             <i class="el-icon-view edit" title="预览" @click="preview(scope.row)"></i>
             <i class="el-icon-edit edit" title="修改" @click="edit(scope.row)"></i>
-            <i class="xffont font-weibiaoti519 edit" title="暂停职位" v-if="Number(scope.row.acb208) === 0" @click="pause(scope.row, 0)"></i>
-            <i class="el-icon-caret-right edit" title="启用职位" v-if="Number(scope.row.acb208) === 1" @click="pause(scope.row, 1)"></i>
-            <i class="el-icon-refresh edit" title="刷新职位" v-if="Number(scope.row.acb208) === 0" @click="refresh(scope.row)"></i>
+            <i class="xffont font-weibiaoti519 edit" title="暂停岗位" v-if="Number(scope.row.acb208) === 0" @click="pause(scope.row, 0)"></i>
+            <i class="el-icon-caret-right edit" title="启用岗位" v-if="Number(scope.row.acb208) === 1" @click="pause(scope.row, 1)"></i>
+            <i class="el-icon-refresh edit" title="刷新岗位" v-if="Number(scope.row.acb208) === 0" @click="refresh(scope.row)"></i>
           </span>
         </template>
       </el-table-column>

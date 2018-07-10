@@ -18,7 +18,7 @@
       <a class="item" href="#/records/apply">
         <div class="text">
           <p class="big">{{personalInfo.positionCounts || 0}}</p>
-          <p>我申请的职位</p>
+          <p>我申请的岗位</p>
         </div>
       </a>
       <a class="item" href="#/records/invitation">
@@ -54,7 +54,9 @@
     <div class="job-fair">
       <div class="card-tit">
         <span class="item active"><i class="xffont font-zhiwei"></i>最新招聘会</span>
-        <el-button type="text" class="more">更多&gt;</el-button>
+        <a href="newsList.html#/fair?channel_code=ZPH" target="_blank">
+          <el-button type="text" class="more">更多&gt;</el-button>
+        </a>
       </div>
       <div class="list">
         <div class="item" v-for="val in jobFairList" :key="val.acb330">
@@ -77,7 +79,7 @@
     </div>
     <div class="recommend">
       <div class="card-tit">
-        <span class="item" :class="currentTab === 1 ? 'active' : ''" @click="currentTab = 1"><i class="xffont font-iconzhiwei"></i>推荐职位</span>
+        <span class="item" :class="currentTab === 1 ? 'active' : ''" @click="currentTab = 1"><i class="xffont font-iconzhiwei"></i>推荐岗位</span>
         <span class="item" :class="currentTab === 2 ? 'active' : ''" @click="currentTab = 2"><i class="xffont font-gongsixinxi"></i>推荐单位</span>
         <el-button @click="change" type="text" class="more">换一批<i class="el-icon-refresh"></i></el-button>
       </div>

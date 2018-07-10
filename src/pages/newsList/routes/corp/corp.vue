@@ -70,17 +70,20 @@
       </transition>
     </div>
     <div class="list" ref="list" v-loading="loading">
-      <a class="item" v-for="val in list" :key="val.aab001" :href="'corp.html?aab001=' + val.aab001" target="_blank">
-        <div class="img">
-          <img :src="val.ccmu15">
-        </div>
-        <div class="info">
-          <p v-html="val.aab004"></p>
-          <p>{{val.ccpr10name || '--'}}</p>
-          <p>{{val.acb206 || '--'}}</p>
-        </div>
-        <div class="count">在招职位数：<span>{{val.cnt || 0}}</span></div>
-      </a>
+      <div>
+        <a class="item" v-for="val in list" :key="val.aab001" :href="'corp.html?aab001=' + val.aab001" target="_blank">
+          <div class="img">
+            <img :src="val.ccmu15">
+          </div>
+          <div class="info">
+            <p>{{val.aab004}}</p>
+            <p>{{val.ccpr10name || '--'}}</p>
+            <p v-html="val.acb206 || '--'"></p>
+          </div>
+          <div class="count">在招岗位数：<span>{{val.cnt || 0}}</span></div>
+          <i class="xffont font-tubiao- red" title="重点推荐" v-if="Number(val.ccpr26) === 1"></i>
+        </a>
+      </div>
     </div>
     <empty v-if="pageBean.totalCount === 0"></empty>
     <div class="page">
@@ -248,6 +251,7 @@ export default {
         margin-bottom: 15px;
         overflow: hidden;
         border: 1px solid #ebebeb;
+        position: relative;
         &:hover{
           background: #f3f3f3;
           border-color: $--color-primary;
@@ -293,6 +297,14 @@ export default {
           span{
             color: $--color-primary;
           }
+        }
+        .red{
+          color: red;
+          font-size: 18px;
+          font-weight: bold;
+          position: absolute;
+          top: 10px;
+          right: 10px;
         }
       }
     }

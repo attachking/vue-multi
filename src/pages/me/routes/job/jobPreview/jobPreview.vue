@@ -1,10 +1,10 @@
 <template>
   <div class="job-preview">
     <el-form ref="form" inline label-width="100px" class="demo-table-expand">
-      <el-form-item label="职位类别">
+      <el-form-item label="岗位类别">
         <span class="detail">{{form.bca112}}</span>
       </el-form-item>
-      <el-form-item label="职位名称">
+      <el-form-item label="岗位名称">
         <span class="detail">{{form.cca113}}</span>
       </el-form-item>
       <el-form-item label="招聘人数">
@@ -43,7 +43,7 @@
       <el-form-item label="优惠政策">
         <span class="detail">{{form.favouredPolicy}}</span>
       </el-form-item>
-      <el-form-item label="职位描述" style="width: 100%;">
+      <el-form-item label="岗位描述" style="width: 100%;">
         <p class="no-wrap">{{form.cca114}}</p>
       </el-form-item>
     </el-form>

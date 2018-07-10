@@ -20,7 +20,7 @@
               <img :src="userInfo.logo">
             </a>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="me.html">个人中心</el-dropdown-item>
+              <el-dropdown-item command="me.html">用户中心</el-dropdown-item>
               <el-dropdown-item command="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
@@ -68,8 +68,9 @@
 </template>
 <script>
 import md5 from 'blueimp-md5'
-import {storage, STORAGE_TYPE} from '../../common/js/utils'
+import {storage, STORAGE_TYPE, getUserInfo} from '../../common/js/utils'
 import event from '../../common/js/event'
+import $ from 'jquery'
 
 export default {
   name: 'xf-header',
@@ -213,6 +214,7 @@ export default {
       storage.set(STORAGE_TYPE.aab001, res.result.aab001)
       storage.set(STORAGE_TYPE.ccmu01, res.result.userid)
       storage.set(STORAGE_TYPE.logo, res.result.logo)
+      this.userInfo = getUserInfo()
     },
     validCode() {
       this.$post('/service/business/login/verifyCode/getVerifyCode').then(res => {
@@ -245,6 +247,24 @@ export default {
     event.$on('refresh', () => {
       this.refreshLogin()
     })
+    // 图片自适应大小函数，img需要有固定大小父容器，onload函数调用
+    window.handleBeauty = function(e) {
+      var $el = $(e.target)
+      var $parent = $el.parent()
+      var p = $parent.height() / $parent.width()
+      var m = $el.height() / $el.width()
+      if (p > m) {
+        $el.css({
+          height: '100%',
+          width: 'auto'
+        })
+      } else {
+        $el.css({
+          height: 'auto',
+          width: '100%'
+        })
+      }
+    }
   }
 }
 </script>

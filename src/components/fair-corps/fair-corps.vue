@@ -20,7 +20,7 @@
           trigger="click">
           <el-table :data="val.positionList">
             <el-table-column
-              label="职位名称">
+              label="岗位名称">
               <template slot-scope="scope">
                 <a class="ellipsis" target="_blank" :href="'job.html?acb210=' + scope.row.acb210" :title="scope.row.cca113">{{scope.row.cca113 || '--'}}</a>
               </template>
@@ -36,7 +36,7 @@
               align="center"
               label="学历要求">
               <template slot-scope="scope">
-                <span class="ellipsis" :title="scope.row.aac012">{{scope.row.aac012 || '--'}}</span>
+                <span class="ellipsis" :title="scope.row.aac011name">{{scope.row.aac011name || '--'}}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -50,13 +50,13 @@
               align="center"
               label="薪资">
               <template slot-scope="scope">
-                <span class="ellipsis red" :title="scope.row.acc034Name">{{scope.row.acc034Name || '--'}}</span>
+                <span class="ellipsis red" :title="scope.row.aac034name">{{scope.row.aac034name || '--'}}</span>
               </template>
             </el-table-column>
           </el-table>
           <div class="right" slot="reference">
             <p>{{val.jobNum || 0}}</p>
-            <p>发布职位</p>
+            <p>发布岗位</p>
           </div>
         </el-popover>
       </div>

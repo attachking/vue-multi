@@ -15,38 +15,38 @@
       </span>
     </div>
     <div class="menu">
-      <div class="item">
+      <a class="item" href="#/job">
         <div class="left-font">
           <i class="xffont font-zhiwei"></i>
           <p>已发布职位 <span class="theme">{{corpInfo.corpPositionCounts}}</span><br>剩余可发布 <span class="theme">{{corpInfo.allowPostionCounts}}</span></p>
         </div>
-      </div>
-      <div class="item">
+      </a>
+      <a class="item" href="#/corpResume">
         <div class="left-font">
           <i class="xffont font-jianli-copy"></i>
           <p>未查看简历 <span class="theme">{{corpInfo.corpNoResumeCounts}}</span><br>已收到简历 <span class="theme">{{corpInfo.corpResumeCounts}}</span></p>
         </div>
-      </div>
-      <div class="item">
+      </a>
+      <a class="item" href="#/jobFair">
         <div class="text">
           <p class="big">{{corpInfo.corpJobFairCounts}}</p>
           <p>已预订招聘会</p>
         </div>
-      </div>
+      </a>
       <a class="item" href="#/talent">
         <div class="text">
           <p class="big">{{corpInfo.ccpr28}}</p>
           <p>剩余下载简历数</p>
         </div>
       </a>
-      <div class="item">
+      <a class="item" href="#/message">
         <div class="img">
           <el-badge :value="corpInfo.corpNoticeCounts" :hidden="Number(corpInfo.corpNoticeCounts) === 0">
             <i class="xffont font-youjian"></i>
           </el-badge>
           <p>我的消息</p>
         </div>
-      </div>
+      </a>
     </div>
     <div class="banner">
       <img :src="ad" alt="">
@@ -54,29 +54,31 @@
     <div class="job-fair">
       <div class="card-tit">
         <span class="item active"><i class="xffont font-zhiwei"></i>最新招聘会</span>
-        <el-button type="text" class="more">更多&gt;</el-button>
+        <a href="#/jobFair">
+          <el-button type="text" class="more">更多&gt;</el-button>
+        </a>
       </div>
       <div class="list">
         <div class="item" v-for="val in jobFair" :key="val.acb330">
-          <a href="" :title="val.acb331">{{val.acb331 || '--'}}</a>
+          <a :href="'fair.html?acb330=' + val.acb330" target="_blank" :title="val.acb331">{{val.acb331 || '--'}}</a>
           <p>
             <i class="xffont font-zuobiao"></i><span>{{val.acd200name || '--'}}</span>
             <i class="xffont font-msnui-time"></i><span>{{$dateFormat(val.acb333, 'yyyy-MM-dd hh:mm')}} -- {{$dateFormat(val.acb334, 'yyyy-MM-dd hh:mm')}}</span>
           </p>
-          <el-button class="btn" type="primary" plain :disabled="Number(val.status) === 3">{{Number(val.status) === 3 ? '已结束' : '企业预定'}}</el-button>
+          <el-button class="btn" type="primary" plain :disabled="Number(val.status) === 3">{{Number(val.status) === 3 ? '已结束' : '单位预定'}}</el-button>
         </div>
       </div>
       <empty v-if="jobFairPageBean.totalCount === 0"></empty>
     </div>
     <div class="talent">
       <div class="card-tit">
-        <span class="item" :class="tab === 1 ? 'active' : ''" @click="tab = 1"><i class="xffont font-admin"></i>推荐人才</span>
+        <span class="item" :class="tab === 1 ? 'active' : ''" @click="tab = 1"><i class="xffont font-admin"></i>人才推荐</span>
         <span class="item" :class="tab === 2 ? 'active' : ''" @click="tab = 2"><i class="xffont font-xueshimao"></i>专业推荐</span>
         <el-button @click="change" type="text" class="more">换一批<i class="el-icon-refresh"></i></el-button>
       </div>
       <transition name="el-fade-in" mode="out-in">
         <div class="talent-list" v-if="tab === 1" key="recommend" v-loading="loading">
-          <div class="item" v-for="val in recommend" :key="val.aac001">
+          <a class="item" v-for="val in recommend" :key="val.aac001" target="_blank" :href="'personalInfo.html?aac001=' + val.aac001">
             <div class="img">
               <img :src="val.ccmu15" alt="">
             </div>
@@ -86,11 +88,11 @@
               <span>{{val.acb223name}}岁</span>
             </p>
             <p class="time">{{$dateFormat(val.ccpr05, 'yyyy-MM-dd')}}</p>
-          </div>
+          </a>
           <empty v-if="tab === 1 && recommendPageBean.totalCount === 0"></empty>
         </div>
         <div class="talent-list" v-if="tab === 2" key="major" v-loading="loading">
-          <div class="item" v-for="val in major" :key="val.aac001">
+          <a class="item" v-for="val in major" :key="val.aac001" target="_blank" :href="'personalInfo.html?aac001=' + val.aac001">
             <div class="img">
               <img :src="val.ccmu15" alt="">
             </div>
@@ -100,7 +102,7 @@
               <span>{{val.acb223name}}岁</span>
             </p>
             <p class="time">{{$dateFormat(val.ccpr05, 'yyyy-MM-dd')}}</p>
-          </div>
+          </a>
           <empty v-if="tab === 2 && majorPageBean.totalCount === 0"></empty>
         </div>
       </transition>

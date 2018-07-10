@@ -69,14 +69,14 @@
         </div>
         <div class="pos-info">
           <p>
-            <a href="" class="pos-name" target="_blank">{{val.aac003 || '--'}}</a>
+            <a :href="'personalInfo.html?aac001=' + val.aac001" class="pos-name" target="_blank">{{val.aac003 || '--'}}</a>
             <span class="corp-name">{{val.aac004name || '--'}} | {{val.acb223name || '--'}} | {{val.aac011name || '--'}}</span>
             <span class="salary">{{val.acc034name || '--'}}</span>
           </p>
           <p class="pos-detail">
               <span>
                 <span>求职意向：{{val.bca112 || '--'}}</span>&nbsp;|&nbsp;
-                <span>期待工作地点：{{val.bcb202 || '--'}} 人</span>&nbsp;|&nbsp;
+                <span>期待工作地点：{{val.bcb202 || '--'}}</span>&nbsp;|&nbsp;
                 <span>专业：{{val.bcc01g || '--'}}</span>
               </span>
             <span class="date">{{$dateFormat(val.ccpr05, 'yyyy-MM-dd')}}</span>
@@ -151,6 +151,7 @@ export default {
     },
     getList() {
       this.loading = true
+      this.searchData.aab001 = this.$userInfo.aab001
       this.$post('/service/business/search/stuApplyJob/seachPersonnel.xf', this.searchData).then(res => {
         this.loading = false
         this.list = res.result
@@ -170,10 +171,15 @@ export default {
       }
     },
     confirmInvite(val) {
+      if (Number(val.is_Resume) > 0) {
+        this.$message({
+          message: '已经邀请过该用户',
+          type: 'warning'
+        })
+        return
+      }
       this.$refs.invitation.show(val.aac001).then(() => {
         this.getList()
-      }).catch(() => {
-        console.log('close')
       })
     },
     handlePage(page) {
