@@ -22,7 +22,7 @@
           :data="uploadForm"
           :action="baseUrl + '/service/business/fm/pic/picInfo/uploadPicInfo'"
           :on-remove="handleRemove"
-          accept="image/*"
+          accept="image/jpg,image/jpeg,image/png"
           :on-success="onSuccess"
           :file-list="fileList"
           :limit="1">

@@ -13,9 +13,15 @@
       </div>
       <div class="xf-footer-right">
         <div class="xf-footer-qrcode">
-          <img src="../../../static/assets/qrcode/weixin.png">
+          <img src="../../../static/assets/qrcode/weixin.jpg">
         </div>
-        <p>官方微信号</p>
+        <p>微信订阅号</p>
+      </div>
+      <div class="xf-footer-right">
+        <div class="xf-footer-qrcode">
+          <img src="../../../static/assets/qrcode/weixin-service.jpg">
+        </div>
+        <p>微信公众号</p>
       </div>
       <div class="xf-footer-right">
         <div class="xf-footer-qrcode">
@@ -29,8 +35,32 @@
   </div>
 </template>
 <script>
+import $ from 'jquery'
+
 export default {
-  name: 'xf-footer'
+  name: 'xf-footer',
+  created() {
+    // 图片自适应大小函数，img需要有固定大小父容器，onload函数调用
+    window.handleBeauty = function(e) {
+      var $el = $(e.target)
+      var $parent = $el.parent()
+      var p = $parent.height() / $parent.width()
+      var m = $el.height() / $el.width()
+      if (p > m) {
+        $el.css({
+          height: '100%',
+          width: 'auto',
+          marginLeft: `-${($el.width() * $parent.height() / $el.height() - $parent.width()) / 2}px`
+        })
+      } else {
+        $el.css({
+          height: 'auto',
+          width: '100%',
+          marginTop: `-${($el.height() * $parent.width() / $el.width() - $parent.height()) / 2}px`
+        })
+      }
+    }
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -47,7 +77,7 @@ export default {
       font-size: 14px;
       @include clearFixed;
       .xf-footer-left{
-        width: 200px;
+        width: 180px;
         height: 145px;
         float: left;
         border-right: 1px solid #454547;
@@ -59,19 +89,19 @@ export default {
         }
       }
       .xf-footer-middle{
-        width: 715px;
+        width: 695px;
         float: left;
         border-right: 1px solid #454547;
-        padding: 0 0 0 60px;
+        padding: 0 0 0 30px;
         line-height: 30px;
         height: 145px;
         margin: 30px 0;
       }
       .xf-footer-right{
-        width: 138px;
+        width: 108px;
         height: 100%;
         float: left;
-        padding: 36px 0 0 15px;
+        padding: 36px 0 0 10px;
         p{
           margin: 10px 0 0 0;
           text-align: center;
@@ -85,11 +115,10 @@ export default {
       }
     }
     .xf-footer-qrcode{
-      width: 109px;
-      height: 109px;
-      padding: 5px;
+      width: 90px;
+      height: 90px;
       background: #fff;
-      margin: 0 0 0 7px;
+      margin: 0 0 0 4px;
       img{
         width: 100%;
         height: 100%;

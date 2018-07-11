@@ -175,8 +175,8 @@
           <div class="dt-carousel">
             <el-carousel height="523px" @change="handleChange" arrow="never">
               <el-carousel-item v-for="(val, key) in DHDT1" :key="key">
-                <a :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01" :title="val.cand03">
-                  <img :src="val.cand11">
+                <a :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01" :title="val.cand03" style="width: 100%; height: 100%; display: block;">
+                  <img :src="val.cand11" onload="handleBeauty(event)">
                 </a>
               </el-carousel-item>
             </el-carousel>
@@ -186,7 +186,7 @@
           </div>
           <div class="dt-right">
             <a :title="val.cand03" :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01" class="dt-right-item" v-for="(val, key) in DHDT2" :key="key">
-              <img :src="val.cand11">
+              <img :src="val.cand11" onload="handleBeauty(event)">
               <div class="dt-info">{{val.cand03}}</div>
             </a>
           </div>
@@ -210,7 +210,7 @@
           <div class="topics-con" v-if="currentTab1 === 0" key="SDZT">
             <a :title="val.cand03" :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01" class="topics-item" v-for="(val, key) in SDZT" :key="key">
               <div class="topics-img">
-                <img :src="val.cand11">
+                <img :src="val.cand11" onload="handleBeauty(event)">
               </div>
               <div class="topics-info">{{val.cand03}}</div>
             </a>
@@ -218,7 +218,7 @@
           <div class="topics-con" v-if="currentTab1 === 1" key="HNXHD">
             <a :title="val.cand03" :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01" class="topics-item" v-for="(val, key) in HNXHD" :key="key">
               <div class="topics-img">
-                <img :src="val.cand11">
+                <img :src="val.cand11" onload="handleBeauty(event)">
               </div>
               <div class="topics-info">{{val.cand03}}</div>
             </a>
@@ -329,7 +329,7 @@
         </div>
         <div class="supporting-con">
           <a target="_blank" :href="val.ccmw03" class="supporting-item" v-for="(val, key) in ZZDW" :key="key" :title="val.ccmw02">
-            <img :src="val.ccmw07">
+            <img :src="val.ccmw07" onload="handleBeauty(event)">
           </a>
         </div>
       </div>
@@ -342,7 +342,7 @@
         </div>
         <div class="supporting-con">
           <a target="_blank" :href="val.ccmw03" class="supporting-item" v-for="(val, key) in HZMT" :key="key" :title="val.ccmw02">
-            <img :src="val.ccmw07">
+            <img :src="val.ccmw07" onload="handleBeauty(event)">
           </a>
         </div>
       </div>
@@ -649,10 +649,6 @@ export default {
           float: left;
           height: 523px;
           position: relative;
-          img{
-            width: 100%;
-            height: 523px;
-          }
           .dt-info{
             height: 90px;
           }
@@ -679,10 +675,7 @@ export default {
             position: relative;
             float: left;
             margin-bottom: 28px;
-            img{
-              width: 100%;
-              height: 100%;
-            }
+            overflow: hidden;
             &:nth-child(2n-1){
               margin-right: 28px;
             }
@@ -753,10 +746,7 @@ export default {
         .topics-img{
           width: 100%;
           height: 170px;
-          img{
-            width: 100%;
-            height: 100%;
-          }
+          overflow: hidden;
         }
         .topics-info{
           height: 73px;
@@ -827,6 +817,7 @@ export default {
           margin-right: 30px;
           margin-bottom: 30px;
           display: block;
+          overflow: hidden;
           &:hover{
             cursor: pointer;
             opacity: .9;
@@ -834,10 +825,6 @@ export default {
           }
           &:nth-child(5n){
             margin-right: 0;
-          }
-          img{
-            width: 100%;
-            height: 100%;
           }
         }
       }

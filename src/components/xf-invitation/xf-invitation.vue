@@ -44,7 +44,7 @@ export default {
     return {
       dialogVisible: false,
       form: {
-        acb210: '', // 职位
+        acb210: '', // 岗位
         ccps03: '', // 面试时间
         ccps05: '', // 面试地点
         ccps11: '' // 面试备注
@@ -52,12 +52,12 @@ export default {
       rules: {
         acb210: [{
           required: true,
-          message: '请选择职位',
+          message: '请选择岗位',
           trigger: 'change'
         }],
         ccps03: [{
           required: true,
-          message: '请选择职位',
+          message: '请选择面试时间',
           trigger: 'change'
         }],
         ccps05: [{

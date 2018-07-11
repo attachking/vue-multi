@@ -13,7 +13,7 @@
                 <xf-cascader
                   v-model="form.bca111"
                   change-on-select
-                  placeholder="请选择职位类别"
+                  placeholder="请选择岗位类别"
                   filterable
                   clearable
                   :options="dictionaries.CRAFT_AS"
@@ -241,13 +241,13 @@ export default {
         TAB_NATURE: [], // 工作性质
         TAB_EDUCATION: [], // 学历
         TAB_CITY: [], // 地区
-        CRAFT_AS: [], // 职位
+        CRAFT_AS: [], // 岗位
         TAB_UNITNATURE: [], // 企业性质
         TAB_PSCALE: [] // 企业规模
       },
       form: {
         bca112: '', // 关键字
-        bca111Name: '', // 职位
+        bca111Name: '', // 岗位
         bca111: '',
         areaWrap: '', // 地区
         acb202: '', // 地区code
@@ -325,7 +325,7 @@ export default {
           TAB_NATURE: res.result.TAB_NATURE, // 工作性质
           TAB_EDUCATION: res.result.TAB_EDUCATION, // 学历
           TAB_CITY: res.result.TAB_CITY, // 地区
-          CRAFT_AS: res.result.CRAFT_AS, // 职位
+          CRAFT_AS: res.result.CRAFT_AS, // 岗位
           TAB_UNITNATURE: res.result.TAB_UNITNATURE, // 企业性质
           TAB_PSCALE: res.result.TAB_PSCALE // 企业规模
         }

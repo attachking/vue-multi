@@ -162,9 +162,9 @@ export default {
       dialogVisible: false,
       formLoading: false,
       form: {
-        bca111: '', // 职位类别code
-        bca112: '', // 职位类别
-        cca113: '', // 职位名称
+        bca111: '', // 岗位类别code
+        bca112: '', // 岗位类别
+        cca113: '', // 岗位名称
         acb21r: '', // 招聘人数
         aae030: '', // 发布日期
         aae031: '', // 失效日期（默认90天后失效）
@@ -177,18 +177,18 @@ export default {
         bcb202: '', // 工作地点
         acb21i: '', // 工作性质
         acb228: '', // 食宿情况
-        cca114: '', // 职位描述
+        cca114: '', // 岗位描述
         favouredPolicy: '' // 优惠政策
       },
       rules: {
         bca111: [{
           required: true,
-          message: '请选择职位类别',
+          message: '请选择岗位类别',
           trigger: 'change'
         }],
         cca113: [{
           required: true,
-          message: '请输入职位名称',
+          message: '请输入岗位名称',
           trigger: 'change'
         }, {
           max: 20,
@@ -249,7 +249,7 @@ export default {
           trigger: 'change'
         }]
       },
-      // 提取历史职位
+      // 提取历史岗位
       searchData: {
         rowsNum: 6,
         currentPage: 1,
@@ -266,7 +266,7 @@ export default {
     handleRouter(router) {
       echo(this.form)
       if (router.query.acb210) {
-        // 修改职位
+        // 修改岗位
         this.getInfo(router.query.acb210)
         this.isEdit = true
       } else {
@@ -321,7 +321,7 @@ export default {
         res.result.acc214 = res.result.acc214 ? res.result.acc214.split(',') : []
         echo(this.form, res.result)
         if (resetTime) {
-          // 如果是提取历史职位，则重置职位有效期
+          // 如果是提取历史岗位，则重置岗位有效期
           this.resetTime()
         }
       }).catch(() => {

@@ -18,7 +18,7 @@
       <a class="item" href="#/job">
         <div class="left-font">
           <i class="xffont font-zhiwei"></i>
-          <p>已发布职位 <span class="theme">{{corpInfo.corpPositionCounts}}</span><br>剩余可发布 <span class="theme">{{corpInfo.allowPostionCounts}}</span></p>
+          <p>已发布岗位 <span class="theme">{{corpInfo.corpPositionCounts}}</span><br>剩余可发布 <span class="theme">{{corpInfo.allowPostionCounts}}</span></p>
         </div>
       </a>
       <a class="item" href="#/corpResume">

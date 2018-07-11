@@ -24,8 +24,8 @@
           <div class="news-carousel">
             <el-carousel height="345px" @change="handleChange" arrow="never">
               <el-carousel-item v-for="val in firstSlider" :key="val.cand01">
-                <a :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01" :title="val.cand03">
-                  <img :src="val.cand11">
+                <a :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01" :title="val.cand03" style="display: block;width: 100%;height: 100%;">
+                  <img :src="val.cand11" onload="handleBeauty(event)">
                 </a>
               </el-carousel-item>
             </el-carousel>
@@ -35,7 +35,7 @@
         <div class="news-con">
           <div class="title">
             <span>工作动态</span>
-            <a href="newsList.html#/module?channel_code=ZXDT" class="news-more" title="更多">+</a>
+            <a href="newsList.html#/module?channel_code=ZXDT" class="news-more" title="更多">更多&gt;</a>
           </div>
           <div class="news-list">
             <div class="news-item" v-for="item in ZXDT" :key="item.cand01">
@@ -47,7 +47,7 @@
         <div class="news-con">
           <div class="title">
             <span>人才政策</span>
-            <a href="newsList.html#/module?channel_code=RCZC" class="news-more" title="更多">+</a>
+            <a href="newsList.html#/module?channel_code=RCZC" class="news-more" title="更多">更多&gt;</a>
           </div>
           <div class="news-list">
             <div class="news-item" v-for="item in RCZC" :key="item.cand01">
@@ -84,7 +84,7 @@
           <div class="innovate-left">
             <div class="tit">
               <span>创新创业政策</span>
-              <a href="newsList.html#/module?channel_code=ZCWJ" class="news-more" title="更多">+</a>
+              <a href="newsList.html#/module?channel_code=ZCWJ" class="news-more" title="更多">更多&gt;</a>
             </div>
             <div class="innovate-list">
               <a :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01" class="innovate-item" v-for="val in CXCY1" :key="val.cand01" :title="val.cand03">{{val.cand03}}</a>
@@ -92,7 +92,7 @@
           </div>
           <div class="innovate-right">
             <a class="innovate-right-item" :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01" :title="val.cand03" v-for="val in CXCY2" :key="val.cand01">
-              <img :src="val.cand11" alt="">
+              <img :src="val.cand11" alt="" onload="handleBeauty(event)">
               <div class="innovate-right-info">{{val.cand03}}</div>
             </a>
             <div class="innovate-right-item" v-show="false">
@@ -116,7 +116,7 @@
           <el-carousel :autoplay="true" :interval="4000" type="card" height="360px" @change="handleWonder">
             <el-carousel-item v-for="(val, key) in wonders" :key="val.caoa01">
               <div class="wonder-item" :title="val.caoa03">
-                <img :src="val.caoa02">
+                <img :src="val.caoa02" onload="handleBeauty(event)">
                 <div class="wonder-tip" v-if="key === wonderIdx">
                   <span>{{wonders.length && wonders[wonderIdx].caoa03}}</span>
                 </div>
@@ -136,7 +136,7 @@
           <div class="wisdom-left">
             <div class="wisdom-left-tit">
               <span>{{zzInfo.cand03}}</span>
-              <a href="newsList.html#/module?channel_code=ZZGK" title="更多" class="wisdom-left-more">+</a>
+              <a href="newsList.html#/module?channel_code=ZZGK" title="更多" class="wisdom-left-more">更多&gt;</a>
             </div>
             <div class="wisdom-left-con">{{zzInfo.cand19}}</div>
           </div>
@@ -146,7 +146,7 @@
             <a class="wisdom-right-item" href="newsList.html#/module?channel_code=RCGZ"><span>人才工作</span><br>TALENT WORK<img src="./static/wisdom-icon-2.png"></a>
             <a class="wisdom-right-item" href="newsList.html#/module?channel_code=YZHD"><span>引智活动</span><br>INTELLECTUAL ACTIVITY<img src="./static/wisdom-icon-3.png"></a>
             <div class="wisdom-right-item"></div>
-            <a class="wisdom-right-item" href="newsList.html#/module?channel_code=ZJFC"><span>专家风采</span><br>EXPERT DEMEANOR<img src="./static/wisdom-icon-4.png"></a>
+            <a class="wisdom-right-item" href="newsList.html#/pic?channel_code=ZJFC"><span>专家风采</span><br>EXPERT DEMEANOR<img src="./static/wisdom-icon-4.png"></a>
           </div>
         </div>
       </div>
@@ -195,6 +195,19 @@ export default {
     }
   },
   methods: {
+    getBanners() { // 出彩河南
+      this.$post('/service/business/fm/pic/picInfo/getPicList', {
+        caoa04: 110,
+        rowsNum: 12
+      }).then(res => {
+        this.banners = res.result.map(item => {
+          return {
+            url: item.caoa02,
+            target: item.caoa10 || 'javascript:;'
+          }
+        })
+      })
+    },
     handleChange(index) {
       this.firstSliderIndex = index
     },
@@ -288,6 +301,7 @@ export default {
     this.getWonders()
     this.getTopNews()
     this.getZZInfo()
+    this.getBanners()
     $(window).on('resize', () => {
       this.topBannerHeight = Math.max($(window).width(), 1200) / 1920 * 730 + 'px'
     })
@@ -368,14 +382,10 @@ export default {
           font-size: 18px;
         }
         .news-more{
-          width: 26px;
-          height: 26px;
-          line-height: 22px;
-          text-align: center;
-          border: 1px solid #d9d9d9;
           display: inline-block;
           float: right;
-          font-weight: bold;
+          font-size: 14px;
+          padding: 3px 0 0 0;
         }
       }
       .news-list{
@@ -415,10 +425,6 @@ export default {
     .news-carousel{
       position: relative;
       padding: 48px 0 0 0;
-      img{
-        width: 100%;
-        height: 100%;
-      }
       .news-banner-info{
         position: absolute;
         left: 0;
@@ -582,16 +588,11 @@ export default {
           font-size: 18px;
         }
         .news-more{
-          width: 26px;
-          height: 26px;
-          line-height: 22px;
-          text-align: center;
-          border: 1px solid #d9d9d9;
           display: inline-block;
           float: right;
-          font-weight: bold;
-          color: #999;
-          background: #fff;
+          color: #fff;
+          padding: 3px 0 0 0;
+          font-size: 14px;
           &:hover{
             color: $--color-primary;
           }
@@ -634,10 +635,6 @@ export default {
       margin-bottom: 22px;
       position: relative;
       overflow: hidden;
-      img{
-        width: 100%;
-        height: 100%;
-      }
       .innovate-right-info{
         color: #fff;
         width: 100%;
@@ -701,9 +698,6 @@ export default {
       width: 600px;
       height: 360px;
       position: relative;
-      img{
-        width: 100%;
-      }
       .wonder-tip{
         position: absolute;
         height: 110px;
@@ -755,13 +749,9 @@ export default {
         }
         .wisdom-left-more{
           display: inline-block;
-          width: 29px;
-          height: 29px;
-          line-height: 24px;
-          font-size: 26px;
-          border: 1px solid #cbedc2;
-          color: #cbedc2;
-          text-align: center;
+          font-size: 14px;
+          color: #fff;
+          padding: 3px 0 0 0;
           float: right;
           &:hover{
             color: $--color-primary;

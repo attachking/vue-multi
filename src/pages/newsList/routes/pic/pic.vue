@@ -1,14 +1,12 @@
 <template>
   <div class="news-pic" ref="list">
     <div class="news-pic-item" v-for="val in list" :key="val.cand01">
-      <div class="pic-item-left">
-        <a :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01">
-          <img :src="val.cand11">
-        </a>
-      </div>
+      <a class="pic-item-left" :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01">
+        <img :src="val.cand11" onload="handleBeauty(event)">
+      </a>
       <div class="pic-item-right">
         <a :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01"><span :title="val.cand03">{{val.cand03}}</span><i class="xffont font-zhiding" title="置顶" v-if="val.cand17 === 1"></i><i title="热点" class="xffont font-tubiao-" v-if="val.cand16 === 1"></i></a>
-        <div class="news-info">{{val.cand04}}</div>
+        <div class="news-info">{{val.cand19}}</div>
         <div class="news-resource">
           <span class="time-item" :title="'阅读量：' + val.cand13"><i class="xffont font-yanjing"></i><span>{{val.cand13 || 0}}</span></span>
           <span class="time-item"><i class="xffont font-msnui-time"></i><span>{{$dateFormat(val.ccpr05, 'yyyy-MM-dd')}}</span></span>
@@ -87,6 +85,7 @@ export default {
     .pic-item-left{
       width: 200px;
       height: 128px;
+      display: block;
       float: left;
       overflow: hidden;
       img{

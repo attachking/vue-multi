@@ -139,7 +139,7 @@ export default {
         aab001: this.$userInfo.aab001,
         rowsNum: 10,
         currentPage: 1,
-        bca111: '', // 职位分类
+        bca111: '', // 岗位分类
         ccpj03: '', // 查看状态
         aac003: '' // 求职者姓名
       },

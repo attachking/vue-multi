@@ -3,7 +3,7 @@
     <el-upload
       :data="form"
       ref="upload"
-      accept="image/*"
+      accept="image/jpg,image/jpeg,image/png"
       class="upload-demo"
       :limit="6"
       :action="baseUrl + '/service/business/fm/pic/picInfo/uploadPicInfo'"

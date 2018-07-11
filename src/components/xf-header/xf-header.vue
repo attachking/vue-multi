@@ -70,7 +70,6 @@
 import md5 from 'blueimp-md5'
 import {storage, STORAGE_TYPE, getUserInfo} from '../../common/js/utils'
 import event from '../../common/js/event'
-import $ from 'jquery'
 
 export default {
   name: 'xf-header',
@@ -247,24 +246,6 @@ export default {
     event.$on('refresh', () => {
       this.refreshLogin()
     })
-    // 图片自适应大小函数，img需要有固定大小父容器，onload函数调用
-    window.handleBeauty = function(e) {
-      var $el = $(e.target)
-      var $parent = $el.parent()
-      var p = $parent.height() / $parent.width()
-      var m = $el.height() / $el.width()
-      if (p > m) {
-        $el.css({
-          height: '100%',
-          width: 'auto'
-        })
-      } else {
-        $el.css({
-          height: 'auto',
-          width: '100%'
-        })
-      }
-    }
   }
 }
 </script>

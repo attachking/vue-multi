@@ -1,4 +1,4 @@
-<!--招聘会已发布职位列表-->
+<!--招聘会已发布岗位列表-->
 <template>
   <div class="position-list">
     <div class="title">
@@ -174,7 +174,7 @@ export default {
       list: [],
       pageBean: {},
       loading: false,
-      // 有效职位
+      // 有效岗位
       historyList: [],
       historyLoading: false,
       dialogVisible: false,

@@ -9,7 +9,7 @@ const module = () => import('../routes/module/module.vue') // 文字新闻列表
 const photo = () => import('../routes/photo/photo.vue')
 const pic = () => import('../routes/pic/pic.vue') // 图片新闻列表
 const corp = () => import('../routes/corp/corp.vue') // 企业搜索列表
-const job = () => import('../routes/job/job.vue') // 职位搜索列表
+const job = () => import('../routes/job/job.vue') // 岗位搜索列表
 const fair = () => import('../routes/fair/fair.vue') // 招聘会列表
 const talent = () => import('../routes/talent/talent.vue') // 人才推介
 const project = () => import('../routes/project/project.vue') // 项目推介

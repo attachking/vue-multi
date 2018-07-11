@@ -71,20 +71,23 @@
             <div class="contact-con">
               <p>
                 <span class="label">网址：</span>
-                <a :href="corpInfo.aae016" target="_blank">{{corpInfo.aae016}}</a>
+                <a :href="corpInfo.aae016" target="_blank">{{status && corpInfo.aae016 || '--'}}</a>
               </p>
               <p>
                 <span class="label">电话：</span>
-                <span>{{corpInfo.aae005 || '--'}}</span>
+                <span>{{status && corpInfo.aae005 || '--'}}</span>
               </p>
               <p>
                 <span class="label">邮箱：</span>
-                <span>{{corpInfo.aae015 || '--'}}</span>
+                <span>{{status && corpInfo.aae015 || '--'}}</span>
               </p>
               <p>
                 <span class="label">地址：</span>
-                <span>{{corpInfo.aae006 || '--'}}</span>
+                <span>{{status && corpInfo.aae006 || '--'}}</span>
               </p>
+              <div class="no-login" v-if="!status">
+                <p class="no-login-text">企业联系方式<el-button type="text" @click="login">登录</el-button>后可见</p>
+              </div>
             </div>
           </div>
           <div class="right-middle" v-if="false">
@@ -143,10 +146,14 @@ export default {
         currentPage: 1,
         aac001: this.$userInfo.aac001
       },
-      jobPageBean: {}
+      jobPageBean: {},
+      status: this.$userInfo.status
     }
   },
   methods: {
+    login() {
+      event.$emit('login')
+    },
     getDetail(aab001) {
       this.$post('/service/business/corp/corps/getCorpDetail.xf', {
         aab001,
@@ -256,7 +263,7 @@ export default {
       }
       if (this.$userInfo.ccmu17 === 2) {
         this.$message({
-          message: '只有求职者可以收藏职位',
+          message: '只有求职者可以收藏岗位',
           type: 'warning'
         })
         return
@@ -310,7 +317,7 @@ export default {
       }
       if (this.$userInfo.ccmu17 === 2) {
         this.$message({
-          message: '只有求职者可以收藏职位',
+          message: '只有求职者可以收藏岗位',
           type: 'warning'
         })
         return
@@ -541,6 +548,7 @@ export default {
         .contact-con{
           padding: 15px 20px;
           font-size: 14px;
+          position: relative;
           p{
             &:not(:last-child){
               padding: 0 0 8px 0;
@@ -548,6 +556,21 @@ export default {
           }
           .label{
             color: #666;
+          }
+          .no-login{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,.85);
+            .no-login-text{
+              position: absolute;
+              top: 30%;
+              left: 0;
+              width: 100%;
+              text-align: center;
+            }
           }
         }
       }

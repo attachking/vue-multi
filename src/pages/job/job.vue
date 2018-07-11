@@ -32,10 +32,10 @@
               <div class="tit">工作地点</div>
               <div class="con">{{detail.bcb202}}</div>
             </div>
-            <div class="desc">
+            <!--<div class="desc">
               <div class="tit">联系电话</div>
               <div class="con">0379-63091742</div>
-            </div>
+            </div>-->
           </div>
           <div class="left-bottom">
             <p class="position-tit">
@@ -80,20 +80,23 @@
             <div class="contact-con">
               <p>
                 <span class="label">网址：</span>
-                <a :href="corpInfo.aae016" target="_blank">{{corpInfo.aae016 || '--'}}</a>
+                <a :href="corpInfo.aae016" target="_blank">{{status && corpInfo.aae016 || '--'}}</a>
               </p>
               <p>
                 <span class="label">电话：</span>
-                <span>{{corpInfo.aae005 || '--'}}</span>
+                <span>{{status && corpInfo.aae005 || '--'}}</span>
               </p>
               <p>
                 <span class="label">邮箱：</span>
-                <span>{{corpInfo.aae015 || '--'}}</span>
+                <span>{{status && corpInfo.aae015 || '--'}}</span>
               </p>
               <p>
                 <span class="label">地址：</span>
-                <span>{{corpInfo.aae006 || '--'}}</span>
+                <span>{{status && corpInfo.aae006 || '--'}}</span>
               </p>
+              <div class="no-login" v-if="!status">
+                <p class="no-login-text">企业联系方式<el-button type="text" @click="login">登录</el-button>后可见</p>
+              </div>
             </div>
           </div>
           <div class="right-middle" v-if="false">
@@ -135,8 +138,8 @@ export default {
       detail: {},
       isCollect: false,
       welfares: [],
-      recommendJob: [], // 推荐职位
-      otherJob: [], // 该公司在招其他职位
+      recommendJob: [], // 推荐岗位
+      otherJob: [], // 该公司在招其他岗位
       pageBean: {},
       searchData: {
         acb210: '',
@@ -152,7 +155,8 @@ export default {
       corpInfo: {},
       corpLogo: {},
       currentSearch: {},
-      ccmu17: this.$userInfo.ccmu17
+      ccmu17: this.$userInfo.ccmu17,
+      status: this.$userInfo.status
     }
   },
   methods: {
@@ -275,6 +279,9 @@ export default {
       }).then(() => {
         this.sendResume(acb210)
       })
+    },
+    login() {
+      event.$emit('login')
     }
   },
   created() {
@@ -494,6 +501,7 @@ export default {
         .contact-con{
           padding: 15px 20px;
           font-size: 14px;
+          position: relative;
           p{
             &:not(:last-child){
               padding: 0 0 8px 0;
@@ -501,6 +509,21 @@ export default {
           }
           .label{
             color: #666;
+          }
+          .no-login{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,.85);
+            .no-login-text{
+              position: absolute;
+              top: 30%;
+              left: 0;
+              width: 100%;
+              text-align: center;
+            }
           }
         }
       }

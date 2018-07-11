@@ -58,7 +58,7 @@
         <el-input v-model="form.projectEmail" placeholder="请输入邮箱"></el-input>
       </el-form-item>
       <el-form-item label="备注" prop="remark">
-        <el-input v-model="form.remark" placeholder="请输入备注"></el-input>
+        <el-input :rows="5" v-model="form.remark" placeholder="请输入备注"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit" :loading="loading">提交</el-button>

@@ -1,4 +1,4 @@
-<!--个人中心我的收藏 职位-->
+<!--个人中心我的收藏 岗位-->
 <template>
   <div class="job">
     <div class="job-list" v-loading="loading">

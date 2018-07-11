@@ -19,7 +19,7 @@ const pics = () => import('../routes/account/pics/pics.vue') // 风采
 const jobSearch = () => import('../routes/job-search/job-search.vue') // 岗位搜索
 const resume = () => import('../routes/resume/resume.vue') // 简历
 const userCollection = () => import('../routes/user-collection/user-collection.vue') // 我的收藏
-const collectedJob = () => import('../routes/user-collection/job/job.vue') // 我的收藏（职位）
+const collectedJob = () => import('../routes/user-collection/job/job.vue') // 我的收藏（岗位）
 const collectedCorp = () => import('../routes/user-collection/corp/corp.vue') // 我的收藏（单位）
 const records = () => import('../routes/records/records.vue') // 求职管理
 const apply = () => import('../routes/records/apply/apply.vue') // 求职管理（应聘记录）
@@ -28,10 +28,10 @@ const invitation = () => import('../routes/records/invitation/invitation.vue') /
 // 企业中心
 const corp = () => import('../routes/corp-index/corp-index.vue') // 企业中心首页
 const info = () => import('../routes/account/info/info.vue') // 基本信息
-const job = () => import('../routes/job/job.vue') // 职位管理
-const jobList = () => import('../routes/job/jobList/jobList.vue') // 职位列表
-const jobEdit = () => import('../routes/job/jobEdit/jobEdit.vue') // 职位编辑
-const jobPreview = () => import('../routes/job/jobPreview/jobPreview.vue') // 职位预览
+const job = () => import('../routes/job/job.vue') // 岗位管理
+const jobList = () => import('../routes/job/jobList/jobList.vue') // 岗位列表
+const jobEdit = () => import('../routes/job/jobEdit/jobEdit.vue') // 岗位编辑
+const jobPreview = () => import('../routes/job/jobPreview/jobPreview.vue') // 岗位预览
 const talent = () => import('../routes/talent/talent.vue') // 人才搜索
 const corpResume = () => import('../routes/corp-resume/corp-resume.vue') // 简历管理
 const received = () => import('../routes/corp-resume/received/received.vue') // 收到的简历
@@ -41,9 +41,9 @@ const jobFair = () => import('../routes/job-fair/job-fair.vue') // 招聘会
 const jobFairList = () => import('../routes/job-fair/job-fair-list/job-fair-list.vue') // 招聘会列表
 const stalls = () => import('../routes/job-fair/stalls/stalls.vue') // 招聘会摊位列表
 const reserved = () => import('../routes/job-fair/job-fair-reserved/job-fair-reserved.vue') // 已预定的招聘会列表
-const fairJob = () => import('../routes/job/jobEdit/jobEdit.vue') // 招聘会职位编辑
-const positionList = () => import('../routes/job-fair/position-list/position-list.vue') // 招聘会已发布职位
-const fairJobPreview = () => import('../routes/job/jobPreview/jobPreview.vue') // 招聘会预览职位
+const fairJob = () => import('../routes/job/jobEdit/jobEdit.vue') // 招聘会岗位编辑
+const positionList = () => import('../routes/job-fair/position-list/position-list.vue') // 招聘会已发布岗位
+const fairJobPreview = () => import('../routes/job/jobPreview/jobPreview.vue') // 招聘会预览岗位
 const fairCorpList = () => import('../routes/job-fair/fair-corp-list/fair-corp-list.vue') // 招聘会参会企业列表
 const authen = () => import('../routes/account/authen/authen.vue') // 企业认证
 const project = () => import('../routes/project/project.vue') // 项目申报
@@ -231,7 +231,7 @@ router.beforeEach((to, from, next) => {
     setTimeout(() => {
       event.$emit('login')
     }, 20)
-    return
+    return;
   }
   // 默认跳转路由
   if (!to.name) {

@@ -59,7 +59,7 @@
                   <span class="fix-width">{{info1.aac035 ? info1.aac035 + 'kg' : '&#45;&#45;'}}</span>
                 </el-form-item>-->
                 <el-form-item label="学历">
-                  <span class="fix-width">{{info1.aac011 || '--'}}</span>
+                  <span class="fix-width">{{info1.aac011name || '--'}}</span>
                 </el-form-item>
                 <el-form-item label="政治面貌">
                   <span class="fix-width">{{info1.aac024name || '--'}}</span>
@@ -71,7 +71,7 @@
                   <span class="fix-width">{{info1.aac180name || '--'}}</span>
                 </el-form-item>
                 <el-form-item label="专业类别">
-                  <span class="fix-width">--</span>
+                  <span class="fix-width">{{info1.acc01gName || '--'}}</span>
                 </el-form-item>
                 <el-form-item label="专业名称">
                   <span class="fix-width">{{info1.aac040 || '--'}}</span>
@@ -98,10 +98,10 @@
             <transition name="el-fade-in" mode="out-in">
               <el-form ref="form" class="demo-table">
                 <el-form-item label="意向岗位">
-                  <span>{{info2.bca112 || '--'}}</span>
+                  <span>{{info2.bca112 || '--'}}{{info2.bcaa12 && `，${info2.bcaa12}`}}{{info2.bcab12 && `，${info2.bcab12}`}}</span>
                 </el-form-item>
                 <el-form-item label="期望工作地区">
-                  <span>{{info2.bcb202 || '--'}}</span>
+                  <span>{{info2.bcb202 || '--'}}{{info2.bcb203 && `，${info2.bcb203}`}}{{info2.bcb204 && `，${info2.bcb204}`}}</span>
                 </el-form-item>
                 <el-form-item label="期望薪资">
                   <span>{{info2.acc034Name || '--'}}</span>
@@ -185,7 +185,15 @@
                   <el-table-column
                     label="证书名称">
                     <template slot-scope="scope">
-                      <span>{{scope.row.bac0c2}}</span>
+                      <el-popover
+                        placement="top"
+                        title="附件"
+                        width="200"
+                        :disabled="!scope.row.aac0c5"
+                        trigger="hover">
+                        <img :src="scope.row.aac0c5" style="width: 100%;" v-img="scope.row.aac0c5">
+                        <el-button slot="reference" type="text">{{scope.row.bac0c2}}</el-button>
+                      </el-popover>
                     </template>
                   </el-table-column>
                   <el-table-column

@@ -44,7 +44,7 @@
             <span class="fix-width">{{info1.aac035 ? info1.aac035 + 'kg' : '&#45;&#45;'}}</span>
           </el-form-item>-->
           <el-form-item label="学历">
-            <span class="fix-width">{{info1.aac011 || '--'}}</span>
+            <span class="fix-width">{{info1.aac011name || '--'}}</span>
           </el-form-item>
           <el-form-item label="政治面貌">
             <span class="fix-width">{{info1.aac024name || '--'}}</span>
@@ -56,7 +56,7 @@
             <span class="fix-width">{{info1.aac180name || '--'}}</span>
           </el-form-item>
           <el-form-item label="专业类别">
-            <span class="fix-width">--</span>
+            <span class="fix-width">{{info1.acc01gName || '--'}}</span>
           </el-form-item>
           <el-form-item label="专业名称">
             <span class="fix-width">{{info1.aac040 || '--'}}</span>
@@ -178,10 +178,10 @@
       <transition name="el-fade-in" mode="out-in" @enter="handleEnter('formIntention')">
         <el-form ref="form" class="demo-table" v-if="!formIntention" key="intentionList">
           <el-form-item label="意向岗位">
-            <span>{{info2.bca112 || '--'}}</span>
+            <span>{{info2.bca112 || '--'}}{{info2.bcaa12 && `，${info2.bcaa12}`}}{{info2.bcab12 && `，${info2.bcab12}`}}</span>
           </el-form-item>
           <el-form-item label="期望工作地区">
-            <span>{{info2.bcb202 || '--'}}</span>
+            <span>{{info2.bcb202 || '--'}}{{info2.bcb203 && `，${info2.bcb203}`}}{{info2.bcb204 && `，${info2.bcb204}`}}</span>
           </el-form-item>
           <el-form-item label="期望薪资">
             <span>{{info2.acc034Name || '--'}}</span>
@@ -225,16 +225,45 @@
     </div>
     <div class="container">
       <transition name="el-fade-in" mode="out-in" @enter="handleEnter('formEducation')">
-        <div class="education-list" v-if="!formEducation" key="educationList">
-          <div class="item" v-for="val in educationList" :key="val.aac0d0">
-            <span>{{val.aae030}} -- {{val.aac046}}</span>
-            <span :title="val.aac045">{{val.aac045 || '--'}}</span>
-            <span :title="val.acc01g">{{val.acc01g || '--'}}</span>
-            <span :title="val.atc011">{{val.atc011}}</span>
-            <el-button icon="el-icon-edit" size="mini" circle @click="editEducation(val)" title="修改"></el-button>
-            <el-button icon="el-icon-delete" size="mini" circle @click="delEducation(val)" title="删除"></el-button>
-          </div>
-        </div>
+        <el-table
+          :data="educationList"
+          stripe
+          v-if="!formEducation"
+          key="educationList"
+          style="width: 100%">
+          <el-table-column
+            label="时间">
+            <template slot-scope="scope">
+              <span>{{scope.row.aae030}} -- {{scope.row.aac046}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="学校">
+            <template slot-scope="scope">
+              <span>{{scope.row.aac045 || '--'}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="专业">
+            <template slot-scope="scope">
+              <span>{{scope.row.acc01g || '--'}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            label="学历">
+            <template slot-scope="scope">
+              <span>{{scope.row.atc011 || '--'}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            width="100px"
+            label="操作">
+            <template slot-scope="scope">
+              <el-button icon="el-icon-edit" size="mini" circle @click="editEducation(scope.row)" title="修改"></el-button>
+              <el-button icon="el-icon-delete" size="mini" circle @click="delEducation(scope.row)" title="删除"></el-button>
+            </template>
+          </el-table-column>
+        </el-table>
         <!--教育经历表单-->
         <el-form ref="formEducation" :model="form3" :rules="rules3" class="form" label-width="100px" key="formEducation" v-if="formEducation">
           <el-form-item prop="aae030" label="开始时间">
@@ -350,7 +379,15 @@
             <el-table-column
               label="证书名称">
               <template slot-scope="scope">
-                <span>{{scope.row.bac0c2}}</span>
+                <el-popover
+                  placement="top"
+                  title="附件"
+                  width="200"
+                  :disabled="!scope.row.aac0c5"
+                  trigger="hover">
+                  <img :src="scope.row.aac0c5" style="width: 100%;" v-img="scope.row.aac0c5">
+                  <el-button slot="reference" type="text">{{scope.row.bac0c2}}</el-button>
+                </el-popover>
               </template>
             </el-table-column>
             <el-table-column
@@ -375,8 +412,8 @@
               align="center"
               label="操作">
               <template slot-scope="scope">
-                <el-button title="修改" icon="el-icon-edit" size="mini" circle @click="editCert(val)"></el-button>
-                <el-button title="删除" icon="el-icon-delete" size="mini" circle @click="delCert(val)"></el-button>
+                <el-button title="修改" icon="el-icon-edit" size="mini" circle @click="editCert(scope.row)"></el-button>
+                <el-button title="删除" icon="el-icon-delete" size="mini" circle @click="delCert(scope.row)"></el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -406,6 +443,20 @@
             </el-form-item>
             <el-form-item prop="aae013" label="备注">
               <el-input v-model="form5.aae013" placeholder="请输入备注"></el-input>
+            </el-form-item>
+            <el-form-item label="附件" :style="`${form5.aac0c5 ? 'max-height: 150px; ' : ''}overflow: hidden;`">
+              <el-upload
+                :data="uploadForm"
+                accept="image/jpg,image/jpeg,image/png"
+                :action="baseUrl + '/service/business/fm/pic/picInfo/uploadPicInfo'"
+                :limit="1"
+                :file-list="fileList"
+                :on-success="onSuccess"
+                :on-remove="onRemove"
+                list-type="picture-card">
+                <i class="el-icon-plus"></i>
+                <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5MB</div>
+              </el-upload>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit5" :loading="loading5" size="mini">确定</el-button>
@@ -541,6 +592,7 @@
 <script>
 import {mapGetters} from 'vuex'
 import {echo} from '../../../../common/js/utils'
+import {BASE_URL} from '../../../../common/js/config'
 import event from '../../../../common/js/event'
 import XfCascader from '../../../../components/xf-cascader/xf-cascader.vue'
 
@@ -555,6 +607,16 @@ export default {
   data() {
     let _this = this
     return {
+      fileList: [],
+      baseUrl: BASE_URL,
+      uploadForm: {
+        picSize: 5120,
+        remark: 2,
+        _token: this.$userInfo.token,
+        ccmu17: this.$userInfo.ccmu17,
+        userId: this.$userInfo.ccmu17 === 1 ? this.$userInfo.aac001 : this.$userInfo.aab001,
+        ccmu01: this.$userInfo.ccmu01
+      },
       dialogVisible: false,
       formBase: false,
       form1: { // 基本信息
@@ -608,7 +670,27 @@ export default {
             } else {
               callback(new Error('请输入正确的身份证号'))
             }
-          }
+          },
+          trigger: 'change'
+        }, {
+          // 根据身份证号读取生日，性别
+          validator(rule, value, callback) {
+            if (/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(this.form1.aac002)) {
+              this.$post('/service/business/person/personInfo/getInfoByCard', {cardNo: this.form1.aac002}).then(res => {
+                if (res.error && res.error.result === 0) {
+                  callback(new Error(res.error.message))
+                } else {
+                  callback()
+                  this.form1.aac006 || (this.form1.aac006 = res.result.birthday || '')
+                  this.form1.aac004 || (this.form1.aac004 = res.result.sexCode || '')
+                  this.form1.age || (this.form1.age = res.result.age || '')
+                }
+              })
+            } else {
+              callback()
+            }
+          },
+          trigger: 'blur'
         }],
         aac006: [{
           required: true,
@@ -783,8 +865,8 @@ export default {
         aae030: '', // 开始时间
         aae031: '', // 结束时间
         aac045: '', // 公司名称
-        aac0b3: '', // 职位名称
-        aac0b4: '' // 职位描述
+        aac0b3: '', // 岗位名称
+        aac0b4: '' // 岗位描述
       },
       rules4: {
         aae030: [{
@@ -848,7 +930,8 @@ export default {
         cczy06: '', // 证书类别
         aac0c3: '', // 证书编号
         aae013: '', // 证书备注
-        aac0c4: '' // 证书获得时间
+        aac0c4: '', // 证书获得时间
+        aac0c5: '' // 证书图片路径
       },
       rules5: {
         bac0c2: [{
@@ -1156,6 +1239,7 @@ export default {
         loading.close()
         if (!res.result.length) return
         echo(this.form4, res.result[0])
+        this.formWork = true
       }).catch(() => {
         loading.close()
       })
@@ -1211,11 +1295,14 @@ export default {
       const loading = this.$loading({ fullscreen: true })
       this.$post('/service/business/person/stuSkill/listJson', {
         aac0c1: val.aac0c1,
-        aac001: this.$userInfo
+        aac001: this.$userInfo.aac001
       }).then(res => {
         loading.close()
         if (!res.result.length) return
         echo(this.form5, res.result[0])
+        if (res.result[0].aac0c5) {
+          this.fileList = [{url: res.result[0].aac0c5}]
+        }
       }).catch(() => {
         loading.close()
       })
@@ -1406,16 +1493,6 @@ export default {
         this.worksList = res.result.worksList || []
       })
     },
-    // 根据身份证号读取生日，性别
-    getSex() {
-      if (/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(this.form1.aac002)) {
-        this.$post('/service/business/person/personInfo/getInfoByCard', {cardNo: this.form1.aac002}).then(res => {
-          this.form1.aac006 || (this.form1.aac006 = res.result.birthday || '')
-          this.form1.aac004 || (this.form1.aac004 = res.result.sexCode || '')
-          this.form1.age || (this.form1.age = res.result.age || '')
-        })
-      }
-    },
     showSchool() {
       this.dialogVisible = true
     },
@@ -1465,6 +1542,17 @@ export default {
           }, 500)
         }
       })
+    },
+    // 证书上传
+    onSuccess(res, file) {
+      if (res.error && res.error.result === 1) {
+        this.form5.aac0c5 = res.result[0]
+      } else {
+        this.fileList = []
+      }
+    },
+    onRemove() {
+      this.form5.aac0c5 = ''
     }
   },
   created() {
@@ -1543,40 +1631,6 @@ export default {
     }
     .el-cascader{
       width: 250px;
-    }
-  }
-  .education-list{
-    font-size: 14px;
-    .item{
-      padding: 10px 10px;
-      white-space: nowrap;
-      &:nth-child(2n){
-        background: #f3f3f3;
-      }
-      &:not(:last-child){
-        border-bottom: 1px dashed #d9d9d9;
-      }
-      .el-button{
-        vertical-align: middle;
-      }
-      span{
-        vertical-align: middle;
-        display: inline-block;
-        @include ellipsis;
-        padding-right: 10px;
-        &:nth-child(1){
-          width: 25%;
-        }
-        &:nth-child(2){
-          width: 25%;
-        }
-        &:nth-child(3){
-          width: 25%;
-        }
-        &:nth-child(4){
-          width: 100px;
-        }
-      }
     }
   }
   .work-item{

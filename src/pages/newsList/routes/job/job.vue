@@ -13,7 +13,7 @@
               :options="dictionaries.CRAFT_AS"
               v-model="bca111"
               change-on-select
-              placeholder="请选择职位类别"
+              placeholder="请选择岗位类别"
               @change="handleBcalll">
             </el-cascader>
           </el-form-item>
@@ -131,7 +131,7 @@
         <div class="item" v-for="val in list" :key="val.acb210">
           <div class="top">
             <p>
-              <a :href="'job.html?acb210=' + val.acb210" target="_blank">{{val.cca113}} <i class="xffont font-tubiao- red" title="重点推荐" v-if="Number(val.acb21z) === 3"></i></a>
+              <a :href="'job.html?acb210=' + val.acb210" target="_blank" :title="val.cca113">{{val.cca113}} <i class="xffont font-tubiao- red" title="重点推荐" v-if="Number(val.acb21z) === 3"></i></a>
               <span class="salary">{{val.acc034Name}}</span>
             </p>
             <p>{{val.aac012 || '--'}} / {{val.acb21r || 0}}人 / {{val.acb21iName || '--'}}</p>
@@ -177,7 +177,7 @@ export default {
       ccmu17: this.$userInfo.ccmu17,
       form: {
         bca112: '', // 关键字
-        bca111Name: '', // 职位
+        bca111Name: '', // 岗位
         bca111: '',
         areaWrap: '', // 地区
         acb202: '', // 地区code
@@ -199,7 +199,7 @@ export default {
         TAB_NATURE: [], // 工作性质
         TAB_EDUCATION: [], // 学历
         TAB_CITY: [], // 地区
-        CRAFT_AS: [], // 职位
+        CRAFT_AS: [], // 岗位
         TAB_UNITNATURE: [], // 企业性质
         TAB_PSCALE: [] // 企业规模
       },
@@ -264,7 +264,7 @@ export default {
           TAB_NATURE: res.result.TAB_NATURE, // 工作性质
           TAB_EDUCATION: res.result.TAB_EDUCATION, // 学历
           TAB_CITY: res.result.TAB_CITY, // 地区
-          CRAFT_AS: res.result.CRAFT_AS, // 职位
+          CRAFT_AS: res.result.CRAFT_AS, // 岗位
           TAB_UNITNATURE: res.result.TAB_UNITNATURE, // 企业性质
           TAB_PSCALE: res.result.TAB_PSCALE // 企业规模
         }

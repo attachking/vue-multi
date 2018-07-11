@@ -6,7 +6,7 @@ const state = {
     TAB_CITY2: [], // 只有两级
     TAB_WELFARE: [], // 福利
     TAB_WORKYEARS: [], // 工作年限
-    CRAFT_AS: [], // 职位
+    CRAFT_AS: [], // 岗位
     TAB_SALARY: [], // 薪资
     TAB_SEX: [], // 性别
     TAB_NATURE: [], // 工作性质

@@ -8,11 +8,13 @@
             <img :src="val.ccmu15" class="image">
           </div>
           <div>
-            <a class="tit" :href="'personalInfo.html?aac001=' + val.aac001" target="_blank">{{val.aac003}}</a>
+            <a class="tit" :href="'personalInfo.html?aac001=' + val.aac001" target="_blank" v-if="status === 1">{{val.aac003}}</a>
+            <a class="tit" href="" @click.prevent="handleLogin" v-if="status !== 1">{{val.aac003}}</a>
             <p class="sub-tit">
-              <span>{{val.aac011name || '--'}}</span>
-              <span>{{val.aac004name || '--'}}</span>
+              <span :title="val.aac011name">{{val.aac011name || '--'}}</span>
+              <span :title="val.aac004name">{{val.aac004name || '--'}}</span>
             </p>
+            <p class="other" :title="val.bca112">{{val.bca112 || '--'}}</p>
           </div>
         </el-card>
       </div>
@@ -26,6 +28,7 @@
 <script>
 import Pagination from '../../../../components/pagination/pagination.vue'
 import Empty from '../../../../components/empty/empty.vue'
+import event from '../../../../common/js/event'
 
 export default {
   components: {
@@ -34,11 +37,12 @@ export default {
   data() {
     return {
       searchData: {
-        rowsNum: 10,
+        rowsNum: 6,
         currentPage: 1
       },
       pageBean: {},
-      list: []
+      list: [],
+      status: this.$userInfo.status
     }
   },
   methods: {
@@ -51,6 +55,14 @@ export default {
     handlePage(page) {
       this.searchData.currentPage = page
       this.getList()
+    },
+    handleLogin() {
+      this.$alert(`登陆后可查看详细信息`, '提示', {
+        confirmButtonText: '确定',
+        callback: action => {
+          event.$emit('login')
+        }
+      })
     }
   },
   created() {
@@ -65,10 +77,9 @@ export default {
     @include clearFixed;
     .item{
       float: left;
-      width: 190px;
-      height: 250px;
+      width: 260px;
       margin: 0 20px 20px 0;
-      &:nth-child(4n){
+      &:nth-child(3n){
         margin-right: 0;
       }
       .img{
@@ -105,8 +116,15 @@ export default {
           }
         }
       }
+      .other{
+        color: #666;
+        font-size: 14px;
+        width: 100%;
+        text-align: center;
+        @include ellipsis;
+      }
       .el-card{
-        height: 240px;
+        height: 315px;
       }
     }
   }
