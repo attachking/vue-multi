@@ -231,7 +231,7 @@ router.beforeEach((to, from, next) => {
     setTimeout(() => {
       event.$emit('login')
     }, 20)
-    return;
+    return
   }
   // 默认跳转路由
   if (!to.name) {

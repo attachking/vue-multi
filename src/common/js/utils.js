@@ -127,7 +127,7 @@ export function debounce(func, delay) {
 
 // 设置title
 export function renderTitle(tit) {
-  document.title = tit
+  document.title = (tit || '') + '-河南招才引智创新发展大会官网(www.zghnrc.gov.cn)'
 }
 
 // 解析query

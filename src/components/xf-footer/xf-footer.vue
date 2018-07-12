@@ -9,7 +9,7 @@
         <p>电话：0371-69690404&nbsp;&nbsp;0371-69690431&nbsp;&nbsp;0371-69690432</p>
         <p style="text-indent: 3em;">0371-69690433&nbsp;&nbsp;0371-69690434&nbsp;&nbsp;0371-69690435</p>
         <p>传真：0371-69690431&nbsp;&nbsp;邮箱：hnzcyz@126.com&nbsp;&nbsp;邮编：450000</p>
-        <p>豫ICP备05021803号&nbsp;Copyright © 2018 All Right Reserved&nbsp;中国·河南招才引智创新发展大会组委会</p>
+        <p>豫ICP备14002359号&nbsp;Copyright © 2018 All Right Reserved&nbsp;中国·河南招才引智创新发展大会组委会</p>
       </div>
       <div class="xf-footer-right">
         <div class="xf-footer-qrcode">

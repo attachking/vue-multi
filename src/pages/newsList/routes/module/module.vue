@@ -55,6 +55,7 @@ export default {
     handleRoute(route) {
       if (!route.query.channel_code) return
       this.searchData.channel_code = route.query.channel_code
+      this.searchData.currentPage = 1
       this.getList()
     }
   },

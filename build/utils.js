@@ -3,6 +3,7 @@ const path = require('path')
 const config = require('../config')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const packageConfig = require('../package.json')
+const MyPlugin = require('./myPlugin')
 
 exports.assetsPath = function (_path) {
   const assetsSubDirectory = process.env.NODE_ENV === 'production'
@@ -150,10 +151,7 @@ exports.htmlPlugin = function () {
       // 页面模板需要加对应的js脚本，如果不加这行则每个页面都会引入所有的js脚本
       chunks: ['manifest', 'vendor', filename],
       inject: true,
-      favicon: './favicon.png',
-      meta: {
-        viewport: 'width=device-width,initial-scale=1.0'
-      }
+      favicon: './favicon.png'
     }
     if (process.env.NODE_ENV === 'production') {
       conf = merge(conf, {
@@ -166,6 +164,7 @@ exports.htmlPlugin = function () {
       })
     }
     arr.push(new HtmlWebpackPlugin(conf))
+    arr.push(new MyPlugin())
   })
   return arr
 }
