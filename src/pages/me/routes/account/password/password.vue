@@ -144,20 +144,20 @@ export default {
         oldPassword: [{
           required: true,
           message: '请输入原密码',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 25,
           message: '长度不能超过25位',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         password: [{
           required: true,
           message: '请输入新密码',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 25,
           message: '长度不能超过25位',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           validator(rule, value, callback) {
             if (/^[a-zA-Z0-9_]*$/.test(value)) {
@@ -170,12 +170,12 @@ export default {
               callback(new Error('只能输入数字、字母或下划线'))
             }
           },
-          trigger: 'change'
+          trigger: 'blur'
         }],
         password2: [{
           required: true,
           message: '请重复新密码',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           validator(rule, value, callback) {
             if (_this.form1.password === value) {
@@ -184,7 +184,7 @@ export default {
               callback(new Error('两次输入不一致'))
             }
           },
-          trigger: 'change'
+          trigger: 'blur'
         }]
       },
       // 绑定邮箱表单
@@ -221,7 +221,7 @@ export default {
         emailCode: [{
           required: true,
           message: '请输入验证码',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           validator(rule, value, callback) {
             if (/^[a-zA-Z\d]{3,10}$/.test(value)) {
@@ -230,7 +230,7 @@ export default {
               callback(new Error('请输入正确的验证码'))
             }
           },
-          trigger: 'change'
+          trigger: 'blur'
         }]
       },
       // 绑定手机表单
@@ -277,7 +277,7 @@ export default {
         }],
         ccmu05: [{
           required: true,
-          message: '请输入原密保答案',
+          message: '请输入密保答案',
           trigger: 'change'
         }, {
           max: 10,

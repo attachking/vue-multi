@@ -22,7 +22,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="所在区域" prop="aab301">
-          <xf-cascader :fulltext.sync="form.aaa021" :options="dictionaries.TAB_CITY" v-model="form.aab301" placeholder="请选择所在区域"></xf-cascader>
+          <xf-cascader :fulltext.sync="form.aaa021" :options="dictionaries.TAB_CITY3" v-model="form.aab301" placeholder="请选择所在区域"></xf-cascader>
         </el-form-item>
         <el-form-item label="联系地址" prop="aae006">
           <el-input v-model="form.aae006" placeholder="请输入联系地址"></el-input>

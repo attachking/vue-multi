@@ -79,7 +79,7 @@
             <el-input v-model.trim="form1.aac003" placeholder="请输入姓名" clearable></el-input>
           </el-form-item>
           <el-form-item prop="aac002" label="身份证号">
-            <el-input v-model.trim="form1.aac002" placeholder="请输入身份证号" clearable @blur="getSex"></el-input>
+            <el-input v-model.trim="form1.aac002" placeholder="请输入身份证号" clearable></el-input>
           </el-form-item>
           <el-form-item prop="aac006" label="出生日期">
             <el-date-picker
@@ -155,7 +155,7 @@
               <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
               </el-option>
             </el-select>-->
-            <xf-cascader :options="dictionaries.TAB_CITY" v-model="form1.aab305" placeholder="请选择户口所在地" clearable></xf-cascader>
+            <xf-cascader :options="dictionaries.TAB_CITY3" v-model="form1.aab305" placeholder="请选择户口所在地" clearable></xf-cascader>
           </el-form-item>
           <el-form-item prop="aab301" label="现居住地">
             <el-input v-model.trim="form1.aab301" placeholder="请输入现居住地" clearable></el-input>
@@ -198,9 +198,9 @@
             <xf-cascader v-model="form2.bcab11" :text.sync="form2.bcab12" placeholder="第三意向岗位" :options="dictionaries.CRAFT_AS"></xf-cascader>
           </el-form-item>
           <el-form-item prop="acb202" label="工作地点" style="width: 100%;">
-            <xf-cascader v-model="form2.acb202" :fulltext.sync="form2.bcb202" placeholder="请选择意向工作地点" :options="dictionaries.TAB_CITY2"></xf-cascader>
-            <xf-cascader v-model="form2.acb203" :fulltext.sync="form2.bcb203" placeholder="第二意向工作地点" :options="dictionaries.TAB_CITY2"></xf-cascader>
-            <xf-cascader v-model="form2.acb204" :fulltext.sync="form2.bcb204" placeholder="第三意向工作地点" :options="dictionaries.TAB_CITY2"></xf-cascader>
+            <xf-cascader v-model="form2.acb202" :fulltext.sync="form2.bcb202" placeholder="请选择意向工作地点" :options="dictionaries.TAB_CITY3"></xf-cascader>
+            <xf-cascader v-model="form2.acb203" :fulltext.sync="form2.bcb203" placeholder="第二意向工作地点" :options="dictionaries.TAB_CITY3"></xf-cascader>
+            <xf-cascader v-model="form2.acb204" :fulltext.sync="form2.bcb204" placeholder="第三意向工作地点" :options="dictionaries.TAB_CITY3"></xf-cascader>
           </el-form-item>
           <el-form-item prop="acc034" label="期望薪资">
             <el-select v-model="form2.acc034" placeholder="请选择期望薪资">
@@ -675,15 +675,18 @@ export default {
         }, {
           // 根据身份证号读取生日，性别
           validator(rule, value, callback) {
-            if (/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(this.form1.aac002)) {
-              this.$post('/service/business/person/personInfo/getInfoByCard', {cardNo: this.form1.aac002}).then(res => {
+            if (/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(_this.form1.aac002)) {
+              _this.$post('/service/business/person/personInfo/getInfoByCard', {
+                cardNo: _this.form1.aac002,
+                aac001: _this.$userInfo.aac001
+              }).then(res => {
                 if (res.error && res.error.result === 0) {
                   callback(new Error(res.error.message))
                 } else {
                   callback()
-                  this.form1.aac006 || (this.form1.aac006 = res.result.birthday || '')
-                  this.form1.aac004 || (this.form1.aac004 = res.result.sexCode || '')
-                  this.form1.age || (this.form1.age = res.result.age || '')
+                  _this.form1.aac006 || (_this.form1.aac006 = res.result.birthday || '')
+                  _this.form1.aac004 || (_this.form1.aac004 = res.result.sexCode || '')
+                  _this.form1.age || (_this.form1.age = res.result.age || '')
                 }
               })
             } else {
@@ -756,6 +759,15 @@ export default {
         aab301: [{
           required: true,
           message: '请输入现居住地',
+          trigger: 'change'
+        }, {
+          max: 30,
+          message: '最多30个字符',
+          trigger: 'change'
+        }],
+        aac040: [{
+          required: true,
+          message: '请输入专业名称',
           trigger: 'change'
         }, {
           max: 30,
@@ -917,8 +929,8 @@ export default {
           message: '请输入岗位描述',
           trigger: 'change'
         }, {
-          max: 25,
-          message: '最多25个字符',
+          max: 200,
+          message: '最多200个字符',
           trigger: 'change'
         }]
       },
@@ -1676,6 +1688,7 @@ export default {
     display: inline-block;
     max-width: 700px;
     word-break: break-all;
+    white-space: pre-wrap;
   }
   .fix-width{
     display: inline-block;

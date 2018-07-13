@@ -158,7 +158,7 @@ import XfHeader from '../../components/xf-header/xf-header.vue'
 import XfFooter from '../../components/xf-footer/xf-footer.vue'
 import RightMenu from '../../components/right-menu/right-menu.vue'
 import XfCascader from '../../components/xf-cascader/xf-cascader.vue'
-import {echo} from '../../common/js/utils'
+import {echo, handleCity} from '../../common/js/utils'
 import Pagination from '../../components/pagination/pagination.vue'
 import Empty from '../../components/empty/empty.vue'
 
@@ -316,8 +316,8 @@ export default {
       this.$post('/service/sys/config/config/getConditionList', {
         tabStr: 'TAB_SALARY,TAB_WELFARE,TAB_WORKYEARS,TAB_NATURE,TAB_EDUCATION,TAB_CITY,CRAFT_AS,TAB_UNITNATURE,TAB_PSCALE'
       }).then(res => {
-        res.result.CRAFT_AS = this.handleCascader(res.result.CRAFT_AS.children)
-        res.result.TAB_CITY = this.handleCascader(res.result.TAB_CITY.children)
+        res.result.CRAFT_AS = handleCity(res.result.CRAFT_AS.children)
+        res.result.TAB_CITY = handleCity(res.result.TAB_CITY.children)
         this.dictionaries = {
           TAB_SALARY: res.result.TAB_SALARY, // 薪水
           TAB_WELFARE: res.result.TAB_WELFARE, // 福利

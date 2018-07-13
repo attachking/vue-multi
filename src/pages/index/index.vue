@@ -548,7 +548,7 @@ export default {
     }
   }
   .innovate-box{
-    background: url("./static/innovate.png") no-repeat;
+    background: url("./static/innovate.jpg") no-repeat;
     background-size: 100% 100%;
     height: 650px;
     padding: 55px 0;

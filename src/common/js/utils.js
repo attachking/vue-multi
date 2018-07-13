@@ -227,3 +227,28 @@ export function getUserInfo() { // 获取用户信息
     name: storage.get(STORAGE_TYPE.name)
   }
 }
+
+// 将城市字典表处理成3级
+export function handleCity(arr) {
+  return arr.map(item => {
+    return {
+      text: item.text,
+      id: item.id,
+      parentId: item.parentId,
+      children: item.children && item.children.length ? item.children.map(item => {
+        return {
+          text: item.text,
+          id: item.id,
+          parentId: item.parentId,
+          children: item.children && item.children.length ? item.children.map(item => {
+            return {
+              text: item.text,
+              id: item.id,
+              parentId: item.parentId
+            }
+          }) : null
+        }
+      }) : null
+    }
+  })
+}

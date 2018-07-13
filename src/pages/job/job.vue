@@ -25,12 +25,24 @@
               <span v-for="(val, key) in welfares" :key="key">{{val}}</span>
             </div>
             <div class="desc">
-              <div class="tit">岗位描述</div>
-              <div class="con">{{detail.cca114}}</div>
+              <div class="tit">工作地点</div>
+              <div class="con">{{detail.bcb202 || '--'}}</div>
             </div>
             <div class="desc">
-              <div class="tit">工作地点</div>
-              <div class="con">{{detail.bcb202}}</div>
+              <div class="tit">专业要求</div>
+              <div class="con">{{detail.acc01gname || '无'}}</div>
+            </div>
+            <div class="desc">
+              <div class="tit">食宿情况</div>
+              <div class="con">{{detail.acb228name || '无'}}</div>
+            </div>
+            <div class="desc">
+              <div class="tit">优惠政策</div>
+              <div class="con">{{detail.favouredPolicy || '无'}}</div>
+            </div>
+            <div class="desc">
+              <div class="tit">岗位描述</div>
+              <div class="con">{{detail.cca114 || '--'}}</div>
             </div>
             <!--<div class="desc">
               <div class="tit">联系电话</div>

@@ -7,26 +7,24 @@
             <el-input v-model="form.bca112" placeholder="请输入单位名称/关键字" @keydown.enter="onSubmit"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-cascader
-              filterable
+            <xf-cascader
               clearable
-              :options="dictionaries.CRAFT_AS"
-              v-model="bca111"
               change-on-select
+              filterable
+              :options="dictionaries.CRAFT_AS"
               placeholder="请选择岗位类别"
-              @change="handleBcalll">
-            </el-cascader>
+              v-model="form.bca111"
+            ></xf-cascader>
           </el-form-item>
           <el-form-item>
-            <el-cascader
+            <xf-cascader
               clearable
               change-on-select
               filterable
               :options="dictionaries.TAB_CITY"
               placeholder="请选择地区"
-              v-model="acb202"
-              @change="handleAcb202">
-            </el-cascader>
+              v-model="form.acb202">
+            </xf-cascader>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="mini" icon="el-icon-search" @click="onSubmit">搜索</el-button>
@@ -162,13 +160,15 @@
   </div>
 </template>
 <script>
-import {echo} from '../../../../common/js/utils'
+import {echo, handleCity} from '../../../../common/js/utils'
 import event from '../../../../common/js/event'
 import Pagination from '../../../../components/pagination/pagination.vue'
 import Empty from '../../../../components/empty/empty.vue'
+import XfCascader from '../../../../components/xf-cascader/xf-cascader.vue'
 
 export default {
   components: {
+    XfCascader,
     Empty,
     Pagination},
   name: 'job-search',
@@ -255,8 +255,8 @@ export default {
       this.$post('/service/sys/config/config/getConditionList', {
         tabStr: 'TAB_SALARY,TAB_WELFARE,TAB_WORKYEARS,TAB_NATURE,TAB_EDUCATION,TAB_CITY,CRAFT_AS,TAB_UNITNATURE,TAB_PSCALE'
       }).then(res => {
-        res.result.CRAFT_AS = this.handleCascader(res.result.CRAFT_AS.children)
-        res.result.TAB_CITY = this.handleCascader(res.result.TAB_CITY.children)
+        res.result.CRAFT_AS = handleCity(res.result.CRAFT_AS.children)
+        res.result.TAB_CITY = handleCity(res.result.TAB_CITY.children)
         this.dictionaries = {
           TAB_SALARY: res.result.TAB_SALARY, // 薪水
           TAB_WELFARE: res.result.TAB_WELFARE, // 福利

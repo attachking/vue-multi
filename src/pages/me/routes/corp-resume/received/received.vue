@@ -36,7 +36,7 @@
         align="center"
         label="姓名">
         <template slot-scope="scope">
-          <a target="_blank" :href="'personalInfo.html?aac001=' + scope.row.aac001">{{scope.row.aac003 || '--'}}</a>
+          <a target="_blank" :href="'personalInfo.html?aac001=' + scope.row.ccmu01">{{scope.row.aac003 || '--'}}</a>
         </template>
       </el-table-column>
       <el-table-column

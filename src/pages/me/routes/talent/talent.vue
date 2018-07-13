@@ -13,7 +13,7 @@
             <xf-cascader :options="dictionaries.tab_major_type" v-model="searchData.bcc01g" placeholder="请选择专业类别" clearable></xf-cascader>
           </el-form-item>
           <el-form-item>
-            <xf-cascader change-on-select :options="dictionaries.TAB_CITY" v-model="searchData.acb202" placeholder="请选择意向地区" clearable></xf-cascader>
+            <xf-cascader change-on-select :options="dictionaries.TAB_CITY3" v-model="searchData.acb202" placeholder="请选择意向地区" clearable></xf-cascader>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" size="mini" icon="el-icon-search" @click="onSubmit">搜索</el-button>

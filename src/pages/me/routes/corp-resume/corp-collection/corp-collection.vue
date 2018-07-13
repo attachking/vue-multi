@@ -73,7 +73,7 @@
         width="100px"
         label="操作">
         <template slot-scope="scope">
-          <el-button icon="el-icon-delete" circle title="删除收藏" size="mini" @click="delSingle(scope.row)"></el-button>
+          <el-button icon="el-icon-delete" circle title="取消收藏" size="mini" @click="delSingle(scope.row)"></el-button>
           <el-tooltip class="item" effect="dark" content="已邀请" placement="right-end" :disabled="Number(scope.row.ccp03) === 0">
             <el-button
               @click="invite(scope.row)"
@@ -138,6 +138,13 @@ export default {
       this.checked = selections
     },
     invite(val) {
+      if (Number(val.ccp03) > 0) {
+        this.$message({
+          message: '已经邀请过该用户',
+          type: 'warning'
+        })
+        return
+      }
       this.$refs.invitation.show(val.aac001).then(() => {
         this.getList()
       })

@@ -2,8 +2,7 @@
 const state = {
   dictionaries: { // 字典表
     TAB_AFFIL: [], // 政治面貌
-    TAB_CITY: [], // 城市
-    TAB_CITY2: [], // 只有两级
+    TAB_CITY3: [], // 城市，三级
     TAB_WELFARE: [], // 福利
     TAB_WORKYEARS: [], // 工作年限
     CRAFT_AS: [], // 岗位

@@ -92,7 +92,7 @@
   </div>
 </template>
 <script>
-import {echo} from '../../../../common/js/utils'
+import {echo, handleCity} from '../../../../common/js/utils'
 import XfCascader from '../../../../components/xf-cascader/xf-cascader.vue'
 import Empty from '../../../../components/empty/empty.vue'
 import Pagination from '../../../../components/pagination/pagination.vue'
@@ -146,8 +146,7 @@ export default {
       this.$post('/service/sys/config/config/getConditionList', {
         tabStr: 'TAB_UNITNATURE,TAB_PSCALE,TAB_CITY,INDUSTRY_AS'
       }).then(res => {
-        this.handleCascader(res.result.TAB_CITY.children)
-        res.result.TAB_CITY = res.result.TAB_CITY.children
+        res.result.TAB_CITY = handleCity(res.result.TAB_CITY.children)
         this.dictionaries = res.result
       })
     },

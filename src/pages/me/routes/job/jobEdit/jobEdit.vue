@@ -50,7 +50,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="工作地点" prop="acb202">
-        <xf-cascader placeholder="请选择工作地点" change-on-select :options="dictionaries.TAB_CITY" v-model="form.acb202" :fulltext.sync="form.bcb202"></xf-cascader>
+        <xf-cascader placeholder="请选择工作地点" :options="dictionaries.TAB_CITY3" v-model="form.acb202" :fulltext.sync="form.bcb202"></xf-cascader>
       </el-form-item>
       <el-form-item label="工作性质" prop="acb21i">
         <el-select v-model="form.acb21i" placeholder="请选择工作性质" clearable>

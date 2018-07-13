@@ -1,6 +1,9 @@
 <template>
   <div class="project-apply">
     <el-form ref="form" :rules="rules" :model="form" label-width="100px" class="form">
+      <el-form-item label="立项单位">
+        <span>{{form.aab004}}</span>
+      </el-form-item>
       <el-form-item label="项目名称" prop="projectName">
         <el-input v-model="form.projectName" placeholder="请输入项目名称"></el-input>
       </el-form-item>
@@ -30,16 +33,12 @@
           <el-option :label="val.name" :value="val.code" :key="val.code" v-for="val in dictionaries.TAB_SALARY"></el-option>
         </el-select>
       </el-form-item>
-      <!--<el-form-item label="立项单位" prop="aab004">
-        <el-input v-model="form.aab004" placeholder="请输入立项单位"></el-input>
-      </el-form-item>-->
       <el-form-item label="参与单位" prop="projectJoinUnit">
         <el-input type="textarea" :rows="5" v-model="form.projectJoinUnit" placeholder="请输入参与单位"></el-input>
       </el-form-item>
       <el-form-item label="工作地点" prop="projectWorkCode">
         <xf-cascader
-          :options="dictionaries.TAB_CITY"
-          change-on-select
+          :options="dictionaries.TAB_CITY3"
           clearable
           v-model="form.projectWorkCode"
           placeholder="请选择工作地点"
@@ -273,6 +272,7 @@ export default {
         this.getDetail(route.query.projectid)
       } else {
         echo(this.form)
+        this.form.aab004 = this.$userInfo.name
       }
     },
     getDetail(projectid) {
