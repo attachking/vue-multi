@@ -12,7 +12,7 @@
             </div>
             <p class="name" v-if="isPerfect && loginStatus">
               <span>{{name}}</span>
-              <i class="xffont font-anquanshezhi" :class="Number(authenInfo.authenState) === 2 ? 'authened' : 'unAuthen'" :title="Number(authenInfo.authenState) === 2 ? '认证已通过' : '企业未认证'"></i>
+              <i class="xffont font-anquanshezhi" :class="Number(authenInfo.authenState) === 2 ? 'authened' : 'unAuthen'" :title="Number(authenInfo.authenState) === 2 ? '认证已通过' : '单位未认证'"></i>
             </p>
             <p class="tip" v-if="!isPerfect && loginStatus">
               点击

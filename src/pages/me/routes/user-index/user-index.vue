@@ -15,43 +15,45 @@
       </span>
     </div>
     <div class="menu">
-      <a class="item" href="#/records/apply">
+      <router-link tag="div" class="item" to="/records/apply">
         <div class="text">
           <p class="big">{{personalInfo.positionCounts || 0}}</p>
           <p>我申请的岗位</p>
         </div>
-      </a>
-      <a class="item" href="#/records/invitation">
+      </router-link>
+      <router-link class="item" tag="div" to="/records/invitation">
         <div class="text">
           <p class="big">{{personalInfo.interviewCounts || 0}}</p>
           <p>我的面试邀请</p>
         </div>
-      </a>
-      <a class="item" href="#/message">
+      </router-link>
+      <router-link class="item" tag="div" to="/message">
         <div class="img">
           <el-badge :value="personalInfo.noticeCounts" :hidden="Number(personalInfo.noticeCounts) === 0">
             <i class="xffont font-youjian"></i>
           </el-badge>
           <p>我的消息</p>
         </div>
-      </a>
-      <a class="item" href="#/userCollection">
+      </router-link>
+      <router-link class="item" tag="div" to="/userCollection">
         <div class="img">
           <i class="xffont font-shoucang"></i>
           <p>我的收藏</p>
         </div>
-      </a>
-      <a class="item" href="#/account/pics">
+      </router-link>
+      <router-link class="item" tag="div" to="/account/pics">
         <div class="img">
           <i class="xffont font-tupian-copy"></i>
           <p>我的风采</p>
         </div>
-      </a>
+      </router-link>
     </div>
     <div class="banner">
-      <img :src="ad" alt="">
+      <a :href="adUrl" target="_blank">
+        <img :src="ad" alt="">
+      </a>
     </div>
-    <div class="job-fair">
+    <div class="job-fair" v-if="false">
       <div class="card-tit">
         <span class="item active"><i class="xffont font-zhiwei"></i>最新招聘会</span>
         <a href="newsList.html#/fair?channel_code=ZPH" target="_blank">
@@ -158,6 +160,7 @@ export default {
       jobFairList: [],
       jobFairPageBean: {},
       ad: '',
+      adUrl: '',
       jobSearch: {
         aac001: this.$userInfo.aac001,
         currentPage: 1,
@@ -193,6 +196,7 @@ export default {
         caoa04: 100
       }).then(res => {
         this.ad = res.result.caoa02
+        this.adUrl = res.result.caoa10
       })
     },
     getJob() { // 获取推荐岗位
@@ -278,7 +282,7 @@ export default {
     },
     handleResume(val) {
       if (Number(val.is_Resume) === 0) {
-        this.$confirm('确认投递?', '提示', {
+        this.$confirm('确定向该单位投递简历?', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'

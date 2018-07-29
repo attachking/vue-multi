@@ -14,8 +14,8 @@ const state = {
     TAB_MARRIAGE: [], // 婚姻状况
     TAB_CERTIFICATE_TYPE: [], // 技能证书
     INDUSTRY_AS: [], // 行业类型
-    TAB_UNITNATURE: [], // 企业性质
-    TAB_PSCALE: [], // 企业规模
+    TAB_UNITNATURE: [], // 单位性质
+    TAB_PSCALE: [], // 单位规模
     TAB_SREQUIREMENT: [], // 食宿情况
     tab_university_city: [], // 省份字典表（用于选择院校）
     tab_major_type: [], // 专业类别
@@ -25,8 +25,8 @@ const state = {
     TAB_COOPERATION_TYPE: [] // 合作方式
   },
   phoneOpen: false,
-  corpInfo: {}, // 企业信息,
-  authenInfo: { // 企业认证状态
+  corpInfo: {}, // 单位信息,
+  authenInfo: { // 单位认证状态
     authenState: 2, // 0为未认证，1为正在认证，2为已认证，3为认证失败，4、未绑定微信
     infoState: 1 // 0为基本信息未完善
   },

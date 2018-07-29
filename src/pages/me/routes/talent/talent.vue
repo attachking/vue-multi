@@ -7,7 +7,7 @@
       <div class="search-tit">
         <el-form inline class="demo-form-inline">
           <el-form-item>
-            <el-input v-model="searchData.keyword" placeholder="请输入关键字" @keydown.enter="onSubmit"></el-input>
+            <el-input v-model="searchData.keyword" placeholder="请输入姓名或者求职意向搜索" @keydown.native.enter="onSubmit"></el-input>
           </el-form-item>
           <el-form-item>
             <xf-cascader :options="dictionaries.tab_major_type" v-model="searchData.bcc01g" placeholder="请选择专业类别" clearable></xf-cascader>
@@ -140,6 +140,8 @@ export default {
       showMore: false,
       loading: false,
       checked: [],
+      invitedChecked: [],
+      collectChecked: [],
       isIndeterminate: false,
       checkAll: false
     }
@@ -156,6 +158,7 @@ export default {
         this.loading = false
         this.list = res.result
         this.pageBean = res.pageBean
+        this.checked = []
       }).catch(() => {
         this.loading = false
       })
@@ -171,6 +174,7 @@ export default {
       }
     },
     confirmInvite(val) {
+      /*
       if (Number(val.is_Resume) > 0) {
         this.$message({
           message: '已经邀请过该用户',
@@ -178,6 +182,7 @@ export default {
         })
         return
       }
+      */
       this.$refs.invitation.show(val.aac001).then(() => {
         this.getList()
       })
@@ -198,8 +203,8 @@ export default {
             message: res.result.message,
             type: 'success'
           })
-          this.getList()
         }
+        this.getList()
       }).catch(() => {
         this.loading = false
       })
@@ -220,12 +225,42 @@ export default {
       })
     },
     inviteAll() {
-      if (!this.checked.length) return
-      this.confirmInvite(this.checked.join(','))
+      if (!this.checked.length) {
+        this.$message({
+          message: '没有选择任何项',
+          type: 'warning'
+        })
+        return
+      }
+      /*
+      if (!this.invitedChecked.length) {
+        this.$message({
+          message: '您已经邀请过了',
+          type: 'warning'
+        })
+        return
+      }
+      */
+      this.$refs.invitation.show(this.checked.join(',')).then(() => {
+        this.getList()
+      })
     },
     collectAll() {
-      if (!this.checked.length) return
-      this.collect(this.checked.join(','))
+      if (!this.checked.length) {
+        this.$message({
+          message: '没有选择任何项',
+          type: 'warning'
+        })
+        return
+      }
+      if (!this.collectChecked.length) {
+        this.$message({
+          message: '您已经收藏过了',
+          type: 'warning'
+        })
+        return
+      }
+      this.collect(this.collectChecked.join(','))
     },
     handleCheckAllChange(e) {
       if (e) {
@@ -238,6 +273,17 @@ export default {
   created() {
     this.onSubmit()
     this.$watch('checked', (newVal, oldVal) => {
+      this.invitedChecked = []
+      this.collectChecked = []
+      newVal.forEach(item => {
+        let index = this.list.findIndex(val => val.aac001 === item)
+        if (index !== -1 && Number(this.list[index].is_Resume) === 0) {
+          this.invitedChecked.push(item)
+        }
+        if (index !== -1 && Number(this.list[index].is_Collection) === 0) {
+          this.collectChecked.push(item)
+        }
+      })
       if (newVal.length >= this.list.length) {
         this.checkAll = true
       } else if (newVal.length > 0) {

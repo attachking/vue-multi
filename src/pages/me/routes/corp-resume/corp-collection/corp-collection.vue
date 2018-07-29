@@ -22,7 +22,7 @@
         align="center"
         label="姓名">
         <template slot-scope="scope">
-          <a target="_blank" :href="'personalInfo.html?aac001=' + scope.row.aac001">{{scope.row.aac003 || '--'}}</a>
+          <a target="_blank" :href="'personalInfo.html?aac001=' + scope.row.ccmp01">{{scope.row.aac003 || '--'}}</a>
         </template>
       </el-table-column>
       <el-table-column
@@ -77,9 +77,9 @@
           <el-tooltip class="item" effect="dark" content="已邀请" placement="right-end" :disabled="Number(scope.row.ccp03) === 0">
             <el-button
               @click="invite(scope.row)"
-              icon="el-icon-plus"
+              icon="xffont font-yaoqingchengyuan"
               circle
-              :title="scope.row.ccp03 > 0 ? '已邀请' : '面试邀请'"
+              :title="scope.row.ccp03 > 0 ? '' : '面试邀请'"
               size="mini"
               :type="scope.row.ccp03 > 0 ? 'primary' : ''">
             </el-button>
@@ -116,7 +116,8 @@ export default {
       list: [],
       pageBean: {},
       loading: false,
-      checked: []
+      checked: [],
+      inviteChecked: []
     }
   },
   methods: {
@@ -136,8 +137,15 @@ export default {
     },
     handleSelectionChange(selections) {
       this.checked = selections
+      this.inviteChecked = []
+      selections.forEach(item => {
+        if (Number(item.ccp03) === 0) {
+          this.inviteChecked.push(item.ccmp01)
+        }
+      })
     },
     invite(val) {
+      /*
       if (Number(val.ccp03) > 0) {
         this.$message({
           message: '已经邀请过该用户',
@@ -145,7 +153,8 @@ export default {
         })
         return
       }
-      this.$refs.invitation.show(val.aac001).then(() => {
+      */
+      this.$refs.invitation.show(val.ccmp01).then(() => {
         this.getList()
       })
     },
@@ -154,13 +163,34 @@ export default {
       this.getList()
     },
     inviteAll() {
-      if (!this.checked.length) return
-      this.$refs.invitation.show(this.checked.map(item => item.aac001).join(',')).then(() => {
+      if (!this.checked.length) {
+        this.$message({
+          message: '没有选择任何项',
+          type: 'warning'
+        })
+        return
+      }
+      /*
+      if (!this.inviteChecked.length) {
+        this.$message({
+          message: '您已经邀请过了',
+          type: 'warning'
+        })
+        return
+      }
+      */
+      this.$refs.invitation.show(this.checked.join(',')).then(() => {
         this.getList()
       })
     },
     delAll() {
-      if (!this.checked.length) return
+      if (!this.checked.length) {
+        this.$message({
+          message: '没有选择任何项',
+          type: 'warning'
+        })
+        return
+      }
       this.$confirm('确定删除收藏?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

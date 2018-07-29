@@ -1,4 +1,4 @@
-<!--招聘会参会企业列表-->
+<!--招聘会参会单位列表-->
 <template>
   <div class="fair-corps">
     <div class="list">

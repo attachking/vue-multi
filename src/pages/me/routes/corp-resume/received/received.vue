@@ -200,7 +200,13 @@ export default {
       this.sign(arr[0], arr[1])
     },
     handleCommand2(cmd) {
-      if (!this.checked.length) return
+      if (!this.checked.length) {
+        this.$message({
+          message: '没有选择任何项',
+          type: 'warning'
+        })
+        return
+      }
       this.sign(this.checked.join(','), cmd)
     },
     handleSelectionChange(selections) {

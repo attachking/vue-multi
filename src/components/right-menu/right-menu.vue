@@ -1,14 +1,38 @@
 <template>
   <div class="right-menu">
     <div class="right-menu-item">
+      <div class="sign-up-con">
+        <div class="sign-up">
+          <a href="signUp.html">大会报名</a>
+          <a href="signUp.html">点击报名</a>
+        </div>
+      </div>
+    </div>
+    <div class="right-menu-item">
       <div class="right-menu-icon">
-        <div class="right-menu-icon-c">
+        <div class="right-menu-icon-c two">
           <img src="./static/weixin.png">
-          <span>微信公众号</span>
+          <span>微信</span>
         </div>
       </div>
       <div class="right-menu-qrcode">
-        <img src="../../../static/assets/qrcode/weixin.png">
+        <img src="../../../static/assets/qrcode/weixin-service.jpg">
+        <p>微信公众号</p>
+        <img src="../../../static/assets/qrcode/weixin.jpg">
+        <p>微信订阅号</p>
+        <img src="../../../static/assets/qrcode/mp.jpg">
+        <p>微信小程序</p>
+      </div>
+    </div>
+    <div class="right-menu-item">
+      <div class="right-menu-icon" style="padding: 10px 0 0 0;">
+        <div class="right-menu-icon-c app">
+          <img src="./static/app.png">
+          <span>移动APP</span>
+        </div>
+      </div>
+      <div class="right-menu-qrcode">
+        <img :src="test ? './static/assets/qrcode/app-test.png' : './static/assets/qrcode/app.png'">
       </div>
     </div>
     <div class="right-menu-item">
@@ -19,14 +43,14 @@
         </div>
       </div>
       <div class="right-menu-qrcode">
-        <img src="../../../static/assets/qrcode/weixin.png">
+        <img :src="test ? './static/assets/qrcode/mobile-test.png' : './static/assets/qrcode/mobile.png'">
       </div>
     </div>
     <div class="right-menu-item">
       <div class="right-menu-icon">
         <div class="right-menu-icon-c">
           <img src="./static/weibo.png">
-          <span>新浪微博</span>
+          <span>微博</span>
         </div>
       </div>
       <div class="right-menu-qrcode">
@@ -46,11 +70,15 @@
 <script>
 import $ from 'jquery'
 
+// 是否为质保环境
+const test = !!process.env.TEST
+
 export default {
   name: 'right-menu',
   data() {
     return {
-      showTop: false
+      showTop: false,
+      test: test
     }
   },
   methods: {
@@ -90,7 +118,7 @@ export default {
   }
   .right-menu{
     position: fixed;
-    right: 20px;
+    right: 10px;
     top: 50%;
     z-index: 5;
     transform: translate3d(0,-50%,0);
@@ -104,6 +132,21 @@ export default {
     background: url("./static/bg.png") no-repeat;
     background-size: 100% 100%;
     position: relative;
+    .sign-up-con{
+      overflow: hidden;
+      height: 100%;
+      width: 100%;
+    }
+    .sign-up{
+      overflow: hidden;
+      a{
+        color: #fff;
+        font-size: 14px;
+        width: 30px;
+        display: inline-block;
+        margin: 5px 0 0 11px;
+      }
+    }
     .right-menu-qrcode{
       position: absolute;
       right: 60px;
@@ -113,6 +156,12 @@ export default {
       background: #fff;
       img{
         width: 100px;
+        display: block;
+      }
+      p{
+        padding: 0 0 5px 0;
+        text-align: center;
+        font-size: 14px;
       }
     }
     &:not(:last-child){
@@ -122,7 +171,16 @@ export default {
       cursor: pointer;
       opacity: .9;
       .right-menu-icon-c{
-        transform: translate(0,-46px);
+        transform: translate(0,-48px);
+      }
+      .sign-up{
+        transform: translate(0,-43px);
+      }
+      .two{
+        transform: translate(0,-40px);
+      }
+      .app{
+        transform: translate(0,-54px);
       }
       .right-menu-qrcode{
         display: block;
@@ -130,9 +188,9 @@ export default {
         animation: rightMenu .5s;
       }
     }
-    &:nth-child(2){
+    &:nth-child(4){
       .right-menu-icon{
-        padding: 11px 0 0 0;
+        padding: 12px 0 0 0;
       }
     }
   }

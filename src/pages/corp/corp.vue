@@ -24,7 +24,7 @@
             <p class="tit">单位介绍</p>
             <div class="corp-info">{{corpInfo.acb206 || '--'}}</div>
           </div>
-          <div class="left-middle">
+          <div class="left-middle" v-if="corpPic.length">
             <p class="tit">单位风采</p>
             <el-carousel :interval="8000" type="card" height="200px" class="slider">
               <el-carousel-item v-for="val in corpPic" :key="val.caoa01">
@@ -41,6 +41,7 @@
                 <a href="javascript:;" @click="next">&gt;</a>
               </span>
             </p>
+            <empty v-if="!jobList.length"></empty>
             <div class="list" v-loading="jobLoading">
               <div class="item" v-for="val in jobList" :key="val.acb210">
                 <p>
@@ -86,7 +87,7 @@
                 <span>{{status && corpInfo.aae006 || '--'}}</span>
               </p>
               <div class="no-login" v-if="!status">
-                <p class="no-login-text">企业联系方式<el-button type="text" @click="login">登录</el-button>后可见</p>
+                <p class="no-login-text">用人单位联系方式<el-button type="text" @click="login">登录</el-button>后可见</p>
               </div>
             </div>
           </div>
@@ -121,9 +122,11 @@ import XfFooter from '../../components/xf-footer/xf-footer.vue'
 import RightMenu from '../../components/right-menu/right-menu.vue'
 import {queryParse, renderTitle} from '../../common/js/utils'
 import event from '../../common/js/event'
+import Empty from '../../components/empty/empty.vue'
 
 export default {
   components: {
+    Empty,
     RightMenu,
     XfFooter,
     XfHeader},
@@ -324,12 +327,12 @@ export default {
       }
       if (Number(val.is_Resume) > 0) {
         this.$message({
-          message: '您已经投递过简历了',
+          message: '您已经投递过该单位的该岗位',
           type: 'warning'
         })
         return
       }
-      this.$confirm('确定投递简历?', '提示', {
+      this.$confirm('确定向该单位投递简历?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

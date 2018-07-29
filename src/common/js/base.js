@@ -27,6 +27,7 @@ export default {
             shade.remove()
             imgBox.remove()
           })
+          /*
           image.on('click', e => {
             if (e && e.stopPropagation) {
               e.stopPropagation()
@@ -34,6 +35,7 @@ export default {
               window.event.cancelBubble = true
             }
           })
+          */
           let currentRotate = 0
           rotate.on('click', e => {
             if (e && e.stopPropagation) {

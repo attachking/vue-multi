@@ -4,7 +4,7 @@
       <div class="centerBox">
         <div class="top">
           <div class="topLeft">
-            <p>找人才</p> | <span>大量人才简历一览无余</span>
+            <p>找人才</p> | <span>优秀人才信息一览无余</span>
           </div>
           <div class="topRight">
             <router-link to="/user">我要找工作&gt;</router-link>
@@ -39,14 +39,15 @@
               <i class="xffont font-xiayibu"></i>
             </a>
           </p>
+          <p class="pass-tip"><i class="el-icon-info"></i>注册成功后，用户名为注册手机号，密码默认会以短信方式发送到手机，首次登录请修改密码</p>
         </div>
       </div>
     </div>
     <el-dialog
       title="用户协议"
       :visible.sync="dialogVisible"
-      width="500px">
-      <span>这是一段信息</span>
+      width="700px">
+      <agreement></agreement>
     </el-dialog>
   </div>
 </template>
@@ -54,9 +55,12 @@
 <script>
 import {renderTitle, reg} from '../../../../common/js/utils'
 import event from '../../../../common/js/event'
+import Agreement from '../agreement/agreement.vue'
 
 export default {
+  components: {Agreement},
   data() {
+    let _this = this
     return {
       checked: false,
       form: {
@@ -78,6 +82,19 @@ export default {
             }
           },
           trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            _this.$post('/service/business/login/account/verificationPhone', {
+              phone: value
+            }).then(res => {
+              if (res.error.result === 1) {
+                callback()
+              } else {
+                callback(new Error(res.error.message))
+              }
+            })
+          },
+          trigger: 'blur'
         }],
         valiCode: [{
           required: true,
@@ -115,7 +132,8 @@ export default {
       codeText: '获取验证码',
       sendable: true,
       loading: false,
-      loadingCode: false
+      loadingCode: false,
+      phoneValidCode: ''
     }
   },
   methods: {
@@ -145,6 +163,7 @@ export default {
                       message: res.error.message,
                       type: 'success'
                     })
+                    this.phoneValidCode = res.result.valiCode
                   }
                   if (res.error.result === 0) {
                     this.getImgCode()
@@ -179,6 +198,8 @@ export default {
       this.$post('/service/business/login/account/userRegister', {
         aae005: this.form.phone,
         phoneCode: this.form.phoneCode,
+        valiCode: this.phoneValidCode,
+        cczy06: 1, // (数据来源）：(1：官网注:3：微官网注册，4：app注册)
         remark: 1 // 单位1，用户2
       }).then(res => {
         this.loading = false
@@ -195,7 +216,7 @@ export default {
       })
     },
     login() {
-      event.$emit('login')
+      event.$emit('login', '', 2)
     }
   },
   created() {
@@ -288,16 +309,24 @@ export default {
     &:after{
       height: 22px;
       width: 22px;
-      content: 'or';
+      content: '';
       display: block;
       position: absolute;
       left: -11px;
       top: 50%;
-      background: #fff;
       z-index: 5;
       color: #999;
       font-size: 14px;
       text-align: center;
+    }
+  }
+  .pass-tip{
+    font-size: 14px;
+    color: #666;
+    text-align: left;
+    line-height: 25px;
+    i{
+      margin: 0 5px 0 0;
     }
   }
 </style>

@@ -164,8 +164,9 @@ exports.htmlPlugin = function () {
       })
     }
     arr.push(new HtmlWebpackPlugin(conf))
-    arr.push(new MyPlugin())
   })
+  // 自定义插件
+  arr.push(new MyPlugin())
   return arr
 }
 /* 这里是添加的部分 ---------------------------- 结束 */

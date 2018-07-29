@@ -34,6 +34,7 @@
 <script>
 import Pagination from '../../../../components/pagination/pagination.vue'
 import Empty from '../../../../components/empty/empty.vue'
+import event from '../../../../common/js/event'
 
 export default {
   components: {
@@ -110,14 +111,29 @@ export default {
               type: 'success'
             })
           }
+          event.$emit('refresh')
           this.getList()
         }
       })
     },
     signAll() {
+      if (!this.selections.length) {
+        this.$message({
+          message: '没有选中任何消息',
+          type: 'warning'
+        })
+        return
+      }
       this.sign(this.selections.join(','), true)
     },
     delConfirm() {
+      if (!this.selections.length) {
+        this.$message({
+          message: '没有选中任何消息',
+          type: 'warning'
+        })
+        return
+      }
       this.$confirm('此操作将永久删除消息, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

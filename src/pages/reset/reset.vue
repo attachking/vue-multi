@@ -30,7 +30,7 @@
         </div>
         <div class="tip" key="tip" v-if="active === 3">
           <p class="success"><i class="el-icon-circle-check-outline"></i></p>
-          <p class="first">您的密码已重置为手机号后六位</p>
+          <p class="first">{{successInfo}}</p>
           <p class="second">
             请尽快
             <el-button type="text" @click="login">登录</el-button>
@@ -111,7 +111,9 @@ export default {
       loadingCode: false,
       valiId: '',
       loading: false,
-      sendable: true
+      sendable: true,
+      successInfo: '',
+      phoneValidCode: ''
     }
   },
   methods: {
@@ -130,7 +132,7 @@ export default {
                 this.loadingCode = true
                 this.$post('/service/business/login/account/verificationCode', {
                   phone: this.form.phone,
-                  remark: 1, // 1：注册时发送  2：注册成功发送  0：认证时发送
+                  remark: 1, // 1：注册时发送  2：注册成功发送  0：认证时发送 3:找回密码
                   valiCode: this.form.valiCode,
                   valiId: this.valiId
                 }).then(res => {
@@ -141,6 +143,7 @@ export default {
                       message: res.error.message,
                       type: 'success'
                     })
+                    this.phoneValidCode = res.result.valiCode
                   }
                   if (res.error.result === 0) {
                     this.getImgCode()
@@ -175,11 +178,13 @@ export default {
       this.$post('/service/business/login/account/findPassword', {
         phone: this.form.phone,
         phoneCode: this.form.phoneCode,
+        valiCode: this.phoneValidCode,
         remark: 2 // 单位1，用户2
       }).then(res => {
         this.loading = false
         if (res.error.result === 1) {
           this.active = 2
+          this.successInfo = res.error.message || ''
           setTimeout(() => {
             this.active = 3
           }, 1000)

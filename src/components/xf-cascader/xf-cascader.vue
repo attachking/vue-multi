@@ -1,6 +1,7 @@
 <!--级联选择器组件（二次开发，带回填功能）-->
 <template>
   <el-cascader
+    ref="input"
     :clearable="clearable"
     :placeholder="placeholder"
     :options="options"
@@ -10,6 +11,7 @@
     @change="handleChange"
     :props="cascaderFmt"
     :show-all-levels="showAllLevels"
+    @blur="handleBlur"
   ></el-cascader>
 </template>
 <script>
@@ -72,7 +74,8 @@ export default {
         value: 'id',
         label: 'text',
         children: 'children'
-      }
+      },
+      currentValues: []
     }
   },
   methods: {
@@ -86,11 +89,20 @@ export default {
           id: value
         })
         this.val = this.back.back()
+        this.currentValues = this.val
+        this.pullName(this.val)
       }
     },
     handleChange(values) {
+      this.currentValues = values
+      if (values.length < 2) {
+        this.$emit('input', '')
+        return
+      }
       this.$emit('input', values[values.length - 1])
-
+      this.pullName(values)
+    },
+    pullName(values) {
       let i = 0
       let names = []
       function deep(arr) {
@@ -103,6 +115,11 @@ export default {
       deep(this.options)
       this.$emit('update:text', names[names.length - 1])
       this.$emit('update:fulltext', names.join(' '))
+    },
+    handleBlur() {
+      if (this.currentValues.length < 2) {
+        this.val = []
+      }
     }
   },
   created() {

@@ -1,25 +1,11 @@
 <template>
   <div class="theme-page">
-    <div class="header">
-      <div class="header-con">
-        <a class="item">
-          <img src="../../common/img/logo-color.png" alt="">
-        </a>
-        <a class="item" href="index.html">首页</a>
-        <a class="item" @click="scrollTo('about')">关于大会</a>
-        <a class="item" @click="scrollTo('process')">大会议程</a>
-        <a class="item" @click="scrollTo('dt')">大会动态</a>
-        <a class="item" @click="scrollTo('topics')">大会专题</a>
-        <a class="item" @click="scrollTo('guide')">会议指南</a>
-        <a class="item" @click="scrollTo('supporting')">赞助单位</a>
-        <a class="item" @click="scrollTo('media')">合作媒体</a>
-      </div>
-    </div>
+    <theme-header></theme-header>
     <div class="banner">
-      <img src="./static/banner.png" alt="">
+      <img src="./static/banner.jpg" alt="">
     </div>
-    <div class="module">
-      <div class="module-con" ref="about">
+    <div class="module normal-bg">
+      <div class="module-con" ref="about" id="about">
         <div class="title">
           <p>关于大会</p>
           <p>ABOUT MEETING</p>
@@ -43,7 +29,31 @@
         </div>
       </div>
     </div>
-    <div class="module process-box" ref="process">
+    <div class="module live-con">
+      <div class="live">
+        <div class="left-top">
+          <span>27</span>
+          <span>2018-10</span>
+        </div>
+        <div class="tit">
+          <span>开幕式直播</span>
+          <span>OPENING CEREMONY LIVE</span>
+        </div>
+        <div class="time">[ 2018.10.27 09:00 ]</div>
+        <div class="live-list">
+          <div class="item"><img src="./static/live-huya.png" alt=""></div>
+          <div class="item"><img src="./static/live-huajiao.png" alt=""></div>
+          <div class="item"><img src="./static/live-yingke.png" alt=""></div>
+        </div>
+        <div class="live-news-list">
+          <a class="live-news-item" target="_blank" v-for="(val, key) in lives" :key="key" :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01" :title="val.cand03">
+            <img :src="val.cand11"  onload="handleBeauty(event)">
+            <div class="tip">{{val.cand03 || '--'}}</div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="module process-box normal-bg" ref="process" id="process">
       <div class="module-con">
         <div class="title">
           <p>大会议程</p>
@@ -165,7 +175,7 @@
         </transition>
       </div>
     </div>
-    <div class="module dt-box" ref="dt">
+    <div class="module dt-box" ref="dt" id="dt">
       <div class="module-con">
         <div class="title">
           <p>大会动态</p>
@@ -192,11 +202,11 @@
           </div>
         </div>
         <div class="dt-more">
-          <a class="more" href="newsList.html#/module?channel_code=DHDT">查看更多</a>
+          <a class="more" :href="'newsList.html?lang=' + (en ? 'en' : 'cn') + '#/module?channel_code=DHDT' + (en ? '_EN' : '')">查看更多</a>
         </div>
       </div>
     </div>
-    <div class="module topics-box" ref="topics">
+    <div class="module topics-box normal-bg" ref="topics" id="topics">
       <div class="module-con">
         <div class="title">
           <p>大会专题</p>
@@ -208,11 +218,13 @@
         </div>
         <transition name="el-fade-in" mode="out-in">
           <div class="topics-con" v-if="currentTab1 === 0" key="SDZT">
-            <a :title="val.cand03" :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01" class="topics-item" v-for="(val, key) in SDZT" :key="key">
+            <a :title="val.cand03" :href="'subject.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01 + '&key=' + key" class="topics-item" v-for="(val, key) in SDZT" :key="key">
               <div class="topics-img">
                 <img :src="val.cand11" onload="handleBeauty(event)">
               </div>
-              <div class="topics-info">{{val.cand03}}</div>
+              <div class="topics-info">
+                <div style="height: 100%; width: 100%; overflow: hidden;">{{val.cand03}}</div>
+              </div>
             </a>
           </div>
           <div class="topics-con" v-if="currentTab1 === 1" key="HNXHD">
@@ -220,13 +232,15 @@
               <div class="topics-img">
                 <img :src="val.cand11" onload="handleBeauty(event)">
               </div>
-              <div class="topics-info">{{val.cand03}}</div>
+              <div class="topics-info">
+                <div style="height: 100%; width: 100%; overflow: hidden;">{{val.cand03}}</div>
+              </div>
             </a>
           </div>
         </transition>
       </div>
     </div>
-    <div class="module guide-box" ref="guide">
+    <div class="module guide-box" ref="guide" id="guide">
       <div class="module-con">
         <div class="title">
           <p>会议指南</p>
@@ -256,7 +270,7 @@
               <p>地铁<br><span>METRO</span></p>
             </div>
             <div class="card-tit-item" :style="'background:' + cards[4] + ';'" @mouseover="handleCard(4)">
-              <img src="./static/train.png" alt="">
+              <img src="./static/plane.png" alt="">
               <p>飞机<br><span>AIRCRAFT</span></p>
             </div>
             <div class="card-tit-item" :style="'background:' + cards[5] + ';'" @mouseover="handleCard(5)">
@@ -321,10 +335,10 @@
         </div>
       </div>
     </div>
-    <div class="module supporting-box" ref="supporting">
+    <div class="module supporting-box normal-bg" ref="supporting" id="supporting">
       <div class="module-con">
         <div class="title">
-          <p>赞助单位</p>
+          <p>合作媒体</p>
           <p>SUPPORTING AGENCY</p>
         </div>
         <div class="supporting-con">
@@ -334,7 +348,7 @@
         </div>
       </div>
     </div>
-    <div class="module supporting-box" ref="media">
+    <!--<div class="module supporting-box" ref="media">
       <div class="module-con">
         <div class="title">
           <p>合作媒体</p>
@@ -346,7 +360,7 @@
           </a>
         </div>
       </div>
-    </div>
+    </div>-->
     <xf-footer></xf-footer>
     <right-menu ref="right" @onscroll="stop"></right-menu>
   </div>
@@ -355,9 +369,12 @@
 import XfFooter from '../../components/xf-footer/xf-footer.vue'
 import $ from 'jquery'
 import RightMenu from '../../components/right-menu/right-menu.vue'
+import {queryParse} from '../../common/js/utils'
+import ThemeHeader from '../../components/theme-header/theme-header.vue'
 
 export default {
   components: {
+    ThemeHeader,
     RightMenu,
     XfFooter},
   data() {
@@ -372,7 +389,9 @@ export default {
       currentTab2: 0, // 大会议程tab
       currentTab1: 0, // 十大专题or河南行活动
       ZZDW: [],
-      HZMT: []
+      HZMT: [],
+      lives: [],
+      en: queryParse(location.search).lang === 'en'
     }
   },
   methods: {
@@ -389,6 +408,7 @@ export default {
       this.currentCard = index
     },
     scrollTo(el) {
+      if (!this.$refs[el]) return
       this.$refs.right.stop()
       this.stop()
       this.timer = setInterval(() => {
@@ -412,7 +432,7 @@ export default {
         rowsNum: 4,
         currentPage: 1,
         countsNum: 50,
-        channel_code: 'DHDT'
+        channel_code: 'DHDT' + (this.en ? '_EN' : '')
       }).then(res => {
         this.DHDT1 = res.result
       })
@@ -422,17 +442,17 @@ export default {
         rowsNum: 4,
         currentPage: 2,
         countsNum: 50,
-        channel_code: 'DHDT'
+        channel_code: 'DHDT' + (this.en ? '_EN' : '')
       }).then(res => {
         this.DHDT2 = res.result
       })
     },
     getSDZT() { // 十大专题
       this.$post('/service/business/sms/sms/getContentList', {
-        rowsNum: 6,
+        rowsNum: 10,
         currentPage: 1,
         countsNum: 50,
-        channel_code: 'SDZT'
+        channel_code: 'SDZT' + (this.en ? '_EN' : '')
       }).then(res => {
         this.SDZT = res.result
       })
@@ -442,7 +462,7 @@ export default {
         rowsNum: 6,
         currentPage: 1,
         countsNum: 50,
-        channel_code: 'HNXHD'
+        channel_code: 'HNXHD' + (this.en ? '_EN' : '')
       }).then(res => {
         this.HNXHD = res.result
       })
@@ -460,6 +480,16 @@ export default {
       }).then(res => {
         this.HZMT = res.result.links
       })
+    },
+    getLives() { // 开幕式新闻
+      this.$post('/service/business/sms/sms/getContentList', {
+        rowsNum: 4,
+        currentPage: 1,
+        countsNum: 50,
+        channel_code: 'KMSZB' + (this.en ? '_EN' : '')
+      }).then(res => {
+        this.lives = res.result
+      })
     }
   },
   created() {
@@ -471,7 +501,17 @@ export default {
     this.getSDZT()
     this.getHNXHD()
     this.getZZDW()
-    this.getHZMT()
+    this.getLives()
+    // this.getHZMT()
+  },
+  mounted() {
+    const to = queryParse(location.search).to
+    if (to) {
+      location.hash = '#' + to
+    }
+    $(window).on('hashchange', () => {
+      this.scrollTo(location.hash.substr(2))
+    })
   }
 }
 </script>
@@ -481,42 +521,6 @@ export default {
     text-decoration: none;
   }
   .theme-page{
-    .header{
-      height: 100px;
-      background: #fff;
-      border-bottom: 1px solid #d9d9d9;
-      .header-con{
-        width: 1200px;
-        margin: 0 auto;
-        .item{
-          display: inline-block;
-          height: 100px;
-          line-height: 100px;
-          vertical-align: middle;
-          color: #666;
-          width: 124px;
-          text-align: center;
-          &:first-child{
-            width: 150px;
-            overflow: hidden;
-            text-align: right;
-            &:hover{
-              cursor: default;
-              background: #fff;
-            }
-            img{
-              width: 93px;
-              height: 93px;
-              margin: 3px 0 0 0;
-            }
-          }
-          &:hover{
-            cursor: pointer;
-            background: #f3f3f3;
-          }
-        }
-      }
-    }
     .banner{
       width: 100%;
       img{
@@ -596,7 +600,6 @@ export default {
       }
     }
     .process-box{
-      background: #f3f3f3;
       padding: 100px 0;
       .process-con{
         padding: 10px 0 0 0;
@@ -724,7 +727,6 @@ export default {
       }
     }
     .topics-box{
-      background: #f3f3f3;
       padding: 117px 0;
       .topics-con{
         padding: 30px 0 0 0;
@@ -753,6 +755,7 @@ export default {
           background: #e2e2e2;
           color: #333;
           padding: 15px 12px;
+          overflow: hidden;
         }
       }
     }
@@ -811,8 +814,8 @@ export default {
         @include clearFixed;
         .supporting-item{
           float: left;
-          width: 215px;
-          height: 138px;
+          width: 270px;
+          height: 175px;
           border: 1px solid #d9d9d9;
           margin-right: 30px;
           margin-bottom: 30px;
@@ -823,10 +826,118 @@ export default {
             opacity: .9;
             transform: scale(1.1);
           }
-          &:nth-child(5n){
+          &:nth-child(4n){
             margin-right: 0;
           }
         }
+      }
+    }
+  }
+  .live-con{
+    background: url("./static/live-bg.png") no-repeat;
+    background-size: 100% 100%;
+  }
+  .live{
+    width: 1200px;
+    margin: 0 auto;
+    padding: 75px 0;
+    position: relative;
+    .left-top{
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 124px;
+      background: url("./static/live-1.png") no-repeat;
+      background-size: 100% 100%;
+      padding: 0 10px;
+      span{
+        color: #fff;
+        display: inline-block;
+        width: 100%;
+        text-align: center;
+        padding: 5px 0;
+        &:nth-child(1){
+          font-size: 36px;
+          border-bottom: 1px solid $--color-primary;
+        }
+        &:nth-child(2){
+          font-size: 16px;
+        }
+      }
+    }
+    .tit{
+      text-align: center;
+      color: #fff;
+      span{
+        display: inline-block;
+        width: 100%;
+        &:nth-child(1){
+          font-size: 32px;
+        }
+        &:nth-child(2){
+          font-size: 16px;
+        }
+      }
+    }
+    .time{
+      text-align: center;
+      font-size: 30px;
+      color: #fff001;
+      padding: 10px 0;
+    }
+    .live-list{
+      padding: 20px 0 40px 0;
+      @include clearFixed;
+      .item{
+        width: 382px;
+        height: 150px;
+        margin: 0 8px;
+        float: left;
+        padding: 10px;
+        background: url("./static/live-2.png");
+        background-size: 100% 100%;
+        display: block;
+        img{
+          width: 100%;
+          &:hover{
+            opacity: .9;
+          }
+        }
+      }
+    }
+    .live-news-list{
+      border-top: 1px solid #493c64;
+      padding: 40px 0 20px 0;
+      @include clearFixed;
+    }
+    .live-news-item{
+      width: 278px;
+      height: 247px;
+      position: relative;
+      float: left;
+      margin-bottom: 28px;
+      margin-right: 28px;
+      overflow: hidden;
+      display: block;
+      &:nth-child(4n){
+        margin-right: 0;
+      }
+      &:hover{
+        opacity: .9;
+      }
+      .tip{
+        height: 70px;
+        width: 100%;
+        background: rgba(32,159,180,.5);
+        color: #fff;
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        z-index: 2;
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
       }
     }
   }

@@ -16,7 +16,7 @@
         </div>
         <div class="findWorker">
           <h3>找人才</h3>
-          <p>大量人才简历一览无余</p>
+          <p>优秀人才信息一览无余</p>
           <div class="workerImg">
             <img src="./worker.png" alt="">
           </div>
@@ -30,7 +30,7 @@
       <div class="goLogin">
         <p>
           已有账号，请
-          <a href="javascript:;" @click="login">登录</a>
+          <a href="javascript:;" @click="login(1)">个人登录</a>&nbsp;/&nbsp;<a href="javascript:;" @click="login(2)">单位登录</a>
         </p>
       </div>
     </div>
@@ -46,8 +46,8 @@ export default {
     }
   },
   methods: {
-    login() {
-      event.$emit('login')
+    login(type) {
+      event.$emit('login', '', type)
     }
   }
 }

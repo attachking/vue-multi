@@ -2,11 +2,12 @@
 <template>
   <div class="beauty">
     <div class="list">
-      <div class="item" v-for="val in list" :key="val.caoa01">
+      <div class="item" v-for="val in list" :key="val.cand01">
         <el-card>
-          <div class="img">
-            <img :src="val.caoa02" onload="handleBeauty(event)" @click="showImg(val)">
-          </div>
+          <a class="img" :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01">
+            <img :src="val.cand11" onload="handleBeauty(event)">
+          </a>
+          <div class="tip">{{val.cand19}}</div>
         </el-card>
       </div>
     </div>
@@ -32,15 +33,26 @@ export default {
       text: '',
       textLeft: 0,
       textBottom: 0,
-      textWidth: 0
+      textWidth: 0,
+      searchData: {
+        rowsNum: 10,
+        currentPage: 1,
+        countsNum: 50,
+        channel_code: ''
+      }
     }
   },
   methods: {
-    getList() {
+    getList2() {
       this.$post('/service/business/fm/pic/picInfo/getPicList', {
         caoa04: 130,
         rowsNum: 12
       }).then(res => {
+        this.list = res.result
+      })
+    },
+    getList() {
+      this.$post('/service/business/sms/sms/getContentList', this.searchData).then(res => {
         this.list = res.result
       })
     },
@@ -63,19 +75,32 @@ export default {
       this.textLeft = $el.offset().left
       this.textBottom = $el.offset().top
       this.showText = true
+    },
+    handleRoute(route) {
+      if (!route.query.channel_code) return
+      this.searchData.channel_code = route.query.channel_code
+      this.searchData.currentPage = 1
+      this.getList()
     }
   },
   beforeRouteLeave(to, fro, next) {
-    $(document).off('keydown')
+    // $(document).off('keydown')
     next(true)
   },
+  watch: {
+    $route(newVal) {
+      this.handleRoute(newVal)
+    }
+  },
   created() {
+    /*
     $(document).on('keydown', e => {
       if (e.keyCode === 27) {
         this.hide()
       }
     })
-    this.getList()
+    */
+    this.handleRoute(this.$route)
   }
 }
 </script>
@@ -89,9 +114,10 @@ export default {
       overflow: hidden;
       margin: 10px 0 10px 10px;
       .img{
-        width: 238px;
+        width: 100%;
         height: 200px;
         overflow: hidden;
+        display: block;
         &:hover{
           cursor: pointer;
           opacity: .9;
@@ -148,5 +174,11 @@ export default {
       cursor: pointer;
       opacity: 1;
     }
+  }
+  .tip{
+    padding: 10px 0 0 0;
+    width: 100%;
+    font-size: 14px;
+    @include ellipsis;
   }
 </style>

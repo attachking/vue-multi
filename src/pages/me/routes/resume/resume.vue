@@ -67,10 +67,10 @@
           <el-form-item label="户口所在地">
             <span class="fix-width">{{info1.aab305name || '--'}}</span>
           </el-form-item>
-          <el-form-item label="邮箱">
+          <el-form-item label="电子邮箱">
             <span class="fix-width">{{info1.aae015 || '--'}}</span>
           </el-form-item>
-          <el-form-item label="现居住地">
+          <el-form-item label="现居住地址">
             <span class="fix-width">{{info1.aab301 || '--'}}</span>
           </el-form-item>
         </el-form>
@@ -83,6 +83,7 @@
           </el-form-item>
           <el-form-item prop="aac006" label="出生日期">
             <el-date-picker
+              :picker-options="pickerOptions"
               v-model="form1.aac006"
               :editable="false"
               type="date"
@@ -157,10 +158,10 @@
             </el-select>-->
             <xf-cascader :options="dictionaries.TAB_CITY3" v-model="form1.aab305" placeholder="请选择户口所在地" clearable></xf-cascader>
           </el-form-item>
-          <el-form-item prop="aab301" label="现居住地">
-            <el-input v-model.trim="form1.aab301" placeholder="请输入现居住地" clearable></el-input>
+          <el-form-item prop="aab301" label="现居住地址">
+            <el-input v-model.trim="form1.aab301" placeholder="请输入现居住地址" clearable></el-input>
           </el-form-item>
-          <el-form-item prop="aae015" label="邮箱">
+          <el-form-item prop="aae015" label="电子邮箱">
             <el-input v-model.trim="form1.aae015" placeholder="请输入邮箱" clearable></el-input>
           </el-form-item>
           <el-form-item style="width: 100%;text-align: center;">
@@ -220,7 +221,7 @@
       </transition>
     </div>
     <div class="card-tit">
-      <span class="item active"><i class="xffont font-xueshimao"></i>教育经历</span>
+      <span class="item active"><i class="xffont font-xueshimao"></i>教育背景</span>
       <el-button title="添加" icon="el-icon-plus" size="mini" circle @click="toggle('formEducation')"></el-button>
     </div>
     <div class="container">
@@ -314,7 +315,7 @@
             <el-form-item label="起止时间">
               <span>{{val.aae030}} -- {{val.aae031}}</span>
             </el-form-item>
-            <el-form-item label="公司名称">
+            <el-form-item label="单位名称">
               <span>{{val.aac045 || '--'}}</span>
             </el-form-item>
             <el-form-item label="岗位名称">
@@ -391,9 +392,15 @@
               </template>
             </el-table-column>
             <el-table-column
+              label="获得日期">
+              <template slot-scope="scope">
+                <span>{{scope.row.aac0c4 || '--'}}</span>
+              </template>
+            </el-table-column>
+            <el-table-column
               label="证书类别">
               <template slot-scope="scope">
-                <span>{{scope.row.cczy06Str}}</span>
+                <span>{{scope.row.cczy06Str || '--'}}</span>
               </template>
             </el-table-column>
             <el-table-column
@@ -424,13 +431,13 @@
             <el-form-item prop="bac0c2" label="证书名称">
               <el-input v-model="form5.bac0c2" placeholder="请输入证书名称"></el-input>
             </el-form-item>
-            <el-form-item prop="aac0c4" label="开始时间">
+            <el-form-item prop="aac0c4" label="获得日期">
               <el-date-picker
                 :editable="false"
                 v-model="form5.aac0c4"
                 type="date"
                 value-format="yyyy-MM-dd"
-                placeholder="选择开始日期">
+                placeholder="获得日期">
               </el-date-picker>
             </el-form-item>
             <el-form-item prop="aac0c3" label="证书编号">
@@ -578,21 +585,21 @@
         <el-select v-model="formSchool.province" filterable placeholder="请选择省份" style="width: 35%;">
           <el-option v-for="item in dictionaries.tab_university_city" :key="item.code" :label="item.name" :value="item.code"></el-option>
         </el-select>
-        <el-select v-model="formSchool.school" filterable placeholder="请选择毕业院校" style="width: 63%;" remote :remote-method="getSchoolList" :loading="remoteLoading">
+        <el-select v-model="formSchool.school" filterable placeholder="请输入搜索院校" style="width: 63%;" remote :remote-method="getSchoolList" :loading="remoteLoading">
           <el-option v-for="item in schoolList" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="confirmSchool">确 定</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 <script>
 import {mapGetters} from 'vuex'
-import {echo} from '../../../../common/js/utils'
-import {BASE_URL} from '../../../../common/js/config'
+import {echo, reg} from '../../../../common/js/utils'
+import {FILE_URL} from '../../../../common/js/config'
 import event from '../../../../common/js/event'
 import XfCascader from '../../../../components/xf-cascader/xf-cascader.vue'
 
@@ -608,10 +615,10 @@ export default {
     let _this = this
     return {
       fileList: [],
-      baseUrl: BASE_URL,
+      baseUrl: FILE_URL,
       uploadForm: {
-        picSize: 5120,
-        remark: 2,
+        picSize: 2048,
+        remark: 170,
         _token: this.$userInfo.token,
         ccmu17: this.$userInfo.ccmu17,
         userId: this.$userInfo.ccmu17 === 1 ? this.$userInfo.aac001 : this.$userInfo.aab001,
@@ -653,16 +660,16 @@ export default {
         aac003: [{
           required: true,
           message: '请输入姓名',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 10,
           message: '最多10个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         aac002: [{
           required: true,
           message: '请输入身份证号',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           validator(rule, value, callback) {
             if (/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(value)) {
@@ -671,7 +678,7 @@ export default {
               callback(new Error('请输入正确的身份证号'))
             }
           },
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           // 根据身份证号读取生日，性别
           validator(rule, value, callback) {
@@ -679,7 +686,7 @@ export default {
               _this.$post('/service/business/person/personInfo/getInfoByCard', {
                 cardNo: _this.form1.aac002,
                 aac001: _this.$userInfo.aac001
-              }).then(res => {
+              }, false).then(res => {
                 if (res.error && res.error.result === 0) {
                   callback(new Error(res.error.message))
                 } else {
@@ -699,11 +706,25 @@ export default {
           required: true,
           message: '请选择出生日期',
           trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            if (!value) {
+              callback()
+              return
+            }
+            let date = new Date(value.replace(/-/g, '/'))
+            let now = new Date()
+            if (date.getFullYear() > now.getFullYear() - 120 && date.getTime() < now.getTime() - 18 * 365 * 24 * 60 * 60 * 1000) {
+              callback()
+            } else {
+              callback(new Error('只有大于18岁，小于120岁才能报名'))
+            }
+          }
         }],
         aae005: [{
           required: true,
           message: '请输入您的手机号',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           validator(rule, value, callback) {
             if (/^[1][3,4,5,7,8,9][0-9]{9}$/.test(value)) {
@@ -716,15 +737,16 @@ export default {
         age: [{
           required: true,
           message: '请输入年龄',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           validator(rule, value, callback) {
-            if (/^[1-9][0-9]{0,1}$$/.test(value)) {
+            if (/^[1-9][0-9]{0,1}$/.test(value)) {
               callback()
             } else {
               callback(new Error('请输入小于99的整数'))
             }
-          }
+          },
+          trigger: 'blur'
         }],
         aac004: [{
           required: true,
@@ -758,21 +780,31 @@ export default {
         }],
         aab301: [{
           required: true,
-          message: '请输入现居住地',
-          trigger: 'change'
+          message: '请输入现居住地址',
+          trigger: 'blur'
         }, {
           max: 30,
           message: '最多30个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         aac040: [{
-          required: true,
+          required: false,
           message: '请输入专业名称',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 30,
           message: '最多30个字符',
-          trigger: 'change'
+          trigger: 'blur'
+        }],
+        aae015: [{
+          validator(rule, value, callback) {
+            if (reg.email(value)) {
+              callback()
+            } else {
+              callback(new Error('请输入正确格式的邮箱'))
+            }
+          },
+          trigger: 'blur'
         }]
       },
       // 求职意向
@@ -797,12 +829,12 @@ export default {
         bca111: [{
           required: true,
           message: '请选择期望岗位',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         acb202: [{
           required: true,
           message: '请选择期望工作地点',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         acc034: [{
           required: true,
@@ -848,21 +880,21 @@ export default {
               callback(new Error('结束时间需要大于开始时间'))
             }
           },
-          trigger: 'change'
+          trigger: 'blur'
         }],
         aac045: [{
           required: true,
           message: '请输入学校名称',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 20,
           message: '最多20个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         acc01g: [{
           max: 20,
           message: '最多20个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         atc011: [{
           required: true,
@@ -892,11 +924,11 @@ export default {
           trigger: 'change'
         }, {
           validator(rule, value, callback) {
-            if (!_this.form3.aae030 || !value) {
+            if (!_this.form4.aae030 || !value) {
               callback()
               return
             }
-            let begin = new Date(_this.form3.aae030.replace(/-/g, '/')).getTime()
+            let begin = new Date(_this.form4.aae030.replace(/-/g, '/')).getTime()
             let end = new Date(value.replace(/-/g, '/')).getTime()
             if (begin < end) {
               callback()
@@ -904,34 +936,34 @@ export default {
               callback(new Error('结束时间需要大于开始时间'))
             }
           },
-          trigger: 'change'
+          trigger: 'blur'
         }],
         aac045: [{
           required: true,
           message: '请输入公司名称',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 25,
           message: '最多25个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         aac0b3: [{
           required: true,
           message: '请输入岗位名称',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 25,
           message: '最多25个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         aac0b4: [{
           required: true,
           message: '请输入岗位描述',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 200,
           message: '最多200个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }]
       },
       formWork: false,
@@ -949,11 +981,11 @@ export default {
         bac0c2: [{
           required: true,
           message: '请输入证书名称',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 20,
           message: '最多20个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         cczy06: [{
           required: true,
@@ -963,12 +995,12 @@ export default {
         aac0c3: [{
           max: 25,
           message: '最多25个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         aae013: [{
           max: 20,
           message: '最多20个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         aac0c4: [{
           required: true,
@@ -989,11 +1021,11 @@ export default {
         agencyname: [{
           required: true,
           message: '请输入机构名称',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 20,
           message: '最多20个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         starttime: [{
           required: true,
@@ -1012,22 +1044,26 @@ export default {
             }
             let begin = new Date(_this.form6.starttime.replace(/-/g, '/')).getTime()
             let end = new Date(value.replace(/-/g, '/')).getTime()
+            if (end > new Date().getTime()) {
+              callback(new Error('结束时间不能大于当前时间'))
+              return
+            }
             if (begin < end) {
               callback()
             } else {
               callback(new Error('结束时间需要大于开始时间'))
             }
           },
-          trigger: 'change'
+          trigger: 'blur'
         }],
         traindesc: [{
           required: true,
           message: '请输入培训详情',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 200,
           message: '最多200个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }]
       },
       trainList: [],
@@ -1040,11 +1076,11 @@ export default {
         aac042: [{
           required: true,
           message: '请输入技能描述',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 150,
           message: '最多150个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }]
       },
       formSkill: false,
@@ -1056,11 +1092,11 @@ export default {
         aac041: [{
           required: true,
           message: '请输入自我介绍',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 150,
           message: '最多150个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }]
       },
       formDesc: false,
@@ -1080,7 +1116,13 @@ export default {
       remoteLoading: false,
       addressList: [],
       addressLoading: false,
-      secret: false
+      secret: false,
+      pickerOptions: {
+        disabledDate(date) {
+          let now = new Date()
+          return !(date.getFullYear() > now.getFullYear() - 120 && date.getTime() < now.getTime() - 18 * 365 * 24 * 60 * 60 * 1000)
+        }
+      }
     }
   },
   methods: {
@@ -1096,11 +1138,18 @@ export default {
       }
       if (name === 'certForm') {
         this.aac0c1 = ''
+        this.fileList = []
         echo(this.form5)
       }
       if (name === 'formTrain') {
         echo(this.form6)
         this.trainId = ''
+      }
+      if (name === 'formSkill') {
+        echo(this.form7, this.info1)
+      }
+      if (name === 'formDesc') {
+        echo(this.form8, this.info1)
       }
     },
     handleEnter(name) {
@@ -1126,6 +1175,7 @@ export default {
                 type: 'success'
               })
               this.getBase()
+              event.$emit('refresh')
             }
           }).catch(() => {
             this.loading1 = false
@@ -1423,6 +1473,7 @@ export default {
           this.$post('/service/business/person/stuSkill/skillDescSave.xf', form).then(res => {
             this.loading7 = false
             if (res.result.result === 1) {
+              this.formSkill = false
               this.$message({
                 message: res.result.message,
                 type: 'success'
@@ -1446,6 +1497,7 @@ export default {
           this.$post('/service/business/person/stuSkill/skillDescSave.xf', form).then(res => {
             this.loading8 = false
             if (res.result.result === 1) {
+              this.formDesc = false
               this.$message({
                 message: res.result.message,
                 type: 'success'
@@ -1545,10 +1597,6 @@ export default {
         acb208 // 1保密，0公开
       }).then(res => {
         if (res.result && res.result.result === 1) {
-          this.$message({
-            message: res.result.message,
-            type: 'success'
-          })
           setTimeout(() => {
             event.$emit('refresh')
           }, 500)
@@ -1572,6 +1620,9 @@ export default {
     this.getCert()
     this.getTrainList()
     this.secret = this.personalInfo.resumeState === 1
+    this.$watch('personalInfo', newVal => {
+      this.secret = newVal.resumeState === 1
+    })
     this.$watch('secret', newVal => {
       setTimeout(() => {
         this.handleSecret(newVal ? 1 : 0)
@@ -1667,6 +1718,7 @@ export default {
     white-space: pre-wrap;
     word-break: break-all;
     max-width: 850px;
+    font-size: 14px;
   }
   .no-data{
     color: #666;

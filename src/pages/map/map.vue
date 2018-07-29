@@ -133,8 +133,8 @@
           <div class="right">
             <div class="list">
               <div class="item" v-for="val in list" :key="val.acb210">
-                <a href="" class="pos-name">{{val.cca113 || '--'}}</a>
-                <a href="" class="corp-name">{{val.aab004 || '--'}}</a>
+                <a :href="'job.html?acb210=' + val.acb210" class="pos-name" target="_blank">{{val.cca113 || '--'}}</a>
+                <a :href="'corp.html?aab001=' + val.aab001" class="corp-name" target="_blank">{{val.aab004 || '--'}}</a>
                 <p class="other">
                   <span>学历：{{val.aac012 || '--'}}</span>
                   <span class="red">{{val.acc034Name || '--'}}</span>
@@ -178,6 +178,7 @@ ComplexCustomOverlay.prototype.initialize = function (map) {
   var _this = this
   this._map = map
   var div = this._div = document.createElement('div')
+  div.className = 'hover-z-index'
   div.style.position = 'absolute'
   div.style.zIndex = BMap.Overlay.getZIndex(this._point.lat)
   div.style.height = '24px'
@@ -242,8 +243,8 @@ export default {
         TAB_EDUCATION: [], // 学历
         TAB_CITY: [], // 地区
         CRAFT_AS: [], // 岗位
-        TAB_UNITNATURE: [], // 企业性质
-        TAB_PSCALE: [] // 企业规模
+        TAB_UNITNATURE: [], // 单位性质
+        TAB_PSCALE: [] // 单位规模
       },
       form: {
         bca112: '', // 关键字
@@ -257,7 +258,7 @@ export default {
         acb21i: '', // 工作性质
         aac011: '', // 学历
         aab019: '', // 单位性质
-        aab056: '', // 企业规模
+        aab056: '', // 单位规模
         updateDates: '', // 更新时间
         rowsNum: 6,
         currentPage: 1
@@ -326,8 +327,8 @@ export default {
           TAB_EDUCATION: res.result.TAB_EDUCATION, // 学历
           TAB_CITY: res.result.TAB_CITY, // 地区
           CRAFT_AS: res.result.CRAFT_AS, // 岗位
-          TAB_UNITNATURE: res.result.TAB_UNITNATURE, // 企业性质
-          TAB_PSCALE: res.result.TAB_PSCALE // 企业规模
+          TAB_UNITNATURE: res.result.TAB_UNITNATURE, // 单位性质
+          TAB_PSCALE: res.result.TAB_PSCALE // 单位规模
         }
       })
     },

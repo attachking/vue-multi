@@ -1,4 +1,4 @@
-<!--企业基本信息-->
+<!--单位基本信息-->
 <template>
   <div class="corp-info" ref="info">
     <transition name="el-fade-in" mode="out-in" @enter="handleEnter">
@@ -107,6 +107,7 @@
 import {mapGetters} from 'vuex'
 import XfCascader from '../../../../../components/xf-cascader/xf-cascader.vue'
 import {echo, reg} from '../../../../../common/js/utils'
+import event from '../../../../../common/js/event'
 
 const BMap = window.BMap
 
@@ -122,8 +123,8 @@ export default {
       dialogVisible: false,
       formShow: false,
       form: {
-        aab004: '', // 企业名称
-        aab019: '', // 企业性质
+        aab004: '', // 单位名称
+        aab019: '', // 单位性质
         ccpr10: '', // 行业类型
         aab056: '', // 人员规模
         aaa021: '', // 所在区域
@@ -144,8 +145,8 @@ export default {
           message: '请输入单位名称',
           trigger: 'change'
         }, {
-          max: 20,
-          message: '最多20个字符',
+          max: 50,
+          message: '最多50个字符',
           trigger: 'change'
         }],
         aab019: [{
@@ -237,6 +238,10 @@ export default {
           trigger: 'change'
         }],
         acb206: [{
+          required: true,
+          message: '请输入单位简介',
+          trigger: 'change'
+        }, {
           max: 1000,
           message: '最多不超过1000个字符',
           trigger: 'change'
@@ -294,6 +299,7 @@ export default {
         echo(this.form, res.result)
         this.info = res.result
         this.formShow = false
+        event.$emit('authen')
       }).catch(() => {
         loading.close()
       })

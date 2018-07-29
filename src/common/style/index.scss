@@ -47,3 +47,19 @@ a{
 .el-popover{
   border: 1px solid #ebebeb;
 }
+.el-cascader-menu__item--extensible:after {
+  right: 6px;
+}
+.hover-z-index{
+  &:hover{
+    z-index: 500 !important;
+  }
+}
+.normal-bg{
+  background: #fff url("../../pages/subject/static/bg2.png") repeat;
+}
+.hover-opa{
+  &:hover{
+    opacity: .95;
+  }
+}

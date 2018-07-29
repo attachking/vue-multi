@@ -57,11 +57,12 @@ export default {
       this.getList()
     },
     handleLogin() {
-      this.$alert(`登陆后可查看详细信息`, '提示', {
+      this.$confirm(`登陆后可查看详细信息`, '提示', {
         confirmButtonText: '确定',
-        callback: action => {
-          event.$emit('login')
-        }
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        event.$emit('login')
       })
     }
   },

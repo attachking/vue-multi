@@ -115,8 +115,14 @@ export default {
       })
     },
     confirmSend(val) {
-      if (!this.checked.length && !val) return
-      this.$confirm('确认投递?', '提示', {
+      if (!this.checked.length && !val) {
+        this.$message({
+          message: '没有选取任何选项',
+          type: 'warning'
+        })
+        return
+      }
+      this.$confirm('确定向该单位投递简历?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -129,7 +135,7 @@ export default {
           let arr = []
           this.checked.forEach(item => {
             let index = this.list.findIndex(val => val.acb210 === item)
-            if (Number(this.list[index].acb210) === 0) {
+            if (Number(this.list[index].noResume) === 0) {
               arr.push(item)
             }
           })
@@ -137,7 +143,7 @@ export default {
             this.sendResume(arr.join(','))
           } else {
             this.$message({
-              message: '请勿重复投递',
+              message: '您已经投递过该单位的该岗位',
               type: 'warning'
             })
           }
@@ -145,8 +151,14 @@ export default {
       })
     },
     delAll() {
-      if (!this.checked.length) return
-      this.$confirm('确认删除收藏?', '提示', {
+      if (!this.checked.length) {
+        this.$message({
+          message: '没有选取任何选项',
+          type: 'warning'
+        })
+        return
+      }
+      this.$confirm('确认取消收藏?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

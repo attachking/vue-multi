@@ -69,7 +69,13 @@ export default {
       })
     },
     delAll() {
-      if (!this.checked.length) return
+      if (!this.checked.length) {
+        this.$message({
+          message: '没有选取任何选项',
+          type: 'warning'
+        })
+        return
+      }
       this.$confirm('确认取消收藏?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

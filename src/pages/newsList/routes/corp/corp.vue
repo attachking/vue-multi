@@ -110,8 +110,8 @@ export default {
         aab004: '', // 关键字
         ccpr10: '', // 行业类别
         aab301: '', // 城市
-        aab019: '', // 企业性质
-        aab056: '', // 企业规模
+        aab019: '', // 单位性质
+        aab056: '', // 单位规模
         updateDates: '' // 更新时间
       },
       showMore: false,

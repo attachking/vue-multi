@@ -74,7 +74,8 @@ export default {
   components: {XfCascader},
   computed: {
     ...mapGetters([
-      'dictionaries'
+      'dictionaries',
+      'corpInfo'
     ])
   },
   data() {
@@ -103,100 +104,100 @@ export default {
         projectName: [{
           required: true,
           message: '请输入项目名称',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 100,
           message: '最多100个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         projectCategory: [{
           required: true,
           message: '请输入项目类别',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 100,
           message: '最多100个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         projectIntroduction: [{
           required: true,
           message: '请输入项目介绍',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 500,
           message: '最多500个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         projectProblem: [{
           required: true,
           message: '请输入项目需研究或解决的问题',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 500,
           message: '最多500个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         projectFundresourse: [{
           required: true,
           message: '请选择项目经费来源',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 100,
           message: '最多100个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         projectWorktype: [{
           required: true,
-          message: '请输入合作方式',
-          trigger: 'change'
+          message: '请选择合作方式',
+          trigger: 'blur'
         }, {
           max: 50,
           message: '最多50个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         projectTreatment: [{
           required: true,
-          message: '请输入待遇情况',
-          trigger: 'change'
+          message: '请选择待遇情况',
+          trigger: 'blur'
         }, {
           max: 100,
           message: '最多100个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         /*
         aab004: [{
           required: true,
           message: '请输入立项单位',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 100,
           message: '最多100个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         */
         projectJoinUnit: [{
           max: 100,
           message: '最多100个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         projectWorkCode: [{
           required: true,
           message: '请选择工作地点',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         projectContacts: [{
           required: true,
           message: '请输入联系人姓名',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 10,
           message: '最多10个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         projectPhone: [{
           required: true,
           message: '请输入联系人手机号',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           validator(rule, value, callback) {
             if (reg.phone(value)) {
@@ -205,26 +206,26 @@ export default {
               callback(new Error('请输入正确的手机号'))
             }
           },
-          trigger: 'change'
+          trigger: 'blur'
         }],
         projectTel: [{
           required: false,
           message: '请输入固定电话',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           validator(rule, value, callback) {
             if (reg.tel(value)) {
               callback()
             } else {
-              callback(new Error('请输入正确的手机号'))
+              callback(new Error('请输入正确的电话号码'))
             }
           },
-          trigger: 'change'
+          trigger: 'blur'
         }],
         projectEmail: [{
           required: false,
           message: '请输入邮箱',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           validator(rule, value, callback) {
             if (reg.email(value)) {
@@ -233,12 +234,12 @@ export default {
               callback(new Error('请输入正确的邮箱'))
             }
           },
-          trigger: 'change'
+          trigger: 'blur'
         }],
         remark: [{
           max: 500,
           message: '最多500个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }]
       }
     }
@@ -272,7 +273,7 @@ export default {
         this.getDetail(route.query.projectid)
       } else {
         echo(this.form)
-        this.form.aab004 = this.$userInfo.name
+        this.form.aab004 = this.corpInfo.aab004
       }
     },
     getDetail(projectid) {

@@ -107,7 +107,7 @@
                 <span>{{status && corpInfo.aae006 || '--'}}</span>
               </p>
               <div class="no-login" v-if="!status">
-                <p class="no-login-text">企业联系方式<el-button type="text" @click="login">登录</el-button>后可见</p>
+                <p class="no-login-text">用人单位联系方式<el-button type="text" @click="login">登录</el-button>后可见</p>
               </div>
             </div>
           </div>
@@ -284,7 +284,7 @@ export default {
         })
         return
       }
-      this.$confirm('确认投递?', '提示', {
+      this.$confirm('确定向该单位投递简历?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'

@@ -56,7 +56,15 @@
       <el-table-column
         label="审核状态">
         <template slot-scope="scope">
-          <span>{{scope.row.ebb773}}</span>
+          <el-popover
+            placement="top-start"
+            title="审核意见"
+            width="200"
+            :disabled="Number(scope.row.abb773) !== 2"
+            trigger="hover">
+            <span>{{scope.row.abb772}}</span>
+            <span slot="reference" :class="Number(scope.row.abb773) === 2 ? 'red' : Number(scope.row.abb773) === 1 ? 'green' : ''">{{scope.row.ebb773}}</span>
+          </el-popover>
         </template>
       </el-table-column>
       <el-table-column
@@ -195,5 +203,11 @@ export default {
   .page{
     margin: 20px 0;
     text-align: center;
+  }
+  .red{
+    color: red;
+  }
+  .green{
+    color: green;
   }
 </style>

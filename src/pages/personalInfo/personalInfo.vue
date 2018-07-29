@@ -10,7 +10,9 @@
             </div>
             <p class="left-name">{{info1.aac003 || '--'}}</p>
             <div class="btn-box">
-              <el-button type="primary" v-if="ccmu17 !== 1" @click="invite" :disabled="Number(is_Resume) > 0" :title="Number(is_Resume) > 0 ? '已邀请' : '面试邀请'">面试邀请</el-button>
+              <el-tooltip class="item" effect="dark" content="点击再次邀请" placement="right-end" :disabled="Number(is_Resume) === 0">
+                <el-button type="primary" v-if="ccmu17 !== 1" @click="invite" :title="Number(is_Resume) > 0 ? '' : '面试邀请'">{{Number(is_Resume) > 0 ? '已邀请' : '面试邀请'}}</el-button>
+              </el-tooltip>
             </div>
             <div class="btn-box">
               <el-button type="warning" @click="download">下载简历</el-button>
@@ -82,10 +84,10 @@
                 <el-form-item label="户口所在地">
                   <span class="fix-width">{{info1.aab305name || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="现居住地">
+                <el-form-item label="现居住地址">
                   <span class="fix-width">{{info1.aab301 || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="邮箱">
+                <el-form-item label="电子邮箱">
                   <span class="fix-width">{{info1.aae015 || '--'}}</span>
                 </el-form-item>
               </el-form>
@@ -100,20 +102,20 @@
                 <el-form-item label="意向岗位">
                   <span>{{info2.bca112 || '--'}}{{info2.bcaa12 && `，${info2.bcaa12}`}}{{info2.bcab12 && `，${info2.bcab12}`}}</span>
                 </el-form-item>
-                <el-form-item label="期望工作地区">
+                <el-form-item label="工作地区">
                   <span>{{info2.bcb202 || '--'}}{{info2.bcb203 && `，${info2.bcb203}`}}{{info2.bcb204 && `，${info2.bcb204}`}}</span>
                 </el-form-item>
                 <el-form-item label="期望薪资">
                   <span>{{info2.acc034Name || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="期望工作性质">
+                <el-form-item label="工作性质">
                   <span>{{info2.aac013Name || '--'}}</span>
                 </el-form-item>
               </el-form>
             </transition>
           </div>
           <div class="card-tit" v-if="educationList.length">
-            <span class="item active"><i class="xffont font-xueshimao"></i>教育经历</span>
+            <span class="item active"><i class="xffont font-xueshimao"></i>教育背景</span>
           </div>
           <div class="container" v-if="educationList.length">
             <transition name="el-fade-in" mode="out-in">
@@ -197,9 +199,15 @@
                     </template>
                   </el-table-column>
                   <el-table-column
+                    label="获得日期">
+                    <template slot-scope="scope">
+                      <span>{{scope.row.aac0c4 || '--'}}</span>
+                    </template>
+                  </el-table-column>
+                  <el-table-column
                     label="证书类别">
                     <template slot-scope="scope">
-                      <span>{{scope.row.cczy06Str}}</span>
+                      <span>{{scope.row.cczy06Str || '--'}}</span>
                     </template>
                   </el-table-column>
                   <el-table-column
@@ -355,6 +363,11 @@ export default {
             }).then(res => {
               if (res.result && res.result.result === 1) {
                 location.href = (BASE_URL + '/service/business/person/resumeInfo/excWord.xf?aac001=' + this.aac001 + '&ccmu01=' + this.$userInfo.ccmu01 + '&userId=' + this.$userInfo.aab001 + '&ccmu17=2' + '&_token=' + this.$userInfo.token)
+              } else {
+                this.$message({
+                  message: res.result.message,
+                  type: 'warning'
+                })
               }
             })
           } else {
@@ -402,8 +415,8 @@ export default {
             message: res.result.message,
             type: 'success'
           })
-          this.getBase()
         }
+        this.getBase()
       })
     },
     del() {
@@ -428,7 +441,12 @@ export default {
         aac001: this.aac001,
         flag: 2
       }).then(res => {
-        this.pics = res.result
+        this.pics = []
+        res.result.forEach(item => {
+          if (item.caoa07 === 1) {
+            this.pics.push(item)
+          }
+        })
       })
     }
   },
@@ -555,6 +573,7 @@ export default {
     white-space: pre-wrap;
     word-break: break-all;
     max-width: 850px;
+    font-size: 14px;
   }
   .no-data{
     color: #666;

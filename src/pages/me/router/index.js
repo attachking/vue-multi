@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import {storage, STORAGE_TYPE} from '../../../common/js/utils'
 import event from '../../../common/js/event'
+import store from '../store'
+import {MessageBox} from 'element-ui'
 
 Vue.use(Router)
 
@@ -25,8 +27,8 @@ const records = () => import('../routes/records/records.vue') // 求职管理
 const apply = () => import('../routes/records/apply/apply.vue') // 求职管理（应聘记录）
 const invitation = () => import('../routes/records/invitation/invitation.vue') // 求职管理（面试邀请）
 
-// 企业中心
-const corp = () => import('../routes/corp-index/corp-index.vue') // 企业中心首页
+// 单位中心
+const corp = () => import('../routes/corp-index/corp-index.vue') // 单位中心首页
 const info = () => import('../routes/account/info/info.vue') // 基本信息
 const job = () => import('../routes/job/job.vue') // 岗位管理
 const jobList = () => import('../routes/job/jobList/jobList.vue') // 岗位列表
@@ -44,8 +46,8 @@ const reserved = () => import('../routes/job-fair/job-fair-reserved/job-fair-res
 const fairJob = () => import('../routes/job/jobEdit/jobEdit.vue') // 招聘会岗位编辑
 const positionList = () => import('../routes/job-fair/position-list/position-list.vue') // 招聘会已发布岗位
 const fairJobPreview = () => import('../routes/job/jobPreview/jobPreview.vue') // 招聘会预览岗位
-const fairCorpList = () => import('../routes/job-fair/fair-corp-list/fair-corp-list.vue') // 招聘会参会企业列表
-const authen = () => import('../routes/account/authen/authen.vue') // 企业认证
+const fairCorpList = () => import('../routes/job-fair/fair-corp-list/fair-corp-list.vue') // 招聘会参会单位列表
+const authen = () => import('../routes/account/authen/authen.vue') // 单位认证
 const project = () => import('../routes/project/project.vue') // 项目申报
 const projectList = () => import('../routes/project/project-list/project-list.vue') // 项目申报列表
 const projectApply = () => import('../routes/project/project-apply/project-apply.vue') // 项目申报表单
@@ -239,9 +241,40 @@ router.beforeEach((to, from, next) => {
     // 限制访问非登录类型的路由
   } else if (to.matched.some(record => typeof record.meta.ccmu17 !== 'undefined' && record.meta.ccmu17 !== ccmu17)) {
     next({name: ccmu17 === 1 ? 'user' : 'corp'})
+  } else if (ccmu17 === 2 && !/(account|message)/.test(to.path)) { // 未认证单位权限限制
+    console.log()
+    if (store.state.authenInfo.infoState === 0) {
+      next({name: 'info'})
+      MessageBox('请先完善单位基本信息', '提示', {
+        confirmButtonText: '确定',
+        callback: action => {}
+      })
+    } else if (store.state.authenInfo.authenState === 0) {
+      next({name: 'authen'})
+      MessageBox('请先进行单位认证', '提示', {
+        confirmButtonText: '确定',
+        callback: action => {}
+      })
+    } else if (store.state.authenInfo.authenState === 1) {
+      next({name: 'authen'})
+      MessageBox('您的单位信息正在认证', '提示', {
+        confirmButtonText: '确定',
+        callback: action => {}
+      })
+    } else {
+      next(true)
+    }
   } else {
     next(true)
   }
+})
+
+let topTitle = document.title
+
+router.afterEach((to, fro) => {
+  setTimeout(() => {
+    document.title = topTitle
+  }, 20)
 })
 
 export default router

@@ -1,11 +1,12 @@
 <template>
   <div class="newsList">
-    <xf-header></xf-header>
+    <xf-header v-if="!en"></xf-header>
+    <theme-header v-if="en"></theme-header>
     <div class="module">
       <div class="news-con">
         <div class="left" ref="left" :style="'height:' + leftHeight + 'px'">
           <div class="left-title">
-            <span>{{pr.canc03}}</span>
+            <span v-if="!en">{{pr.canc03}}</span>
             <span>{{pr.canc06}}</span>
           </div>
           <a :href="val.canc04 || 'javascript:;'" v-for="(val, key) in cr" :key="key" class="left-item" :class="{active: val.channelCode === searchData.channel_code}">
@@ -16,7 +17,7 @@
         <div class="right" ref="right">
           <div class="right-tit">
             <i class="xffont font-weibiao45100847"></i>
-            <a href="index.html">首页</a> >
+            <a :href="en ? 'theme.html?lang=en' : 'index.html'">{{en ? 'Home' : '首页'}}</a> >
             <a :href="current.canc04">{{current.canc03}}</a>
           </div>
           <transition name="el-fade-in" mode="out-in">
@@ -33,11 +34,13 @@
 import XfHeader from '../../components/xf-header/xf-header.vue'
 import XfFooter from '../../components/xf-footer/xf-footer.vue'
 import RightMenu from '../../components/right-menu/right-menu.vue'
-import {renderTitle} from '../../common/js/utils'
+import {renderTitle, queryParse} from '../../common/js/utils'
 import $ from 'jquery'
+import ThemeHeader from '../../components/theme-header/theme-header.vue'
 
 export default {
   components: {
+    ThemeHeader,
     RightMenu,
     XfFooter,
     XfHeader},
@@ -49,7 +52,8 @@ export default {
       cr: [],
       pr: {},
       current: {},
-      leftHeight: 700
+      leftHeight: 700,
+      en: queryParse(location.search).lang === 'en'
     }
   },
   methods: {
@@ -68,6 +72,8 @@ export default {
     handleRoute(route) {
       if (!route.query.channel_code) return
       this.searchData.channel_code = route.query.channel_code
+      this.en = this.searchData.channel_code.indexOf('_EN') !== -1
+      this.searchData.canc09 = this.en ? 2 : ''
       this.getChannel()
     }
   },

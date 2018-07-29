@@ -75,11 +75,13 @@ export function post(url, params = {}, status = true) {
       },
       error(err) {
         reject(err)
+        /*
         Message({
           showClose: false,
           message: '网络错误',
           type: 'warning'
         })
+        */
       }
     })
   })
@@ -203,7 +205,7 @@ export function echo(target, resource) {
 export const reg = {
   tel(str) { // 手机号+固定电话正则
     if (str === '') return true
-    return /^([0-9]{3,4}-)?[0-9]{7,8}$/.test(str) || /^1[345789]\d{9}$/.test(str)
+    return /(^([0-9]{3,4}-)?[0-9]{7,8}$)|(^1[345789]\d{9}$)/.test(str)
   },
   phone(str) { // 手机号正则
     if (str === '') return true
@@ -212,19 +214,23 @@ export const reg = {
   email(str) { // 邮箱
     if (str === '') return true
     return /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(str)
+  },
+  idCard(str) { // 身份证号
+    if (str === '') return true
+    return /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(str)
   }
 }
 
 export function getUserInfo() { // 获取用户信息
   return {
-    ccmu17: Number(storage.get(STORAGE_TYPE.ccmu17)),
-    aac001: storage.get(STORAGE_TYPE.aac001),
-    aab001: storage.get(STORAGE_TYPE.aab001),
-    ccmu01: storage.get(STORAGE_TYPE.ccmu01),
-    logo: storage.get(STORAGE_TYPE.logo),
-    status: Number(storage.get(STORAGE_TYPE.status)),
-    token: storage.get(STORAGE_TYPE.token),
-    name: storage.get(STORAGE_TYPE.name)
+    ccmu17: Number(storage.get(STORAGE_TYPE.ccmu17)) || '',
+    aac001: storage.get(STORAGE_TYPE.aac001) || '',
+    aab001: storage.get(STORAGE_TYPE.aab001) || '',
+    ccmu01: storage.get(STORAGE_TYPE.ccmu01) || '',
+    logo: storage.get(STORAGE_TYPE.logo) || '',
+    status: Number(storage.get(STORAGE_TYPE.status)) || '',
+    token: storage.get(STORAGE_TYPE.token) || '',
+    name: storage.get(STORAGE_TYPE.name) || ''
   }
 }
 
@@ -251,4 +257,34 @@ export function handleCity(arr) {
       }) : null
     }
   })
+}
+
+// 处理中英文url
+export function handleLang(lang) {
+  let search = queryParse(location.search)
+  search.lang = lang
+  let arr = []
+  for (let i in search) {
+    if (search.hasOwnProperty(i)) {
+      arr.push(`${i}=${search[i]}`)
+    }
+  }
+  let str = '?' + arr.join('&') + location.hash.replace('_EN', '')
+  if (lang === 'en') {
+    if (this.en) return 'javascript:;'
+    if (/(theme\.html)|(newsList\.html)|(newsDetail\.html)/.test(location.href)) {
+      return str
+    } else {
+      return 'theme.html?lang=en'
+    }
+  } else {
+    if (!this.en) return 'javascript:;'
+    return str
+  }
+}
+
+// 是否为英文
+export function isEn() {
+  let search = queryParse(location.search)
+  return search.lang === 'en' || location.hash.indexOf('_EN') !== -1 || (search.channel_code && search.channel_code.indexOf('_EN') !== -1)
 }

@@ -1,17 +1,18 @@
 <template>
   <div class="news-detail">
-    <xf-header></xf-header>
+    <xf-header v-if="!en"></xf-header>
+    <theme-header v-if="en"></theme-header>
     <div class="module">
       <div class="news-module" ref="module">
         <div class="top-tit">
           <i class="xffont font-weibiao45100847"></i>
-          <a href="index.html">首页</a> >
+          <a :href="en ? 'theme.html?lang=en' : 'index.html'">{{en ? 'Home' : '首页'}}</a> >
           <a :href="currentUrl">{{current}}</a>
         </div>
         <div class="news-tit">
           <h2>{{detail.cand03}}</h2>
           <div class="resource">
-            发布时间：{{$dateFormat(detail.ccpr05, 'yyyy-MM-dd')}}&nbsp;&nbsp;发布来源：{{detail.aac003}}&nbsp;&nbsp;<i class="xffont font-yanjing" :title="'阅读量：' + detail.cand13"></i>{{detail.cand13 || 0}}
+            {{en ? 'Date' : '发布时间'}}：{{$dateFormat(detail.ccpr05, 'yyyy-MM-dd')}}&nbsp;&nbsp;<span v-if="!en">发布来源：{{detail.aac003}}&nbsp;&nbsp;</span><i class="xffont font-yanjing" :title="(en ? 'amount of reading' : '阅读量') + '：' + detail.cand13"></i>{{detail.cand13 || 0}}
           </div>
           <div class="baidu">
             <div class="bdsharebuttonbox" data-tag="share_1">
@@ -37,9 +38,11 @@ import XfHeader from '../../components/xf-header/xf-header.vue'
 import XfFooter from '../../components/xf-footer/xf-footer.vue'
 import RightMenu from '../../components/right-menu/right-menu.vue'
 import {queryParse, renderTitle} from '../../common/js/utils'
+import ThemeHeader from '../../components/theme-header/theme-header.vue'
 
 export default {
   components: {
+    ThemeHeader,
     RightMenu,
     XfFooter,
     XfHeader},
@@ -50,7 +53,8 @@ export default {
       channelCode: '',
       detail: {},
       pre: {},
-      next: {}
+      next: {},
+      en: false
     }
   },
   methods: {
@@ -74,7 +78,10 @@ export default {
       })
     },
     getChannel(channelCode) {
-      this.$post('/service/business/sms/sms/channelInfo/getCrChannel', {channel_code: channelCode}).then(res => {
+      this.$post('/service/business/sms/sms/channelInfo/getCrChannel', {
+        channel_code: channelCode,
+        canc09: this.en ? 2 : ''
+      }).then(res => {
         res.result.cr.forEach(item => {
           if (item.channelCode === channelCode) {
             this.current = item.canc03
@@ -84,7 +91,10 @@ export default {
       })
     },
     getPage(cand01) {
-      this.$post('/service/business/sms/sms/getPage', {cand01}).then(res => {
+      this.$post('/service/business/sms/sms/getPage', {
+        cand01,
+        canc09: this.en ? 2 : ''
+      }).then(res => {
         this.pre = res.result.Last
         this.next = res.result.next
       })
@@ -131,6 +141,7 @@ export default {
   mounted() {
     const search = queryParse(location.search)
     this.channelCode = search.channel_code
+    this.en = this.channelCode && this.channelCode.indexOf('_EN') !== -1
     this.getDetail(search.cand01)
     this.getPage(search.cand01)
     this.getChannel(search.channel_code)

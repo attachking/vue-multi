@@ -4,7 +4,7 @@
       <div class="search-tit">
         <el-form inline :model="form" class="demo-form-inline">
           <el-form-item>
-            <el-input v-model="form.bca112" placeholder="请输入单位名称/关键字" @keydown.enter="onSubmit"></el-input>
+            <el-input v-model="form.bca112" placeholder="请输入岗位名称/单位名称" @keydown.enter.native="onSubmit"></el-input>
           </el-form-item>
           <el-form-item>
             <xf-cascader
@@ -180,14 +180,14 @@ export default {
         bca111Name: '', // 岗位
         bca111: '',
         areaWrap: '', // 地区
-        acb202: '', // 地区code
+        acb202: this.$route.query.acb202 || '', // 地区code
         acc034: '', // 薪水
         acc214: '', // 福利待遇
         acc217: '', // 工作经验
         acb21i: '', // 工作性质
         aac011: '', // 学历
         aab019: '', // 单位性质
-        aab056: '', // 企业规模
+        aab056: '', // 单位规模
         updateDates: '', // 更新时间
         rowsNum: 6,
         currentPage: 1
@@ -200,8 +200,8 @@ export default {
         TAB_EDUCATION: [], // 学历
         TAB_CITY: [], // 地区
         CRAFT_AS: [], // 岗位
-        TAB_UNITNATURE: [], // 企业性质
-        TAB_PSCALE: [] // 企业规模
+        TAB_UNITNATURE: [], // 单位性质
+        TAB_PSCALE: [] // 单位规模
       },
       showMore: false,
       bca111: [],
@@ -213,20 +213,6 @@ export default {
     }
   },
   methods: {
-    handleBcalll(e) {
-      if (e && e.length) {
-        this.form.bca111 = e[e.length - 1]
-      } else {
-        this.form.bca111 = ''
-      }
-    },
-    handleAcb202(e) {
-      if (e && e.length) {
-        this.form.acb202 = e[e.length - 1]
-      } else {
-        this.form.acb202 = ''
-      }
-    },
     handlePage(page) {
       this.form.currentPage = page
       this.getList()
@@ -265,8 +251,8 @@ export default {
           TAB_EDUCATION: res.result.TAB_EDUCATION, // 学历
           TAB_CITY: res.result.TAB_CITY, // 地区
           CRAFT_AS: res.result.CRAFT_AS, // 岗位
-          TAB_UNITNATURE: res.result.TAB_UNITNATURE, // 企业性质
-          TAB_PSCALE: res.result.TAB_PSCALE // 企业规模
+          TAB_UNITNATURE: res.result.TAB_UNITNATURE, // 单位性质
+          TAB_PSCALE: res.result.TAB_PSCALE // 单位规模
         }
       })
     },
@@ -351,12 +337,12 @@ export default {
       }
       if (Number(val.is_Resume) > 0) {
         this.$message({
-          message: '您已经投递过简历了',
+          message: '您已经投递过该单位的该岗位',
           type: 'warning'
         })
         return
       }
-      this.$confirm('确定投递简历?', '提示', {
+      this.$confirm('确定向该单位投递简历?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -510,6 +496,9 @@ export default {
                 cursor: pointer;
                 color: #f26b01;
               }
+            }
+            .active{
+              color: #f26b01;
             }
           }
           .font-shoucang1{

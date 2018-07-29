@@ -4,7 +4,7 @@
   </div>
 </template>
 <script>
-import {BASE_URL} from '../../../../../common/js/config'
+import {FILE_URL} from '../../../../../common/js/config'
 import {mapGetters} from 'vuex'
 import event from '../../../../../common/js/event'
 
@@ -29,7 +29,7 @@ export default {
       }
       // 修改为您自己的图片上传接口
       xiuxiu.onInit = function (id) {
-        const url = BASE_URL || location.protocol + '//' + location.host + '/service/business/fm/pic/picInfo/uploadPicInfo'
+        const url = (FILE_URL || location.protocol + '//' + location.host) + '/service/business/fm/pic/picInfo/uploadPicInfo'
         xiuxiu.setUploadURL(url)
         // 初始化图片
         xiuxiu.loadPhoto(img)

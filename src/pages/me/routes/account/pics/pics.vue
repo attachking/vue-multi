@@ -38,18 +38,18 @@
   </div>
 </template>
 <script>
-import {BASE_URL} from '../../../../../common/js/config'
+import {FILE_URL} from '../../../../../common/js/config'
 import Empty from '../../../../../components/empty/empty.vue'
 
 export default {
   components: {Empty},
   data() {
     return {
-      baseUrl: BASE_URL,
+      baseUrl: FILE_URL,
       fileList: [],
       form: {
-        picSize: 5120,
-        remark: this.$userInfo.ccmu17 === 1 ? 2 : 3,
+        picSize: 2048,
+        remark: 160,
         _token: this.$userInfo.token,
         ccmu17: this.$userInfo.ccmu17,
         userId: this.$userInfo.ccmu17 === 1 ? this.$userInfo.aac001 : this.$userInfo.aab001,
@@ -134,6 +134,12 @@ export default {
         this.itemForm.file = res.result[0]
         this.itemForm.desc = encodeURIComponent(file.name)
         this.save()
+      } else {
+        this.$message({
+          message: res.error.message,
+          type: 'warning'
+        })
+        this.getList()
       }
     },
     save(remark) {

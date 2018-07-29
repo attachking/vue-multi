@@ -2,17 +2,17 @@
   <div class="fixed-header">
     <div class="xf-header">
       <div class="header-con">
-        <div class="item">
+        <div class="logo">
           <img src="../../common/img/logo-color.png" alt="">
         </div>
         <a class="item" :href="handleUrl(val.CANC04)" v-for="(val, key) in list" :key="key">
           <span>{{val.CANC03}}</span>
           <span class="menu-list">
-            <a :href="handleUrl(item.canc04)" v-for="item in val.CR_LIST" :key="item.canc04">{{item.canc03}}</a>
+            <a :href="handleUrl(item.canc04)" v-for="item in val.CR_LIST" :key="item.canc04" :target="item.cand05 === 2 ? '_blank' : '_self'" @click="handleClick(item)">{{item.canc03}}</a>
           </span>
         </a>
         <span class="login" v-if="!userInfo.status">
-          <a href="javascript:;" @click="login">登录</a>/<a href="register.html">注册</a>
+          <a href="javascript:;" @click="login('', 1)">个人登录</a>&nbsp;/&nbsp;<a href="javascript:;" @click="login('', 2)">单位登录</a>&nbsp;/&nbsp;<a href="register.html">注册</a>
         </span>
         <div class="user-info" v-if="userInfo.status === 1">
           <el-dropdown placement="bottom" @command="handleCommand">
@@ -26,9 +26,13 @@
           </el-dropdown>
           <a class="user-info-name" href="me.html" :title="userInfo.name">{{userInfo.name}}</a>
         </div>
+        <span class="lang">
+          <a :href="en ? 'index.html' : 'javascript:;'" :class="{active: !en}">简体中文</a>&nbsp;/&nbsp;
+          <a :href="en ? 'javascript:;' : 'theme.html?lang=en'" :class="{active: en}">English</a>
+        </span>
       </div>
     </div>
-    <el-dialog title="用户登录" :visible.sync="dialogTableVisible" width="380px">
+    <el-dialog :title="loginTitle" :visible.sync="dialogTableVisible" width="380px">
       <el-form ref="form" :model="form" :rules="rules" class="form">
         <el-form-item prop="ccmu02">
           <el-input v-model.trim="form.ccmu02" placeholder="请输入用户名" clearable prefix-icon="xffont font-yonghu" @keydown.native.enter="onSubmit"></el-input>
@@ -36,6 +40,10 @@
         <el-form-item prop="ccmu03">
           <el-input v-model.trim="form.ccmu03" type="password" placeholder="请输入密码" clearable prefix-icon="xffont font-icon-test" @keydown.native.enter="onSubmit"></el-input>
         </el-form-item>
+        <!--<el-form-item class="less-margin">
+          <el-radio v-model="form.ccmu17" :label="1">个人登录</el-radio>
+          <el-radio v-model="form.ccmu17" :label="2">单位登录</el-radio>
+        </el-form-item>-->
         <el-form-item prop="valiCode" class="less-margin code-item">
           <el-input v-model="form.valiCode" placeholder="请输入验证码" clearable @keydown.native.enter="onSubmit">
             <template slot="append">
@@ -47,7 +55,7 @@
         <el-form-item class="less-margin">
           <el-checkbox label="自动登录" v-model="autoLogin"></el-checkbox>
           <a class="forget" href="reset.html">
-            <el-button type="text">忘记密码?</el-button>
+            <el-button type="text" @click.stop="go('reset.html')">忘记密码?</el-button>
           </a>
         </el-form-item>
         <el-form-item class="less-margin">
@@ -57,7 +65,7 @@
           <span class="forget">
             还没有账号？
             <a href="register.html">
-              <el-button type="text">注册</el-button>
+              <el-button type="text" @click.stop="go('register.html')">注册</el-button>
             </a>
             新账号
           </span>
@@ -68,7 +76,7 @@
 </template>
 <script>
 import md5 from 'blueimp-md5'
-import {storage, STORAGE_TYPE, getUserInfo} from '../../common/js/utils'
+import {storage, STORAGE_TYPE, getUserInfo, queryParse, handleLang} from '../../common/js/utils'
 import event from '../../common/js/event'
 
 export default {
@@ -85,6 +93,7 @@ export default {
       form: {
         ccmu02: '',
         ccmu03: '',
+        ccmu17: 1,
         valiId: '',
         valiCode: '',
         loginStatus: ''
@@ -139,27 +148,63 @@ export default {
           trigger: 'blur'
         }]
       },
-      userInfo: this.$userInfo
+      userInfo: this.$userInfo,
+      loginTitle: '用户登录',
+      en: queryParse(location.search).lang === 'en'
     }
   },
   methods: {
     getChannel() {
-      this.$post('/service/business/sms/sms/channelInfo/getChannelList', {}).then(res => {
+      this.$post('/service/business/sms/sms/channelInfo/getChannelList', {
+        key: 'CHANNEL'
+      }).then(res => {
         this.list = res.result
       })
     },
+    handleClick(val) {
+      if (val.canc04 === 'me.html#/resume' && this.$userInfo.ccmu17 !== 1) {
+        this.$alert(`该功能需要登录个人账号`, '提示', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.login(val.canc04)
+          }
+        })
+        return
+      }
+      if (val.canc04 === 'me.html#/job' && this.$userInfo.ccmu17 !== 2) {
+        this.$alert(`该功能需要登录单位账号`, '提示', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.login(val.canc04)
+          }
+        })
+        return
+      }
+      location.href = val.canc04
+    },
     handleUrl(url) {
-      if (url) {
-        return url
-      } else {
+      if (!url || /me\.html/.test(url)) {
         return 'javascript:;'
+      } else {
+        return url
       }
     },
-    login() {
+    login(url, ccmu17) {
       if (this.dialogTableVisible) return
       this.dialogTableVisible = true
       this.loading = false
       this.validCode()
+      this.redirect = url
+      if (ccmu17 === 1) {
+        this.loginTitle = '个人登录'
+        this.form.ccmu17 = 1
+      } else if (ccmu17 === 2) {
+        this.loginTitle = '单位登录'
+        this.form.ccmu17 = 2
+      } else {
+        this.loginTitle = '用户登录'
+        this.form.ccmu17 = ''
+      }
       setTimeout(() => {
         this.$refs.form.resetFields()
       }, 20)
@@ -179,8 +224,12 @@ export default {
             }
             if (res.error.result === 1) { // 登陆成功
               this.saveStorage(res)
+              if (this.redirect) {
+                location.href = this.redirect
+                return
+              }
               // 如果是在注册页、重置密码页进行登录的，则自动跳转至个人中心
-              if (/(register\.html)|(reset\.html)/.test(location.href)) {
+              if (/(register\.html)|(reset\.html)|(^(?!.*html))|(index\.html)/.test(location.href)) {
                 location.href = 'me.html'
               } else {
                 location.reload()
@@ -235,13 +284,17 @@ export default {
       } else {
         window.location.href = cmd
       }
-    }
+    },
+    go(str) {
+      location.href = str
+    },
+    handleLang: handleLang
   },
   created() {
     this.getChannel()
     this.refreshLogin()
-    event.$on('login', () => {
-      this.login()
+    event.$on('login', (url, ccmu17) => {
+      this.login(url, ccmu17)
     })
     event.$on('refresh', () => {
       this.refreshLogin()
@@ -290,13 +343,12 @@ export default {
     background: #fff;
     border-bottom: 1px solid #d9d9d9;
     .header-con{
-      width: 1200px;
+      width: 1340px;
       margin: 0 auto;
-      div.item{
-        &:hover{
-          cursor: default;
-          background: #fff;
-        }
+      .logo{
+        display: inline-block;
+        vertical-align: middle;
+        padding: 3px 0 0 0;
       }
       .item{
         display: inline-block;
@@ -304,7 +356,7 @@ export default {
         line-height: 100px;
         vertical-align: middle;
         color: #666;
-        width: 100px;
+        width: 82px;
         text-align: center;
         position: relative;
         &:hover{
@@ -353,18 +405,28 @@ export default {
     }
     .login{
       background: url("./login.png") no-repeat;
+      background-size: 100% 100%;
       display: inline-block;
       vertical-align: middle;
-      width: 131px;
+      width: 230px;
       height: 48px;
       line-height: 48px;
       text-align: center;
       color: #fff;
+      font-size: 14px;
       a{
         color: #fff;
         &:hover{
-          text-decoration: underline;
+          color: #d9d9d9;
         }
+      }
+    }
+    .lang{
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 14px;
+      .active{
+        color: $--color-primary;
       }
     }
   }
@@ -393,7 +455,8 @@ export default {
     display: inline-block;
     vertical-align: middle;
     text-align: right;
-    width: 180px;
+    width: 200px;
+    padding: 0 20px 0 0;
     .img{
       width: 40px;
       height: 40px;
@@ -401,6 +464,7 @@ export default {
       border-radius: 50%;
       vertical-align: middle;
       border: 1px solid #ebebeb;
+      overflow: hidden;
       &:hover{
         cursor: pointer;
       }

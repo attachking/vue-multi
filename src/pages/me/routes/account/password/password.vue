@@ -16,7 +16,7 @@
               <el-input v-model.trim="form1.password" type="password" placeholder="请输入新密码" clearable @keydown.native.enter="onSubmit1"></el-input>
             </el-form-item>
             <el-form-item prop="password2" label="确认密码">
-              <el-input v-model.trim="form1.password2" type="password" placeholder="请重复新密码" clearable @keydown.native.enter="onSubmit1"></el-input>
+              <el-input v-model.trim="form1.password2" type="password" placeholder="请重复输入新密码" clearable @keydown.native.enter="onSubmit1"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="onSubmit1" :loading="loading1" size="mini">确定</el-button>
@@ -127,7 +127,7 @@ export default {
     let _this = this
     return {
       info: {},
-      activeNames: ['password'],
+      activeNames: [],
       lastNames: ['password'],
       emailDialog: false,
       // 修改密码表单
@@ -155,6 +155,10 @@ export default {
           message: '请输入新密码',
           trigger: 'blur'
         }, {
+          min: 6,
+          message: '长度不能低于6位',
+          trigger: 'blur'
+        }, {
           max: 25,
           message: '长度不能超过25位',
           trigger: 'blur'
@@ -174,14 +178,14 @@ export default {
         }],
         password2: [{
           required: true,
-          message: '请重复新密码',
+          message: '请重复输入新密码',
           trigger: 'blur'
         }, {
           validator(rule, value, callback) {
             if (_this.form1.password === value) {
               callback()
             } else {
-              callback(new Error('两次输入不一致'))
+              callback(new Error('新密码和确认密码不一致'))
             }
           },
           trigger: 'blur'

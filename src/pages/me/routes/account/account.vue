@@ -5,7 +5,7 @@
       <router-link to="/account/info" class="item" v-if="ccmu17 === 2"><i class="xffont font-yidiandiantubiao04"></i>基本信息</router-link>
       <router-link to="/account/authen" class="item" v-if="ccmu17 === 2"><i class="xffont font-anquanshezhi"></i>单位认证</router-link>
       <router-link to="/account/password" class="item"><i class="xffont font-shezhi"></i>安全设置</router-link>
-      <router-link to="/account/pics" class="item"><i class="xffont font-gerenfengcai"></i>个人风采</router-link>
+      <router-link to="/account/pics" class="item"><i class="xffont font-gerenfengcai"></i>{{ccmu17 === 1 ? '个人' : '单位'}}风采</router-link>
     </div>
     <transition name="el-fade-in" mode="out-in">
       <router-view></router-view>

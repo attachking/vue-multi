@@ -59,6 +59,15 @@ export default {
           required: true,
           message: '请选择面试时间',
           trigger: 'change'
+        }, {
+          validator(rule, value, callback) {
+            if (value && new Date(value.replace(/-/g, '/')).getTime() > new Date().getTime()) {
+              callback()
+            } else {
+              callback(new Error('不能选择过去的时间'))
+            }
+          },
+          trigger: 'change'
         }],
         ccps05: [{
           required: true,
@@ -103,6 +112,9 @@ export default {
       this.aac001 = aac001
       this.getPositionList()
       this.dialogVisible = true
+      setTimeout(() => {
+        this.$refs.form.resetFields()
+      }, 20)
       return new Promise((resolve, reject) => {
         event.$on(SUCCESS_EVENT, () => {
           event.$off(SUCCESS_EVENT)
@@ -128,13 +140,15 @@ export default {
             aac001: this.aac001
           }, this.form)
           this.loading = true
-          this.$post('/service/business/search/stuApplyJob/corpInterviewInvitation.xf', form).then(res => {
+          this.$post('/service/business/search/stuApplyJob/corpInterviewInvitation.xf', form, false).then(res => {
             this.loading = false
-            if (res.error && res.error.result === 1) {
-              this.$message({
-                message: res.error.message,
-                type: 'success'
+            if (res.error && res.error.message) {
+              this.$alert(res.error.message, '提示', {
+                confirmButtonText: '确定',
+                callback: action => {}
               })
+            }
+            if (res.error && res.error.result === 1) {
               this.dialogVisible = false
               event.$emit(SUCCESS_EVENT)
             } else {

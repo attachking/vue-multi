@@ -16,11 +16,11 @@
         </div>
         <div class="top-right">
           <div>
-            <p><span class="num">2</span>家</p>
+            <p><span class="num">{{detail.corpNum || 0}}</span>家</p>
             <p>参会单位</p>
           </div>
           <div>
-            <p><span class="num">4</span>个</p>
+            <p><span class="num">{{detail.jobNum || 0}}</span>个</p>
             <p>招聘岗位</p>
           </div>
         </div>

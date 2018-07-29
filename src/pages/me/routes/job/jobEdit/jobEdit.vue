@@ -31,8 +31,14 @@
         </el-select>
       </el-form-item>
       <el-form-item label="专业要求" prop="acc01g">
-        <xf-cascader :options="dictionaries.tab_major_type" v-model="form.acc01g" placeholder="请选择专业要求" clearable></xf-cascader>
+        <xf-cascader :options="dictionaries.tab_major_type" v-model="acc01g_1" placeholder="请选择专业要求(最多三个)" clearable></xf-cascader>
         <!--<span class="tip red">不选择即为无专业要求</span>-->
+      </el-form-item>
+      <el-form-item label="" prop="acc01g" v-if="acc01g_1">
+        <xf-cascader :options="dictionaries.tab_major_type" v-model="acc01g_2" placeholder="请选择专业要求(最多三个)" clearable></xf-cascader>
+      </el-form-item>
+      <el-form-item label="" prop="acc01g" v-if="acc01g_2">
+        <xf-cascader :options="dictionaries.tab_major_type" v-model="acc01g_3" placeholder="请选择专业要求(最多三个)" clearable></xf-cascader>
       </el-form-item>
       <el-form-item label="福利待遇" prop="acc214">
         <el-select
@@ -69,7 +75,7 @@
         <el-input type="textarea" :rows="6" v-model="form.cca114" placeholder="请输入岗位描述"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit" :loading="loading">提交</el-button>
+        <el-button type="primary" @click="save" :loading="loading">提交</el-button>
         <el-button @click="$router.go(-1)" v-if="$route.query.acb210">取消</el-button>
       </el-form-item>
     </el-form>
@@ -180,6 +186,9 @@ export default {
         cca114: '', // 岗位描述
         favouredPolicy: '' // 优惠政策
       },
+      acc01g_1: '',
+      acc01g_2: '',
+      acc01g_3: '',
       rules: {
         bca111: [{
           required: true,
@@ -189,16 +198,16 @@ export default {
         cca113: [{
           required: true,
           message: '请输入岗位名称',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           max: 20,
           message: '最多20个字符',
-          trigger: 'change'
+          trigger: 'blur'
         }],
         acb21r: [{
           required: true,
           message: '请输入招聘人数',
-          trigger: 'change'
+          trigger: 'blur'
         }, {
           validator(rule, value, callback) {
             if (/^[1-9][0-9]{0,4}$/.test(value)) {
@@ -207,7 +216,7 @@ export default {
               callback(new Error('只能输入1-99999的数字'))
             }
           },
-          trigger: 'change'
+          trigger: 'blur'
         }],
         acc034: [{
           required: true,
@@ -281,37 +290,61 @@ export default {
       this.form.aae030 = this.$dateFormat(now, 'yyyy-MM-dd')
       this.form.aae031 = this.$dateFormat(now.setTime(now.getTime() + 1000 * 60 * 60 * 24 * 90), 'yyyy-MM-dd')
     },
-    onSubmit() {
+    save() {
       this.$refs.form.validate(valid => {
         if (valid) {
-          this.loading = true
-          const form = Object.assign({
-            aab001: this.$userInfo.aab001
-          }, this.form)
-          form.acc214 = form.acc214.sort((a, b) => a - b).join(',')
           if (this.$route.query.acb210) {
-            form.acb210 = this.$route.query.acb210
+            this.$confirm('编辑后需要重新审核，是否继续?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(res => {
+              this.onSubmit()
+            })
+          } else {
+            this.onSubmit()
           }
-          if (this.$route.query.acb330) {
-            form.acb330 = this.$route.query.acb330
-          }
-          if (this.$route.query.cczy01) {
-            form.acb330 = this.$route.query.cczy01
-          }
-          this.$post('/service/business/corp/corpPositon/savePositionInfo', form).then(res => {
-            this.loading = false
-            if (res.error && res.error.result === 1) {
-              this.$alert(res.error.message, '提示', {
-                confirmButtonText: '确定',
-                callback: action => {
-                  this.$router.go(-1)
-                }
-              })
+        }
+      })
+    },
+    onSubmit() {
+      this.loading = true
+      const form = Object.assign({
+        aab001: this.$userInfo.aab001
+      }, this.form)
+      form.acc214 = form.acc214.sort((a, b) => a - b).join(',')
+      if (this.$route.query.acb210) {
+        form.acb210 = this.$route.query.acb210
+      }
+      if (this.$route.query.acb330) {
+        form.acb330 = this.$route.query.acb330
+      }
+      if (this.$route.query.cczy01) {
+        form.acb330 = this.$route.query.cczy01
+      }
+      let arr = []
+      if (this.acc01g_1) {
+        arr.push(this.acc01g_1)
+      }
+      if (this.acc01g_2) {
+        arr.push(this.acc01g_2)
+      }
+      if (this.acc01g_3) {
+        arr.push(this.acc01g_3)
+      }
+      form.acc01g = arr.join(',')
+      this.$post('/service/business/corp/corpPositon/savePositionInfo', form).then(res => {
+        this.loading = false
+        if (res.error && res.error.result === 1) {
+          this.$alert(res.error.message, '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.$router.go(-1)
             }
-          }).catch(() => {
-            this.loading = false
           })
         }
+      }).catch(() => {
+        this.loading = false
       })
     },
     getInfo(acb210, resetTime) {
@@ -319,7 +352,14 @@ export default {
       this.$post('/service/business/corp/corpPositon/editPositionInfo', {acb210}).then(res => {
         this.formLoading = false
         res.result.acc214 = res.result.acc214 ? res.result.acc214.split(',') : []
+        res.result.aae031 = this.$dateFormat(res.result.aae031, 'yyyy-MM-dd')
         echo(this.form, res.result)
+        if (res.result.acc01g) {
+          let arr = res.result.acc01g.split(',')
+          this.acc01g_1 = arr[0] || ''
+          this.acc01g_2 = arr[1] || ''
+          this.acc01g_3 = arr[2] || ''
+        }
         if (resetTime) {
           // 如果是提取历史岗位，则重置岗位有效期
           this.resetTime()
@@ -355,6 +395,11 @@ export default {
   created() {
     this.handleRouter(this.$route)
     this.$watch('$route', this.handleRouter)
+    this.$watch('dictionaries', () => {
+      setTimeout(() => {
+        this.$refs.form.resetFields()
+      }, 20)
+    })
   }
 }
 </script>

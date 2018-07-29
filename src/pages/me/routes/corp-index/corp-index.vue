@@ -15,43 +15,45 @@
       </span>
     </div>
     <div class="menu">
-      <a class="item" href="#/job">
+      <router-link class="item" tag="div" to="/job">
         <div class="left-font">
           <i class="xffont font-zhiwei"></i>
           <p>已发布岗位 <span class="theme">{{corpInfo.corpPositionCounts}}</span><br>剩余可发布 <span class="theme">{{corpInfo.allowPostionCounts}}</span></p>
         </div>
-      </a>
-      <a class="item" href="#/corpResume">
+      </router-link>
+      <router-link class="item" tag="div" to="/corpResume">
         <div class="left-font">
           <i class="xffont font-jianli-copy"></i>
           <p>未查看简历 <span class="theme">{{corpInfo.corpNoResumeCounts}}</span><br>已收到简历 <span class="theme">{{corpInfo.corpResumeCounts}}</span></p>
         </div>
-      </a>
-      <a class="item" href="#/jobFair">
+      </router-link>
+      <!--<a class="item" href="#/jobFair">
         <div class="text">
           <p class="big">{{corpInfo.corpJobFairCounts}}</p>
           <p>已预订招聘会</p>
         </div>
-      </a>
-      <a class="item" href="#/talent">
+      </a>-->
+      <router-link class="item" tag="div" to="/talent">
         <div class="text">
           <p class="big">{{corpInfo.ccpr28}}</p>
           <p>剩余下载简历数</p>
         </div>
-      </a>
-      <a class="item" href="#/message">
+      </router-link>
+      <router-link class="item" tag="div" to="/message">
         <div class="img">
           <el-badge :value="corpInfo.corpNoticeCounts" :hidden="Number(corpInfo.corpNoticeCounts) === 0">
             <i class="xffont font-youjian"></i>
           </el-badge>
           <p>我的消息</p>
         </div>
-      </a>
+      </router-link>
     </div>
     <div class="banner">
-      <img :src="ad" alt="">
+      <a :href="adUrl" target="_blank">
+        <img :src="ad" alt="">
+      </a>
     </div>
-    <div class="job-fair">
+    <div class="job-fair" v-if="false">
       <div class="card-tit">
         <span class="item active"><i class="xffont font-zhiwei"></i>最新招聘会</span>
         <a href="#/jobFair">
@@ -140,7 +142,8 @@ export default {
       major: [],
       majorPageBean: {},
       tab: 1,
-      ad: ''
+      ad: '',
+      adUrl: ''
     }
   },
   methods: {
@@ -207,6 +210,7 @@ export default {
         caoa04: 100
       }).then(res => {
         this.ad = res.result.caoa02
+        this.adUrl = res.result.caoa10
       })
     }
   },
@@ -255,7 +259,7 @@ export default {
     @include clearFixed;
     border: 1px solid #ebebeb;
     .item{
-      width: 20%;
+      width: 25%;
       float: left;
       height: 105px;
       margin: 10px 0;
@@ -279,9 +283,11 @@ export default {
         .xffont{
           font-size: 40px;
           color: #666;
+          float: left;
+          margin-left: 62px;
         }
         p{
-          width: 115px;
+          width: 123px;
           float: right;
           text-align: left;
         }

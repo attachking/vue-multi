@@ -91,9 +91,13 @@ const webpackConfig = merge(baseWebpackConfig, {
         return (
           module.resource &&
           /\.js$/.test(module.resource) &&
-          module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
-          ) === 0
+          module.resource.indexOf(path.join(__dirname, '../node_modules')) === 0 &&
+          exclude({
+            resource: module.resource,
+            files: [
+              'echarts'
+            ]
+          })
         )
       }
     }),
@@ -124,6 +128,16 @@ const webpackConfig = merge(baseWebpackConfig, {
     /* 该位置添加 .concat(utils.htmlPlugin()) ------------------- */
   ].concat(utils.htmlPlugin())
 })
+
+// 排除node_modules里的某个模块
+function exclude({resource, files}) {
+  for (let i = 0; i < files.length; i++) {
+    if (resource.indexOf(`${files[i]}\\`) !== -1) {
+      return false
+    }
+  }
+  return true
+}
 
 if (config.build.productionGzip) {
   const CompressionWebpackPlugin = require('compression-webpack-plugin')

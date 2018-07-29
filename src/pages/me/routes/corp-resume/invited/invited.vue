@@ -29,7 +29,7 @@
         align="center"
         label="姓名">
         <template slot-scope="scope">
-          <a target="_blank" :href="'personalInfo.html?aac001=' + scope.row.aac001">{{scope.row.aac003 || '--'}}</a>
+          <a target="_blank" :href="'personalInfo.html?aac001=' + scope.row.ccmp01">{{scope.row.aac003 || '--'}}</a>
         </template>
       </el-table-column>
       <el-table-column
@@ -189,7 +189,13 @@ export default {
       this.getList()
     },
     handleCommand2(cmd) {
-      if (!this.checked.length) return
+      if (!this.checked.length) {
+        this.$message({
+          message: '没有选择任何项',
+          type: 'warning'
+        })
+        return
+      }
       this.sign(this.checked.join(','), cmd)
     }
   },

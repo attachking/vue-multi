@@ -2,10 +2,10 @@
   <div class="authen">
     <el-form ref="form" :model="form" :rules="rules" label-width="120px" class="form" v-if="authenInfo.authenState === 0 || formShow">
       <el-form-item label="证件类型">
-        <span>三证合一</span>
+        <span>统一社会信用代码(组织机构代码)</span>
       </el-form-item>
       <el-form-item label="证件号码" prop="aab007">
-        <el-input v-model="form.aab007" placeholder="请输入三证合一证件号"></el-input>
+        <el-input v-model="form.aab007" placeholder="请输入统一社会信用代码(组织机构代码)"></el-input>
       </el-form-item>
       <el-form-item label="证件开始日期" prop="aab010">
         <el-date-picker
@@ -20,14 +20,14 @@
         <el-upload
           class="upload-demo"
           :data="uploadForm"
+          accept="image/jpg,image/jpeg,image/png"
           :action="baseUrl + '/service/business/fm/pic/picInfo/uploadPicInfo'"
           :on-remove="handleRemove"
-          accept="image/jpg,image/jpeg,image/png"
           :on-success="onSuccess"
           :file-list="fileList"
           :limit="1">
           <el-button size="small" type="primary">点击上传</el-button>
-          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
+          <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过5MB</div>
         </el-upload>
       </el-form-item>
       <el-form-item>
@@ -55,9 +55,9 @@
           <el-form-item label="原因">
             <span class="fix-width">{{authenInfo.backname || '--'}}</span>
           </el-form-item>
-          <el-form-item label="备注">
-            <span class="fix-width">{{authenInfo.caoa08 || '--'}}</span>
-          </el-form-item>
+          <!--<el-form-item label="备注">
+            <span class="fix-width">{{authenInfo.caoa08 || '&#45;&#45;'}}</span>
+          </el-form-item>-->
         </el-form>
       </div>
       <div class="text-center" v-if="authenInfo.authenState === 3">
@@ -118,7 +118,7 @@
 </template>
 <script>
 import {mapGetters} from 'vuex'
-import {BASE_URL, AUTHEN_URL} from '../../../../../common/js/config'
+import {FILE_URL, AUTHEN_URL} from '../../../../../common/js/config'
 import event from '../../../../../common/js/event'
 
 export default{
@@ -131,11 +131,11 @@ export default{
     return {
       loading1: false,
       loading2: false,
-      baseUrl: BASE_URL,
+      baseUrl: FILE_URL,
       formShow: false,
       form: {
         aab001: this.$userInfo.aab001,
-        remark: 4,
+        remark: 180,
         ccmu17: this.$userInfo.ccmu17,
         ccmu01: this.$userInfo.ccmu01,
         aab007: '', // 证件号码
@@ -199,6 +199,10 @@ export default{
             if (res.error && res.error.result === 1) {
               if (flag === 0) {
                 event.$emit('authen')
+                this.$message({
+                  message: res.error.message,
+                  type: 'success'
+                })
               } else {
                 this.autoAuthenDialog()
               }
@@ -228,7 +232,7 @@ export default{
         ccmu01: this.$userInfo.ccmu01
       }).then(res => {
         this.dialogLoading = false
-        this.info = res.result[0]
+        this.info = res.result
       }).catch(() => {
         this.dialogLoading = false
       })

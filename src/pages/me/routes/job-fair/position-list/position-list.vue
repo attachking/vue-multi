@@ -61,10 +61,23 @@
         </template>
       </el-table-column>
       <el-table-column
-        align="center"
         label="岗位状态">
         <template slot-scope="scope">
-          <span>{{Number(scope.row.acb208) === 3 ? '审核不通过' : Number(scope.row.acb208) === 4 ? '待审核' : Number(scope.row.acb208) === 2 ? '已过期' : '审核通过'}}</span>
+          <span>{{scope.row.ecb208}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="审核状态">
+        <template slot-scope="scope">
+          <el-popover
+            placement="top-start"
+            title="审核意见"
+            width="200"
+            :disabled="Number(scope.row.abb773) !== 2"
+            trigger="hover">
+            <span>{{scope.row.abb772}}</span>
+            <span slot="reference" :class="Number(scope.row.abb773) === 2 ? 'red' : Number(scope.row.abb773) === 1 ? 'green' : ''">{{scope.row.ebb773}}</span>
+          </el-popover>
         </template>
       </el-table-column>
       <el-table-column
