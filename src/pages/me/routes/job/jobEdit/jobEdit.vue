@@ -89,6 +89,7 @@
         v-loading="historyLoading"
         style="width: 100%">
         <el-table-column
+          align="center"
           label="岗位名称"
           width="150">
           <template slot-scope="scope">
@@ -100,7 +101,7 @@
           align="center"
           label="使用日期">
           <template slot-scope="scope">
-            <span>{{scope.row.ccpr05}}</span>
+            <span>{{$dateFormat(scope.row.ccpr05, 'yyyy-MM-dd')}}</span>
           </template>
         </el-table-column>
         <el-table-column
@@ -282,6 +283,13 @@ export default {
         echo(this.form)
         this.resetTime()
         this.isEdit = false
+        this.form.acc214 = []
+        this.acc01g_1 = ''
+        this.acc01g_2 = ''
+        this.acc01g_3 = ''
+        setTimeout(() => {
+          this.$refs.form.clearValidate()
+        }, 20)
       }
     },
     // 重置开始/结束时间
@@ -397,7 +405,7 @@ export default {
     this.$watch('$route', this.handleRouter)
     this.$watch('dictionaries', () => {
       setTimeout(() => {
-        this.$refs.form.resetFields()
+        this.$refs.form.clearValidate()
       }, 20)
     })
   }

@@ -14,7 +14,7 @@
       <div class="module module-top">
         <div class="news-top">
           <p class="title">
-            <a :href="'newsDetail.html?channel_code=' + topNews.channelCode + '&cand01=' + topNews.cand01" :title="topNews.cand03">{{topNews.cand03}}</a>
+            <a :href="'newsDetail.html?channel_code=' + topNews.channelCode + '&cand01=' + topNews.cand01 + '&head=1'" :title="topNews.cand03">{{topNews.cand03}}</a>
           </p>
           <p class="content">{{topNews.cand19}}</p>
         </div>

@@ -26,6 +26,7 @@
       stripe
       style="width: 100%">
       <el-table-column
+        align="center"
         label="岗位名称"
         width="150">
         <template slot-scope="scope">
@@ -61,12 +62,14 @@
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         label="岗位状态">
         <template slot-scope="scope">
           <span>{{scope.row.ecb208}}</span>
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         label="审核状态">
         <template slot-scope="scope">
           <el-popover
@@ -108,6 +111,7 @@
         v-loading="historyLoading"
         style="width: 100%">
         <el-table-column
+          align="center"
           label="岗位名称"
           width="150">
           <template slot-scope="scope">

@@ -23,6 +23,7 @@
       stripe
       style="width: 100%">
       <el-table-column
+        align="center"
         label="岗位名称"
         width="150">
         <template slot-scope="scope">
@@ -30,30 +31,35 @@
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         label="投递简历数">
         <template slot-scope="scope">
           <span>未查看{{scope.row.alreadyStatus}}个,共{{scope.row.allStatus}}个</span>
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         label="发布日期">
         <template slot-scope="scope">
           <span>{{$dateFormat(scope.row.aae030, 'yyyy-MM-dd')}}</span>
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         label="刷新日期">
         <template slot-scope="scope">
           <span>{{$dateFormat(scope.row.cczy09, 'yyyy-MM-dd')}}</span>
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         label="岗位状态">
         <template slot-scope="scope">
           <span>{{scope.row.ecb208}}</span>
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         label="审核状态">
         <template slot-scope="scope">
           <el-popover

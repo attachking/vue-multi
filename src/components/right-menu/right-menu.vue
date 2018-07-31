@@ -9,6 +9,17 @@
       </div>
     </div>
     <div class="right-menu-item">
+      <div class="sign-up-con">
+        <div class="sign-up">
+          <a href="javascript:;">移动APP</a>
+          <a href="javascript:;">扫描下载</a>
+        </div>
+      </div>
+      <div class="right-menu-qrcode">
+        <img :src="test ? './static/assets/qrcode/app-test.png' : './static/assets/qrcode/app.png'">
+      </div>
+    </div>
+    <div class="right-menu-item">
       <div class="right-menu-icon">
         <div class="right-menu-icon-c two">
           <img src="./static/weixin.png">
@@ -25,17 +36,6 @@
       </div>
     </div>
     <div class="right-menu-item">
-      <div class="right-menu-icon" style="padding: 10px 0 0 0;">
-        <div class="right-menu-icon-c app">
-          <img src="./static/app.png">
-          <span>移动APP</span>
-        </div>
-      </div>
-      <div class="right-menu-qrcode">
-        <img :src="test ? './static/assets/qrcode/app-test.png' : './static/assets/qrcode/app.png'">
-      </div>
-    </div>
-    <div class="right-menu-item">
       <div class="right-menu-icon">
         <div class="right-menu-icon-c">
           <img src="./static/phone.png">
@@ -48,7 +48,7 @@
     </div>
     <div class="right-menu-item">
       <div class="right-menu-icon">
-        <div class="right-menu-icon-c">
+        <div class="right-menu-icon-c two">
           <img src="./static/weibo.png">
           <span>微博</span>
         </div>
@@ -136,6 +136,7 @@ export default {
       overflow: hidden;
       height: 100%;
       width: 100%;
+      padding: 2px 0 0 0;
     }
     .sign-up{
       overflow: hidden;
@@ -150,10 +151,11 @@ export default {
     .right-menu-qrcode{
       position: absolute;
       right: 60px;
-      top: 10px;
+      top: 50%;
       display: none;
       padding: 5px;
       background: #fff;
+      transform: translate(0, -50%);
       img{
         width: 100px;
         display: block;
@@ -169,7 +171,6 @@ export default {
     }
     &:hover{
       cursor: pointer;
-      opacity: .9;
       .right-menu-icon-c{
         transform: translate(0,-48px);
       }

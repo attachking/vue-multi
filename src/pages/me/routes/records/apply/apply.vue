@@ -6,6 +6,7 @@
       v-loading="loading"
       style="width: 100%">
       <el-table-column
+        align="center"
         label="岗位名称"
         width="150">
         <template slot-scope="scope">
@@ -13,24 +14,28 @@
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         label="单位名称">
         <template slot-scope="scope">
           <a target="_blank" :href="'corp.html?aab001=' + scope.row.aab001">{{scope.row.aab004 || '--'}}</a>
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         label="工作地点">
         <template slot-scope="scope">
           <span>{{scope.row.bcb202 || '--'}}</span>
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         label="应聘时间">
         <template slot-scope="scope">
           <span>{{scope.row.ccpj02}}</span>
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         label="查看状态">
         <template slot-scope="scope">
           <span>{{scope.row.ccpj03}}</span>

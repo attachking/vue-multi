@@ -97,11 +97,23 @@ export default {
         aab001: this.$userInfo.aab001,
         rowsNum: 1000,
         currentPage: 1,
-        aab773: 1,
-        acb208: 0
+        aab773: 1, // 审核通过
+        acb208: 0 // 使用中
       }).then(res => {
         this.formLoading = false
         this.list = res.result
+        if (!res.result.length) {
+          this.$alert('没有可用职位，请前往岗位管理', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+              this.dialogVisible = false
+              event.$off(ERROR_EVENT)
+              if (action === 'confirm') {
+                location.href = 'me.html#/job'
+              }
+            }
+          })
+        }
       }).catch(() => {
         this.formLoading = false
       })

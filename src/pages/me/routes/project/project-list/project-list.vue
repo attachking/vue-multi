@@ -46,7 +46,7 @@
         width="70"
         label="状态">
         <template slot-scope="scope">
-          <span :class="Number(scope.row.projectAuditstatus) === 2 ? 'red' : Number(scope.row.projectAuditstatus) === 1 ? 'green' : 'un'">{{Number(scope.row.projectAuditstatus) === 2 ? '审核失败' : Number(scope.row.projectAuditstatus) === 1 ? '审核通过' : '未审核'}}</span>
+          <span :class="Number(scope.row.projectAuditstatus) === 2 ? 'red' : Number(scope.row.projectAuditstatus) === 1 ? 'green' : 'un'">{{Number(scope.row.projectAuditstatus) === 2 ? '审核不通过' : Number(scope.row.projectAuditstatus) === 1 ? '审核通过' : '未审核'}}</span>
         </template>
       </el-table-column>
       <el-table-column

@@ -2,8 +2,8 @@
 <template>
   <div class="corp-info" ref="info">
     <transition name="el-fade-in" mode="out-in" @enter="handleEnter">
-      <el-form ref="form" v-if="formShow" :rules="rules" :model="form" label-width="100px" class="form" key="form">
-        <el-form-item label="单位名" prop="aab004">
+      <el-form ref="form" v-if="formShow" :rules="rules" :model="form" label-width="140px" class="form" key="form">
+        <el-form-item label="单位名称" prop="aab004">
           <el-input v-model="form.aab004" placeholder="请输入单位名"></el-input>
         </el-form-item>
         <el-form-item label="单位性质" prop="aab019">
@@ -16,6 +16,11 @@
             <el-option v-for="item in dictionaries.INDUSTRY_AS" :key="item.code" :label="item.name" :value="item.code"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="产业类型" prop="aab054">
+          <el-select v-model="form.aab054" placeholder="请选择产业类型">
+            <el-option v-for="item in dictionaries.TAB_INDUSTRYCLASSES" :key="item.code" :label="item.name" :value="item.code"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item label="人员规模" prop="aab056">
           <el-select v-model="form.aab056" placeholder="请选择人员规模">
             <el-option v-for="item in dictionaries.TAB_PSCALE" :key="item.code" :label="item.name" :value="item.code"></el-option>
@@ -24,19 +29,37 @@
         <el-form-item label="所在区域" prop="aab301">
           <xf-cascader :fulltext.sync="form.aaa021" :options="dictionaries.TAB_CITY3" v-model="form.aab301" placeholder="请选择所在区域"></xf-cascader>
         </el-form-item>
-        <el-form-item label="联系地址" prop="aae006">
-          <el-input v-model="form.aae006" placeholder="请输入联系地址"></el-input>
+        <el-form-item label="单位联系地址" prop="aab040">
+          <el-input v-model="form.aab040" placeholder="请输入单位联系地址"></el-input>
           <el-button icon="el-icon-location" size="mini" class="location" circle title="点击在地图上选取坐标" @click="dialogVisible = true"></el-button>
           <span class="tip" :class="form.cabq02 ? 'green' : 'red'">{{form.cabq02 ? '已选取坐标' : '未选取坐标'}}</span>
         </el-form-item>
+        <el-form-item label="单位注册地址" prop="aae006">
+          <el-input v-model="form.aae006" placeholder="请输入单位联系地址"></el-input>
+        </el-form-item>
         <el-form-item label="法定代表人" prop="aab013">
           <el-input v-model="form.aab013" placeholder="请输入法定代表人"></el-input>
+        </el-form-item>
+        <el-form-item label="法定代表人手机号" prop="aab015">
+          <el-input v-model="form.aab015" placeholder="请输入法定代表人手机号"></el-input>
+        </el-form-item>
+        <el-form-item label="法定代表人身份证号" prop="aab014">
+          <el-input v-model="form.aab014" placeholder="请输入法定代表人身份证号"></el-input>
         </el-form-item>
         <el-form-item label="联系人" prop="aae004">
           <el-input v-model="form.aae004" placeholder="请输入联系人"></el-input>
         </el-form-item>
         <el-form-item label="联系电话" prop="aae005">
           <el-input v-model="form.aae005" placeholder="请输入固定电话或手机号"></el-input>
+        </el-form-item>
+        <el-form-item label="联系人邮箱" prop="aae015">
+          <el-input v-model="form.aae015" placeholder="请输入联系人邮箱"></el-input>
+        </el-form-item>
+        <el-form-item label="微信" prop="aab041">
+          <el-input v-model="form.aab041" placeholder="请输入联系人微信"></el-input>
+        </el-form-item>
+        <el-form-item label="QQ" prop="aab042">
+          <el-input v-model="form.aab042" placeholder="请输入联系人QQ号"></el-input>
         </el-form-item>
         <el-form-item label="乘车路线" prop="acb205">
           <el-input v-model="form.acb205" placeholder="请输入乘车路线"></el-input>
@@ -52,7 +75,7 @@
           <el-button @click="formShow = false">取消</el-button>
         </el-form-item>
       </el-form>
-      <el-form label-width="100px" v-if="!formShow" class="infoForm" key="list">
+      <el-form label-width="140px" v-if="!formShow" class="infoForm" key="list">
         <el-button type="primary" icon="el-icon-edit" size="mini" class="edit-btn" @click="formShow = true">编辑</el-button>
         <el-form-item label="单位名">
           <span>{{info.aab004 || '--'}}</span>
@@ -63,24 +86,45 @@
         <el-form-item label="行业类型">
           <span>{{info.ccpr10name || '--'}}</span>
         </el-form-item>
+        <el-form-item label="产业类型">
+          <span>{{info.aab054name || '--'}}</span>
+        </el-form-item>
         <el-form-item label="人员规模">
           <span>{{info.aab056name || '--'}}</span>
         </el-form-item>
         <el-form-item label="所在区域">
           <span>{{info.aaa021 || '--'}}</span>
         </el-form-item>
-        <el-form-item label="联系地址">
-          <span>{{info.aae006 || '--'}}</span>
+        <el-form-item label="单位联系地址">
+          <span>{{info.aab040 || '--'}}</span>
           <span class="tip" :class="info.cabq02 ? 'green' : 'red'">{{info.cabq02 ? '已选取坐标' : '未选取坐标'}}</span>
+        </el-form-item>
+        <el-form-item label="单位注册地址">
+          <span>{{info.aae006 || '--'}}</span>
         </el-form-item>
         <el-form-item label="法定代表人">
           <span>{{info.aab013 || '--'}}</span>
+        </el-form-item>
+        <el-form-item label="法定代表人手机号">
+          <span>{{info.aab015 || '--'}}</span>
+        </el-form-item>
+        <el-form-item label="法定代表人身份证号">
+          <span>{{info.aab014 || '--'}}</span>
         </el-form-item>
         <el-form-item label="联系人">
           <span>{{info.aae004 || '--'}}</span>
         </el-form-item>
         <el-form-item label="联系电话">
           <span>{{info.aae005 || '--'}}</span>
+        </el-form-item>
+        <el-form-item label="联系人邮箱">
+          <span>{{info.aae015 || '--'}}</span>
+        </el-form-item>
+        <el-form-item label="微信">
+          <span>{{info.aab041 || '--'}}</span>
+        </el-form-item>
+        <el-form-item label="QQ">
+          <span>{{info.aab042 || '--'}}</span>
         </el-form-item>
         <el-form-item label="乘车路线">
           <span>{{info.acb205 || '--'}}</span>
@@ -129,7 +173,7 @@ export default {
         aab056: '', // 人员规模
         aaa021: '', // 所在区域
         aab301: '', // 所在区域code
-        aae006: '', // 地图地址
+        aab040: '', // 地图地址
         aab013: '', // 法定代表人
         aae004: '', // 联系人
         aae005: '', // 手机号
@@ -137,7 +181,14 @@ export default {
         aae016: '', // 公司网址
         acb206: '', // 公司简介
         cabq02: '', // 经度
-        cabq03: '' // 维度
+        cabq03: '', // 维度
+        aab054: '', // 产业类型
+        aab015: '', // 法定代表人手机号
+        aab014: '', // 法定代表人身份证号
+        aae006: '', // 注册地址
+        aab042: '', // QQ
+        aab041: '', // 微信
+        aae015: '' // 联系人邮箱
       },
       rules: {
         aab004: [{
@@ -169,13 +220,13 @@ export default {
           message: '请选择所在区域',
           trigger: 'change'
         }],
-        aae006: [{
+        aab040: [{
           required: true,
-          message: '请输入联系地址',
+          message: '请输入单位联系地址',
           trigger: 'change'
         }, {
-          max: 30,
-          message: '最多不超过30个字符',
+          max: 50,
+          message: '最多不超过50个字符',
           trigger: 'change'
         }],
         aab013: [{
@@ -244,6 +295,69 @@ export default {
         }, {
           max: 1000,
           message: '最多不超过1000个字符',
+          trigger: 'change'
+        }],
+        aab015: [{
+          validator(rule, value, callback) {
+            if (reg.phone(value)) {
+              callback()
+            } else {
+              callback(new Error('请输入正确的手机号'))
+            }
+          },
+          trigger: 'change'
+        }],
+        aab014: [{
+          validator(rule, value, callback) {
+            if (reg.idCard(value)) {
+              callback()
+            } else {
+              callback(new Error('请输入正确的身份证号'))
+            }
+          },
+          trigger: 'change'
+        }],
+        aae006: [{
+          max: 50,
+          message: '最多不超过50个字符',
+          trigger: 'change'
+        }],
+        aab042: [{
+          validator(rule, value, callback) {
+            if (value === '') {
+              callback()
+              return
+            }
+            if (/^\d{3,20}$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('请输入正确的QQ号'))
+            }
+          },
+          trigger: 'change'
+        }],
+        aab041: [{
+          validator(rule, value, callback) {
+            if (value === '') {
+              callback()
+              return
+            }
+            if (/^[\da-zA-Z_]{3,25}$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('请输入正确的微信号'))
+            }
+          },
+          trigger: 'change'
+        }],
+        aae015: [{
+          validator(rule, value, callback) {
+            if (reg.email(value)) {
+              callback()
+            } else {
+              callback(new Error('请输入正确的邮箱号'))
+            }
+          },
           trigger: 'change'
         }]
       },

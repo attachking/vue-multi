@@ -6,6 +6,7 @@
       v-loading="loading"
       style="width: 100%">
       <el-table-column
+        align="center"
         label="岗位名称">
         <template slot-scope="scope">
           <a target="_blank" :href="'job.html?acb210=' + scope.row.acb210" :title="scope.row.cca113">{{scope.row.cca113 || '--'}}</a>
@@ -45,6 +46,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         width="100px"
         label="面试地点">
         <template slot-scope="scope">
@@ -70,6 +72,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        align="center"
         width="100px"
         label="备注">
         <template slot-scope="scope">

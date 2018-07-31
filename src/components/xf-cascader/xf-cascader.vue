@@ -103,6 +103,8 @@ export default {
       this.pullName(values)
     },
     pullName(values) {
+      // 如果字典表还未加载，则终止计算
+      if (!this.options.length) return
       let i = 0
       let names = []
       function deep(arr) {

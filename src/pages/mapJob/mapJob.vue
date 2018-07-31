@@ -32,7 +32,7 @@ export default {
       echarts.registerMap('henan', henan)
       this.chart.setOption({
         title: {
-          text: '个人求职-中国●河南招才引智创新发展大会',
+          text: '个人求职-中国·河南招才引智创新发展大会',
           left: 'center'
         },
         tooltip: {

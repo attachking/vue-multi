@@ -43,7 +43,7 @@
             <el-input v-model="form.tel" placeholder="请输入联系人手机号"></el-input>
           </el-form-item>
           <el-form-item label="证件号码" prop="caac">
-            <el-input v-model="form.caac" placeholder="请输入请输入统一社会信用代码(组织机构代码)"></el-input>
+            <el-input v-model="form.caac" placeholder="请输入统一社会信用代码(组织机构代码)"></el-input>
           </el-form-item>
           <el-form-item label="证件照片" prop="picture" ref="picture">
             <el-upload

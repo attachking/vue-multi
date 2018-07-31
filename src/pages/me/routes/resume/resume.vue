@@ -67,6 +67,21 @@
           <el-form-item label="户口所在地">
             <span class="fix-width">{{info1.aab305name || '--'}}</span>
           </el-form-item>
+          <el-form-item label="军人证号">
+            <span class="fix-width">{{info1.aac00a || '--'}}</span>
+          </el-form-item>
+          <el-form-item label="户口性质">
+            <span class="fix-width">{{info1.aac009 || '--'}}</span>
+          </el-form-item>
+          <el-form-item label="籍贯">
+            <span class="fix-width">{{info1.aac025 || '--'}}</span>
+          </el-form-item>
+          <el-form-item label="邮编">
+            <span class="fix-width">{{info1.aae007 || '--'}}</span>
+          </el-form-item>
+          <el-form-item label="健康状况">
+            <span class="fix-width">{{info1.aac033name || '--'}}</span>
+          </el-form-item>
           <el-form-item label="电子邮箱">
             <span class="fix-width">{{info1.aae015 || '--'}}</span>
           </el-form-item>
@@ -132,6 +147,25 @@
               <el-option v-for="item in dictionaries.TAB_MARRIAGE" :key="item.code" :label="item.name" :value="item.code"></el-option>
             </el-select>
           </el-form-item>
+          <el-form-item prop="aac00a" label="军人证号">
+            <el-input placeholder="请输入军人证号" v-model.trim="form1.aac00a"></el-input>
+          </el-form-item>
+          <el-form-item prop="aac009" label="户口性质">
+            <el-select v-model="form1.aac009" filterable placeholder="请选择户口性质" clearable>
+              <el-option v-for="item in dictionaries.TAB_CATEGORY" :key="item.code" :label="item.name" :value="item.code"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item prop="aac025" label="籍贯">
+            <el-input placeholder="请输入籍贯" v-model.trim="form1.aac025"></el-input>
+          </el-form-item>
+          <el-form-item prop="aac033" label="健康状况">
+            <el-select v-model="form1.aac033" filterable placeholder="请选择健康状况" clearable>
+              <el-option v-for="item in dictionaries.TAB_HEALTH" :key="item.code" :label="item.name" :value="item.code"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item prop="aae007" label="邮编">
+            <el-input placeholder="请输入邮编" v-model.trim="form1.aae007"></el-input>
+          </el-form-item>
           <el-form-item prop="aac180" label="毕业院校">
             <el-input placeholder="请选择毕业院校" v-model="form1.aac180name" readonly @click.native="showSchool"></el-input>
           </el-form-item>
@@ -190,6 +224,21 @@
           <el-form-item label="期望工作性质">
             <span>{{info2.aac013Name || '--'}}</span>
           </el-form-item>
+          <el-form-item label="福利待遇">
+            <span>{{info2.acc214name || '--'}}</span>
+          </el-form-item>
+          <el-form-item label="食宿要求">
+            <span>{{info2.acb228name || '--'}}</span>
+          </el-form-item>
+          <el-form-item label="单位性质">
+            <span>{{info2.aab019name || '--'}}</span>
+          </el-form-item>
+          <el-form-item label="经济类型">
+            <span>{{info2.aab020name || '--'}}</span>
+          </el-form-item>
+          <el-form-item label="参加工作时间">
+            <span>{{info2.aac007 || '--'}}</span>
+          </el-form-item>
         </el-form>
         <!--求职意向表单-->
         <el-form ref="formIntention" :model="form2" :rules="rules2" class="form" label-width="100px" key="formIntention" v-if="formIntention">
@@ -213,6 +262,36 @@
               <el-option v-for="item in dictionaries.TAB_NATURE" :key="item.code" :label="item.name" :value="item.code"></el-option>
             </el-select>
           </el-form-item>
+          <el-form-item prop="acc214" label="福利待遇">
+            <el-select v-model="form2.acc214" placeholder="请选择福利待遇" multiple collapse-tags>
+              <el-option v-for="item in dictionaries.TAB_WELFARE" :key="item.code" :label="item.name" :value="item.code"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item prop="acb228" label="食宿要求">
+            <el-select v-model="form2.acb228" placeholder="请选择食宿要求">
+              <el-option v-for="item in dictionaries.TAB_SREQUIREMENT" :key="item.code" :label="item.name" :value="item.code"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item prop="aab019" label="单位性质">
+            <el-select v-model="form2.aab019" placeholder="请选择食宿要求">
+              <el-option v-for="item in dictionaries.TAB_UNITNATURE" :key="item.code" :label="item.name" :value="item.code"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item prop="aab020" label="经济类型">
+            <el-select v-model="form2.aab020" placeholder="请选择经济类型">
+              <el-option v-for="item in dictionaries.TAB_ECONOMIC" :key="item.code" :label="item.name" :value="item.code"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item prop="aac007" label="参加工作时间">
+            <el-date-picker
+              :picker-options="pickerOptions2"
+              :editable="false"
+              v-model="form2.aac007"
+              type="date"
+              value-format="yyyy-MM-dd"
+              placeholder="选择参加工作时间">
+            </el-date-picker>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit2" :loading="loading2" size="mini">确定</el-button>
             <el-button type="default" @click="toggle('formIntention')" size="mini">取消</el-button>
@@ -233,30 +312,43 @@
           key="educationList"
           style="width: 100%">
           <el-table-column
+            align="center"
+            width="200px"
             label="时间">
             <template slot-scope="scope">
               <span>{{scope.row.aae030}} -- {{scope.row.aac046}}</span>
             </template>
           </el-table-column>
           <el-table-column
+            align="center"
             label="学校">
             <template slot-scope="scope">
               <span>{{scope.row.aac045 || '--'}}</span>
             </template>
           </el-table-column>
           <el-table-column
+            align="center"
             label="专业">
             <template slot-scope="scope">
               <span>{{scope.row.acc01g || '--'}}</span>
             </template>
           </el-table-column>
           <el-table-column
+            align="center"
             label="学历">
             <template slot-scope="scope">
               <span>{{scope.row.atc011 || '--'}}</span>
             </template>
           </el-table-column>
           <el-table-column
+            align="center"
+            label="备注">
+            <template slot-scope="scope">
+              <span>{{scope.row.aae013 || '--'}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column
+            align="center"
             width="100px"
             label="操作">
             <template slot-scope="scope">
@@ -272,6 +364,7 @@
               :editable="false"
               v-model="form3.aae030"
               type="date"
+              :picker-options="pickerOptions2"
               value-format="yyyy-MM-dd"
               placeholder="选择开始日期">
             </el-date-picker>
@@ -295,6 +388,9 @@
             <el-select v-model="form3.atc011" placeholder="请选择学历">
               <el-option v-for="item in dictionaries.TAB_EDUCATION" :key="item.code" :label="item.name" :value="item.code"></el-option>
             </el-select>
+          </el-form-item>
+          <el-form-item prop="aae013" label="备注">
+            <el-input :rows="3" type="textarea" v-model.trim="form3.aae013" placeholder="请输入备注"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit3" :loading="loading3" size="mini">确定</el-button>
@@ -324,6 +420,9 @@
             <el-form-item label="岗位描述">
               <span class="max-text">{{val.aac0b4 || '--'}}</span>
             </el-form-item>
+            <el-form-item label="备注">
+              <span class="max-text">{{val.aae013 || '--'}}</span>
+            </el-form-item>
             <div class="item-edit">
               <el-button title="修改" icon="el-icon-edit" size="mini" circle @click="editWork(val)"></el-button>
               <el-button title="删除" icon="el-icon-delete" size="mini" circle @click="delWork(val)"></el-button>
@@ -337,6 +436,7 @@
               :editable="false"
               v-model="form4.aae030"
               type="date"
+              :picker-options="pickerOptions2"
               value-format="yyyy-MM-dd"
               placeholder="选择开始日期">
             </el-date-picker>
@@ -359,6 +459,9 @@
           <el-form-item prop="aac0b4" label="岗位描述">
             <el-input type="textarea" :rows="4" v-model.trim="form4.aac0b4" placeholder="请输入岗位名称" clearable></el-input>
           </el-form-item>
+          <el-form-item prop="aae013" label="备注">
+            <el-input :rows="4" type="textarea" v-model.trim="form4.aae013" placeholder="请输入备注"></el-input>
+          </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit4" :loading="loading4" size="mini">确定</el-button>
             <el-button type="default" @click="toggle('formWork')" size="mini">取消</el-button>
@@ -378,6 +481,7 @@
             stripe
             style="width: 100%">
             <el-table-column
+              align="center"
               label="证书名称">
               <template slot-scope="scope">
                 <el-popover
@@ -392,24 +496,28 @@
               </template>
             </el-table-column>
             <el-table-column
+              align="center"
               label="获得日期">
               <template slot-scope="scope">
                 <span>{{scope.row.aac0c4 || '--'}}</span>
               </template>
             </el-table-column>
             <el-table-column
+              align="center"
               label="证书类别">
               <template slot-scope="scope">
                 <span>{{scope.row.cczy06Str || '--'}}</span>
               </template>
             </el-table-column>
             <el-table-column
+              align="center"
               label="证书编号">
               <template slot-scope="scope">
                 <span>{{scope.row.aac0c3 || '--'}}</span>
               </template>
             </el-table-column>
             <el-table-column
+              align="center"
               label="备注">
               <template slot-scope="scope">
                 <span>{{scope.row.aae013 || '--'}}</span>
@@ -436,6 +544,7 @@
                 :editable="false"
                 v-model="form5.aac0c4"
                 type="date"
+                :picker-options="pickerOptions2"
                 value-format="yyyy-MM-dd"
                 placeholder="获得日期">
               </el-date-picker>
@@ -503,6 +612,7 @@
             <el-date-picker
               v-model="form6.starttime"
               type="date"
+              :picker-options="pickerOptions2"
               :editable="false"
               value-format="yyyy-MM-dd"
               placeholder="选择开始日期">
@@ -653,7 +763,12 @@ export default {
         aac180: '', // 毕业院校（code）
         aac180name: '',
         aac017: '', // 婚姻状况
-        aac017name: ''
+        aac017name: '',
+        aac00a: '', // 军人证号
+        aac009: '', // 户口性质
+        aac025: '', // 籍贯
+        aac033: '', // 健康状况
+        aae007: '' // 邮编
       },
       info1: {},
       rules1: {
@@ -805,6 +920,35 @@ export default {
             }
           },
           trigger: 'blur'
+        }],
+        aac00a: [{
+          max: 30,
+          message: '最多30个字符',
+          trigger: 'blur'
+        }],
+        aac009: [{
+          required: true,
+          message: '请选择户口性质',
+          trigger: 'blur'
+        }],
+        aac025: [{
+          max: 30,
+          message: '最多30个字符',
+          trigger: 'blur'
+        }],
+        aae007: [{
+          validator(rule, value, callback) {
+            if (value === '') {
+              callback()
+              return
+            }
+            if (/^[0-9]\d{5}$/.test(value)) {
+              callback()
+            } else {
+              callback(new Error('请输入正确格式的邮编'))
+            }
+          },
+          trigger: 'blur'
         }]
       },
       // 求职意向
@@ -822,7 +966,12 @@ export default {
         bcb204: '', // 第三期望地点
         acb204: '', // 第三期望地点code
         acc034: '', // 期望月薪
-        aac013: '' // 求职性质
+        aac013: '', // 求职性质
+        acc214: [], // 福利待遇
+        acb228: '', // 食宿要求
+        aab019: '', // 单位性质
+        aab020: '', // 经济类型
+        aac007: '' // 参加工作时间
       },
       info2: {},
       rules2: {
@@ -854,7 +1003,8 @@ export default {
         aac046: '', // 结束时间
         aac045: '', // 学校名称
         acc01g: '', // 专业名称
-        atc011: '' // 学历
+        atc011: '', // 学历
+        aae013: '' // 备注
       },
       rules3: {
         aae030: [{
@@ -900,6 +1050,11 @@ export default {
           required: true,
           message: '请选择学历',
           trigger: 'change'
+        }],
+        aae013: [{
+          max: 30,
+          message: '最多30个字符',
+          trigger: 'blur'
         }]
       },
       educationList: [],
@@ -910,7 +1065,8 @@ export default {
         aae031: '', // 结束时间
         aac045: '', // 公司名称
         aac0b3: '', // 岗位名称
-        aac0b4: '' // 岗位描述
+        aac0b4: '', // 岗位描述
+        aae013: '' // 备注
       },
       rules4: {
         aae030: [{
@@ -963,6 +1119,11 @@ export default {
         }, {
           max: 200,
           message: '最多200个字符',
+          trigger: 'blur'
+        }],
+        aae013: [{
+          max: 30,
+          message: '最多30个字符',
           trigger: 'blur'
         }]
       },
@@ -1122,6 +1283,12 @@ export default {
           let now = new Date()
           return !(date.getFullYear() > now.getFullYear() - 120 && date.getTime() < now.getTime() - 18 * 365 * 24 * 60 * 60 * 1000)
         }
+      },
+      pickerOptions2: {
+        disabledDate(date) {
+          let now = new Date()
+          return date.getTime() > now.getTime()
+        }
       }
     }
   },
@@ -1191,6 +1358,7 @@ export default {
             aac001: this.$userInfo.aac001,
             ccmu01: this.$userInfo.ccmu01
           }, this.form2)
+          form.acc214 = form.acc214.join(',')
           this.loading2 = true
           this.$post('/service/business/search/stuApplyJob/jobIntentionSave.xf', form).then(res => {
             this.loading2 = false
@@ -1551,6 +1719,7 @@ export default {
         echo(this.form8, res.result.personInfo)
         this.info1 = res.result.personInfo
         res.result.jobIntention || (res.result.jobIntention = {})
+        res.result.jobIntention.acc214 = res.result.jobIntention.acc214 ? res.result.jobIntention.acc214.split(',') : []
         echo(this.form2, res.result.jobIntention)
         this.info2 = res.result.jobIntention
         this.educationList = res.result.educationList || []

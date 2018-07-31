@@ -86,7 +86,7 @@ export default {
           validator(rule, value, callback) {
             _this.$post('/service/business/login/account/verificationPhone', {
               phone: value
-            }).then(res => {
+            }, false).then(res => {
               if (res.error.result === 1) {
                 callback()
               } else {

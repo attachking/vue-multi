@@ -14,7 +14,7 @@
                 <el-button type="primary" v-if="ccmu17 !== 1" @click="invite" :title="Number(is_Resume) > 0 ? '' : '面试邀请'">{{Number(is_Resume) > 0 ? '已邀请' : '面试邀请'}}</el-button>
               </el-tooltip>
             </div>
-            <div class="btn-box">
+            <div class="btn-box" v-if="ccmu17 === 2 || self">
               <el-button type="warning" @click="download">下载简历</el-button>
             </div>
           </div>
@@ -84,6 +84,21 @@
                 <el-form-item label="户口所在地">
                   <span class="fix-width">{{info1.aab305name || '--'}}</span>
                 </el-form-item>
+                <el-form-item label="军人证号">
+                  <span class="fix-width">{{info1.aac00a || '--'}}</span>
+                </el-form-item>
+                <el-form-item label="户口性质">
+                  <span class="fix-width">{{info1.aac009 || '--'}}</span>
+                </el-form-item>
+                <el-form-item label="籍贯">
+                  <span class="fix-width">{{info1.aac025 || '--'}}</span>
+                </el-form-item>
+                <el-form-item label="邮编">
+                  <span class="fix-width">{{info1.aae007 || '--'}}</span>
+                </el-form-item>
+                <el-form-item label="健康状况">
+                  <span class="fix-width">{{info1.aac033name || '--'}}</span>
+                </el-form-item>
                 <el-form-item label="现居住地址">
                   <span class="fix-width">{{info1.aab301 || '--'}}</span>
                 </el-form-item>
@@ -111,6 +126,21 @@
                 <el-form-item label="工作性质">
                   <span>{{info2.aac013Name || '--'}}</span>
                 </el-form-item>
+                <el-form-item label="福利待遇">
+                  <span>{{info2.acc21411name || '--'}}</span>
+                </el-form-item>
+                <el-form-item label="食宿要求">
+                  <span>{{info2.acb228name || '--'}}</span>
+                </el-form-item>
+                <el-form-item label="单位性质">
+                  <span>{{info2.aab019name || '--'}}</span>
+                </el-form-item>
+                <el-form-item label="经济类型">
+                  <span>{{info2.aab020name || '--'}}</span>
+                </el-form-item>
+                <el-form-item label="参加工作时间">
+                  <span>{{info2.aac007 || '--'}}</span>
+                </el-form-item>
               </el-form>
             </transition>
           </div>
@@ -124,24 +154,28 @@
                 stripe
                 style="width: 100%">
                 <el-table-column
+                  align="center"
                   label="时间">
                   <template slot-scope="scope">
                     <span>{{scope.row.aae030}} -- {{scope.row.aac046}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column
+                  align="center"
                   label="学校">
                   <template slot-scope="scope">
                     <span>{{scope.row.aac045 || '--'}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column
+                  align="center"
                   label="专业">
                   <template slot-scope="scope">
                     <span>{{scope.row.acc01g || '--'}}</span>
                   </template>
                 </el-table-column>
                 <el-table-column
+                  align="center"
                   label="学历">
                   <template slot-scope="scope">
                     <span>{{scope.row.atc011 || '--'}}</span>
@@ -185,6 +219,7 @@
                   stripe
                   style="width: 100%">
                   <el-table-column
+                    align="center"
                     label="证书名称">
                     <template slot-scope="scope">
                       <el-popover
@@ -199,24 +234,28 @@
                     </template>
                   </el-table-column>
                   <el-table-column
+                    align="center"
                     label="获得日期">
                     <template slot-scope="scope">
                       <span>{{scope.row.aac0c4 || '--'}}</span>
                     </template>
                   </el-table-column>
                   <el-table-column
+                    align="center"
                     label="证书类别">
                     <template slot-scope="scope">
                       <span>{{scope.row.cczy06Str || '--'}}</span>
                     </template>
                   </el-table-column>
                   <el-table-column
+                    align="center"
                     label="证书编号">
                     <template slot-scope="scope">
                       <span>{{scope.row.aac0c3 || '--'}}</span>
                     </template>
                   </el-table-column>
                   <el-table-column
+                    align="center"
                     label="备注">
                     <template slot-scope="scope">
                       <span>{{scope.row.aae013 || '--'}}</span>
@@ -307,6 +346,13 @@ export default {
       pics: []
     }
   },
+  computed: {
+    self: {
+      get() {
+        return this.aac001 === this.$userInfo.aac001
+      }
+    }
+  },
   methods: {
     getBase() {
       this.$post('/service/business/person/resumeInfo/getRCResumeIndex.xf', {
@@ -357,7 +403,7 @@ export default {
         this.$post('/service/business/corp/corps/getDownLoadResumeCount.xf', {
           aab001: this.$userInfo.aab001
         }).then(res => {
-          if (res.result > 0) {
+          if (res.error && res.error.result === 1) {
             this.$post('/service/business/person/resumeInfo/checkResumeInfo.xf', {
               aac001: this.aac001
             }).then(res => {
@@ -372,7 +418,7 @@ export default {
             })
           } else {
             this.$message({
-              message: '下载次数超过限制，如有疑问请联系管理员',
+              message: res.error.message,
               type: 'warning'
             })
           }

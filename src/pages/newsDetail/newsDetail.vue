@@ -7,7 +7,8 @@
         <div class="top-tit">
           <i class="xffont font-weibiao45100847"></i>
           <a :href="en ? 'theme.html?lang=en' : 'index.html'">{{en ? 'Home' : '首页'}}</a> >
-          <a :href="currentUrl">{{current}}</a>
+          <a :href="currentUrl" v-if="!sc.head">{{current}}</a>
+          <a v-if="sc.head">头条</a>
         </div>
         <div class="news-tit">
           <h2>{{detail.cand03}}</h2>
@@ -23,7 +24,7 @@
           </div>
         </div>
         <div class="news-con" v-html="detail.cand04"></div>
-        <div class="news-page">
+        <div class="news-page" v-if="!sc.head">
           <p>上一篇：<a :href="handleUrl(pre)" :class="{disabled: !pre.cand01}">{{pre.cand03}}</a></p>
           <p>下一篇：<a :href="handleUrl(next)" :class="{disabled: !next.cand01}">{{next.cand03}}</a></p>
         </div>
@@ -54,7 +55,8 @@ export default {
       detail: {},
       pre: {},
       next: {},
-      en: false
+      en: false,
+      sc: queryParse(location.search)
     }
   },
   methods: {

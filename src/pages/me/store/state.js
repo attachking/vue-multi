@@ -22,7 +22,11 @@ const state = {
     TAB_SECURITY: [], // 密保问题
     TAB_FUND_SOURCE: [], // 经费来源(项目申报)
     TAB_PROJECT_TYPE: [], // 项目类别
-    TAB_COOPERATION_TYPE: [] // 合作方式
+    TAB_COOPERATION_TYPE: [], // 合作方式
+    TAB_INDUSTRYCLASSES: [], // 所在产业
+    TAB_CATEGORY: [], // 户口性质
+    TAB_HEALTH: [], // 健康状况
+    TAB_ECONOMIC: [] // 经济类型
   },
   phoneOpen: false,
   corpInfo: {}, // 单位信息,

@@ -57,7 +57,8 @@ export default {
       isPerfect: '', // 是否完善基本信息 0否1是
       ccmu17: this.$userInfo.ccmu17,
       loginStatus: !!this.$userInfo.status,
-      menu: []
+      menu: [],
+      isFirst: true
     }
   },
   computed: {
@@ -101,6 +102,28 @@ export default {
         res.result.infoState = Number(res.result.infoState) // 0为基本信息未完善
         this.isPerfect = res.result.infoState
         this.setAuthenInfo(res.result)
+        // 首次进入验证认证状态后处理路由（仅刷新页面时处理一次）
+        if (!this.isFirst) return
+        if (res.result.infoState === 0) {
+          this.$router.push({name: 'info'})
+          this.$alert('请先完善单位基本信息', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {}
+          })
+        } else if (res.result.authenState === 0) {
+          this.$router.push({name: 'authen'})
+          this.$alert('请先进行单位认证', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {}
+          })
+        } else if (res.result.authenState === 1) {
+          this.$router.push({name: 'authen'})
+          this.$alert('您的单位信息正在认证', '提示', {
+            confirmButtonText: '确定',
+            callback: action => {}
+          })
+        }
+        this.isFirst = false
       })
     },
     getPersonalInfo() {
