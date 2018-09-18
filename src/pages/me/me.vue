@@ -13,6 +13,7 @@
             <p class="name" v-if="isPerfect && loginStatus">
               <span>{{name}}</span>
               <i class="xffont font-anquanshezhi" :class="Number(authenInfo.authenState) === 2 ? 'authened' : 'unAuthen'" :title="Number(authenInfo.authenState) === 2 ? '认证已通过' : '单位未认证'"></i>
+              <i class="xffont font-erweima" title="我的二维码" v-if="qrCode && (authenInfo.authenState === 2 || ccmu17 === 1)" @click="dialogVisible = true"></i>
             </p>
             <p class="tip" v-if="!isPerfect && loginStatus">
               点击
@@ -34,6 +35,12 @@
         </transition>
       </div>
     </div>
+    <el-dialog
+      title="我的二维码"
+      :visible.sync="dialogVisible"
+      width="300px">
+      <img :src="qrCode" class="qrcode">
+    </el-dialog>
     <xf-footer></xf-footer>
     <right-menu></right-menu>
   </div>
@@ -58,7 +65,9 @@ export default {
       ccmu17: this.$userInfo.ccmu17,
       loginStatus: !!this.$userInfo.status,
       menu: [],
-      isFirst: true
+      isFirst: true,
+      qrCode: '',
+      dialogVisible: false
     }
   },
   computed: {
@@ -148,6 +157,17 @@ export default {
       }).then(res => {
         this.menu = res.result
       })
+    },
+    getQrCode() { // 获取二维码
+      this.$post('/service/business/fm/pic/picInfo/qrCodeGenerate.xf', {
+        /// type=1 个人   type=2 单位   type=3 岗位
+        type: this.$userInfo.ccmu17,
+        paramsId: this.$userInfo.ccmu17 === 1 ? this.$userInfo.aac001 : this.$userInfo.aab001
+      }, false).then(res => {
+        if (res.result && res.result.qrCodeUrl) {
+          this.qrCode = res.result.qrCodeUrl
+        }
+      })
     }
   },
   created() {
@@ -158,6 +178,7 @@ export default {
     this.getCorpInfo()
     this.getPersonalInfo()
     this.getAuthen()
+    this.getQrCode()
     event.$on('authen', () => {
       this.getAuthen()
     })
@@ -212,6 +233,9 @@ export default {
       .name{
         color: $--color-primary;
         padding: 5px 5px;
+        .font-erweima{
+          cursor: pointer;
+        }
         i{
           vertical-align: top;
           font-size: 14px;
@@ -247,5 +271,8 @@ export default {
     min-height: 650px;
     width: 1000px;
     float: left;
+  }
+  .qrcode{
+    width: 260px;
   }
 </style>

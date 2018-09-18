@@ -37,7 +37,7 @@
       </div>
       <transition name="el-zoom-in-top" mode="out-in">
         <div class="search-more" v-if="showMore">
-          <el-form inline :model="form" class="demo-form-inline">
+          <el-form inline class="demo-form-inline">
             <el-form-item label="更多筛选">
               <el-select v-model="form.acc034" clearable placeholder="薪资待遇">
                 <el-option
@@ -48,7 +48,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item>
+            <!--<el-form-item>
               <el-select v-model="acc214" clearable collapse-tags multiple placeholder="福利待遇">
                 <el-option
                   v-for="item in dictionaries.TAB_WELFARE"
@@ -77,9 +77,7 @@
                   :value="item.code">
                 </el-option>
               </el-select>
-            </el-form-item>
-          </el-form>
-          <el-form inline :model="form" class="demo-form-inline">
+            </el-form-item>-->
             <el-form-item label="">
               <el-select v-model="form.aac011" clearable placeholder="学历要求">
                 <el-option
@@ -101,6 +99,17 @@
               </el-select>
             </el-form-item>
             <el-form-item>
+              <el-select v-model="form.updateDates" clearable placeholder="更新时间">
+                <el-option label="不限" value="0"></el-option>
+                <el-option label="三天以内" value="3"></el-option>
+                <el-option label="一周以内" value="7"></el-option>
+                <el-option label="十天以内" value="10"></el-option>
+                <el-option label="一个月以内" value="30"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+          <el-form inline class="demo-form-inline">
+            <!--<el-form-item>
               <el-select v-model="form.aab056" clearable placeholder="单位规模">
                 <el-option
                   v-for="item in dictionaries.TAB_PSCALE"
@@ -109,17 +118,7 @@
                   :value="item.code">
                 </el-option>
               </el-select>
-            </el-form-item>
-            <el-form-item>
-              <el-select v-model="form.updateDates" clearable placeholder="更新时间">
-                <el-option label="不限" value="0"></el-option>
-                <el-option label="三天以内" value="3"></el-option>
-                <el-option label="一周以内" value="7"></el-option>
-                <el-option label="十天以内" value="7"></el-option>
-                <el-option label="十天以内" value="10"></el-option>
-                <el-option label="一个月以内" value="30"></el-option>
-              </el-select>
-            </el-form-item>
+            </el-form-item>-->
           </el-form>
         </div>
       </transition>
@@ -132,7 +131,7 @@
               <a :href="'job.html?acb210=' + val.acb210" target="_blank" :title="val.cca113">{{val.cca113}} <i class="xffont font-tubiao- red" title="重点推荐" v-if="Number(val.acb21z) === 3"></i></a>
               <span class="salary">{{val.acc034Name}}</span>
             </p>
-            <p>{{val.aac012 || '--'}} / {{val.acb21r || 0}}人 / {{val.acb21iName || '--'}}</p>
+            <p><span v-if="val.aac012">{{val.aac012 || '--'}} / </span>{{val.acb21r ? val.acb21r + '人' : '若干'}}<span v-if="val.acb21iName"> / {{val.acb21iName || '--'}}</span></p>
             <p>[ {{$dateFormat(val.ccpr05, 'yyyy-MM-dd hh:mm:ss')}} 发布 ]</p>
           </div>
           <div class="bottom">

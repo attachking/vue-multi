@@ -5,12 +5,13 @@
         <span>{{form.aab004}}</span>
       </el-form-item>
       <el-form-item label="项目名称" prop="projectName">
-        <el-input v-model="form.projectName" placeholder="请输入项目名称"></el-input>
+        <el-input v-model.trim="form.projectName" placeholder="请输入项目名称"></el-input>
       </el-form-item>
       <el-form-item label="项目类别" prop="projectCategory">
-        <el-select v-model="form.projectCategory" placeholder="请选择项目类别" clearable>
+        <!--<el-select v-model="form.projectCategory" placeholder="请选择项目类别" clearable>
           <el-option :label="val.name" :value="val.code" :key="val.code" v-for="val in dictionaries.TAB_PROJECT_TYPE"></el-option>
-        </el-select>
+        </el-select>-->
+        <el-input v-model.trim="form.projectCategory" placeholder="请输入项目类别"></el-input>
       </el-form-item>
       <el-form-item label="项目介绍" prop="projectIntroduction">
         <el-input type="textarea" :rows="5" v-model="form.projectIntroduction" placeholder="请输入项目介绍"></el-input>
@@ -19,19 +20,22 @@
         <el-input type="textarea" :rows="5" v-model="form.projectProblem" placeholder="请输入项目需研究或解决的问题"></el-input>
       </el-form-item>
       <el-form-item label="经费来源" prop="projectFundresourse">
-        <el-select v-model="form.projectFundresourse" placeholder="请选择经费来源" clearable>
+        <!--<el-select v-model="form.projectFundresourse" placeholder="请选择经费来源" clearable>
           <el-option :label="val.name" :value="val.code" :key="val.code" v-for="val in dictionaries.TAB_FUND_SOURCE"></el-option>
-        </el-select>
+        </el-select>-->
+        <el-input v-model.trim="form.projectFundresourse" placeholder="请输入经费来源"></el-input>
       </el-form-item>
       <el-form-item label="合作方式" prop="projectWorktype">
-        <el-select v-model="form.projectWorktype" placeholder="请选择合作方式" clearable>
+        <!--<el-select v-model="form.projectWorktype" placeholder="请选择合作方式" clearable>
           <el-option :label="val.name" :value="val.code" :key="val.code" v-for="val in dictionaries.TAB_COOPERATION_TYPE"></el-option>
-        </el-select>
+        </el-select>-->
+        <el-input v-model.trim="form.projectWorktype" placeholder="请输入合作方式"></el-input>
       </el-form-item>
       <el-form-item label="待遇" prop="projectTreatment">
-        <el-select v-model="form.projectTreatment" placeholder="请选择待遇" clearable>
+        <!--<el-select v-model="form.projectTreatment" placeholder="请选择待遇" clearable>
           <el-option :label="val.name" :value="val.code" :key="val.code" v-for="val in dictionaries.TAB_SALARY"></el-option>
-        </el-select>
+        </el-select>-->
+        <el-input type="textarea" :rows="5" v-model.trim="form.projectTreatment" placeholder="请输入待遇"></el-input>
       </el-form-item>
       <el-form-item label="参与单位" prop="projectJoinUnit">
         <el-input type="textarea" :rows="5" v-model="form.projectJoinUnit" placeholder="请输入参与单位"></el-input>
@@ -139,7 +143,7 @@ export default {
         }],
         projectFundresourse: [{
           required: true,
-          message: '请选择项目经费来源',
+          message: '请输入项目经费来源',
           trigger: 'blur'
         }, {
           max: 100,
@@ -148,16 +152,16 @@ export default {
         }],
         projectWorktype: [{
           required: true,
-          message: '请选择合作方式',
+          message: '请输入合作方式',
           trigger: 'blur'
         }, {
-          max: 50,
-          message: '最多50个字符',
+          max: 100,
+          message: '最多100个字符',
           trigger: 'blur'
         }],
         projectTreatment: [{
           required: true,
-          message: '请选择待遇情况',
+          message: '请输入待遇情况',
           trigger: 'blur'
         }, {
           max: 100,

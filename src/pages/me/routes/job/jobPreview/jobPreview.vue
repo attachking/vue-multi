@@ -8,7 +8,7 @@
         <span class="detail">{{form.cca113 || '--'}}</span>
       </el-form-item>
       <el-form-item label="招聘人数">
-        <span class="detail">{{form.acb21r || '--'}}人</span>
+        <span class="detail">{{form.acb21r ? form.acb21r + '人' : '若干'}}</span>
       </el-form-item>
       <el-form-item label="发布日期">
         <span class="detail">{{$dateFormat(form.aae030, 'yyyy-MM-dd')}}</span>
@@ -17,19 +17,19 @@
         <span class="detail">{{$dateFormat(form.aae031, 'yyyy-MM-dd')}}</span>
       </el-form-item>
       <el-form-item label="学历要求">
-        <span class="detail">{{form.aac012 || '--'}}</span>
+        <span class="detail">{{form.aac012 || '无'}}</span>
       </el-form-item>
       <el-form-item label="薪资待遇">
         <span class="detail">{{form.acc034Name || '--'}}</span>
       </el-form-item>
       <el-form-item label="工作经验">
-        <span class="detail">{{form.acc218 || '--'}}</span>
+        <span class="detail">{{form.acc218 || '无'}}</span>
       </el-form-item>
       <el-form-item label="专业要求">
-        <span class="detail">{{form.acc01gname || '--'}}</span>
+        <span class="detail">{{form.acc01gname || '无'}}</span>
       </el-form-item>
       <el-form-item label="福利待遇">
-        <span class="detail">{{form.acc214name || '--'}}</span>
+        <span class="detail">{{form.acc214name || '无'}}</span>
       </el-form-item>
       <el-form-item label="工作地点">
         <span class="detail">{{form.bcb202 || '--'}}</span>
@@ -41,7 +41,7 @@
         <span class="detail">{{form.acb228name || '--'}}</span>
       </el-form-item>
       <el-form-item label="优惠政策">
-        <span class="detail">{{form.favouredPolicy || '--'}}</span>
+        <p class="no-wrap">{{form.favouredPolicy || '--'}}</p>
       </el-form-item>
       <el-form-item label="岗位描述" style="width: 100%;">
         <p class="no-wrap">{{form.cca114 || '--'}}</p>

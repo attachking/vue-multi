@@ -194,25 +194,29 @@ export default {
       }, 1000)
     },
     onSubmit() {
-      this.loading = true
-      this.$post('/service/business/login/account/userRegister', {
-        aae005: this.form.phone,
-        phoneCode: this.form.phoneCode,
-        valiCode: this.phoneValidCode,
-        cczy06: 1, // (数据来源）：(1：官网注:3：微官网注册，4：app注册)
-        remark: 1 // 单位1，用户2
-      }).then(res => {
-        this.loading = false
-        if (res.error.result === 1) {
-          this.$alert(`${res.error.message}`, '提示', {
-            confirmButtonText: '确定',
-            callback: action => {
-              this.login()
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          this.loading = true
+          this.$post('/service/business/login/account/userRegister', {
+            aae005: this.form.phone,
+            phoneCode: this.form.phoneCode,
+            valiCode: this.phoneValidCode,
+            cczy06: 1, // (数据来源）：(1：官网注:3：微官网注册，4：app注册)
+            remark: 1 // 单位1，用户2
+          }).then(res => {
+            this.loading = false
+            if (res.error.result === 1) {
+              this.$alert(`${res.error.message}`, '提示', {
+                confirmButtonText: '确定',
+                callback: action => {
+                  this.login()
+                }
+              })
             }
+          }).catch(() => {
+            this.loading = false
           })
         }
-      }).catch(() => {
-        this.loading = false
       })
     },
     login() {

@@ -11,7 +11,7 @@
           <a v-if="sc.head">头条</a>
         </div>
         <div class="news-tit">
-          <h2>{{detail.cand03}}</h2>
+          <h2 :style="'color: ' + (detail.cand20 || '#000000') + ';'">{{detail.cand03}}</h2>
           <div class="resource">
             {{en ? 'Date' : '发布时间'}}：{{$dateFormat(detail.ccpr05, 'yyyy-MM-dd')}}&nbsp;&nbsp;<span v-if="!en">发布来源：{{detail.aac003}}&nbsp;&nbsp;</span><i class="xffont font-yanjing" :title="(en ? 'amount of reading' : '阅读量') + '：' + detail.cand13"></i>{{detail.cand13 || 0}}
           </div>
@@ -221,7 +221,6 @@ export default {
     margin: 0 0 0 980px;
   }
   .bd_weixin_popup{
-    width: 255px !important;
-    height: 285px !important;
+    box-sizing: content-box;
   }
 </style>

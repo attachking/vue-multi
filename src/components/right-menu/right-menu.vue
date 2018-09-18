@@ -9,17 +9,6 @@
       </div>
     </div>
     <div class="right-menu-item">
-      <div class="sign-up-con">
-        <div class="sign-up">
-          <a href="javascript:;">移动APP</a>
-          <a href="javascript:;">扫描下载</a>
-        </div>
-      </div>
-      <div class="right-menu-qrcode">
-        <img :src="test ? './static/assets/qrcode/app-test.png' : './static/assets/qrcode/app.png'">
-      </div>
-    </div>
-    <div class="right-menu-item">
       <div class="right-menu-icon">
         <div class="right-menu-icon-c two">
           <img src="./static/weixin.png">
@@ -27,12 +16,27 @@
         </div>
       </div>
       <div class="right-menu-qrcode">
-        <img src="../../../static/assets/qrcode/weixin-service.jpg">
-        <p>微信公众号</p>
-        <img src="../../../static/assets/qrcode/weixin.jpg">
-        <p>微信订阅号</p>
-        <img src="../../../static/assets/qrcode/mp.jpg">
-        <p>微信小程序</p>
+        <div class="qrcode-box">
+          <img src="../../../static/assets/qrcode/weixin-service.jpg" v-img="'./static/assets/qrcode/weixin-service.jpg'">
+          <p>微信服务号</p>
+          <img src="../../../static/assets/qrcode/weixin.jpg" v-img="'./static/assets/qrcode/weixin.jpg'">
+          <p>微信订阅号</p>
+          <img src="../../../static/assets/qrcode/mp.jpg" v-img="'./static/assets/qrcode/mp.jpg'">
+          <p>微信小程序</p>
+        </div>
+      </div>
+    </div>
+    <div class="right-menu-item">
+      <div class="sign-up-con">
+        <div class="sign-up">
+          <a href="javascript:;">移动APP</a>
+          <a href="javascript:;">扫描下载</a>
+        </div>
+      </div>
+      <div class="right-menu-qrcode">
+        <div class="qrcode-box">
+          <img :src="test ? './static/assets/qrcode/app-test.png' : './static/assets/qrcode/app.png'" v-img="test ? './static/assets/qrcode/app-test.png' : './static/assets/qrcode/app.png'">
+        </div>
       </div>
     </div>
     <div class="right-menu-item">
@@ -43,7 +47,9 @@
         </div>
       </div>
       <div class="right-menu-qrcode">
-        <img :src="test ? './static/assets/qrcode/mobile-test.png' : './static/assets/qrcode/mobile.png'">
+        <div class="qrcode-box">
+          <img :src="test ? './static/assets/qrcode/mobile-test.png' : './static/assets/qrcode/mobile.png'" v-img="test ? './static/assets/qrcode/mobile-test.png' : './static/assets/qrcode/mobile.png'">
+        </div>
       </div>
     </div>
     <div class="right-menu-item">
@@ -54,7 +60,9 @@
         </div>
       </div>
       <div class="right-menu-qrcode">
-        <img src="../../../static/assets/qrcode/weibo.png">
+        <div class="qrcode-box">
+          <img src="../../../static/assets/qrcode/weibo.png" v-img="'./static/assets/qrcode/weibo.png'">
+        </div>
       </div>
     </div>
     <div class="right-menu-item" v-if="showTop" @click="scrollTop">
@@ -149,12 +157,15 @@ export default {
       }
     }
     .right-menu-qrcode{
+      .qrcode-box{
+        background: #fff;
+        padding: 5px;
+      }
       position: absolute;
-      right: 60px;
+      right: 50px;
       top: 50%;
       display: none;
-      padding: 5px;
-      background: #fff;
+      padding: 0 5px 0 0;
       transform: translate(0, -50%);
       img{
         width: 100px;

@@ -2,7 +2,7 @@
 <template>
   <div class="list" ref="list">
     <div class="item" v-for="val in list" :key="val.cand01">
-      <a class="tit" :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01"><span :title="val.cand03">{{val.cand03}}</span><i class="xffont font-zhiding" title="置顶" v-if="val.cand17 === 1"></i><i title="热点" class="xffont font-tubiao-" v-if="val.cand16 === 1"></i></a><span class="time">
+      <a class="tit" :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01"><span :title="val.cand03" v-html="mixinHighLight(val.cand03, keywords)"></span><i class="xffont font-zhiding" title="置顶" v-if="val.cand17 === 1"></i><i title="热点" class="xffont font-tubiao-" v-if="val.cand16 === 1"></i></a><span class="time">
         <span class="time-item" :title="'阅读量：' + val.cand13"><i class="xffont font-yanjing"></i><span>{{val.cand13 || 0}}</span></span>
         <span class="time-item"><i class="xffont font-msnui-time"></i><span>{{$dateFormat(val.ccpr05, 'MM-dd')}}</span></span>
       </span>
@@ -17,6 +17,7 @@
 
 import Pagination from '../../../../components/pagination/pagination.vue'
 import Empty from '../../../../components/empty/empty.vue'
+import {mixinHighLight} from '../../../../common/js/mixin'
 
 export default {
   components: {
@@ -28,13 +29,16 @@ export default {
         rowsNum: 10,
         currentPage: 1,
         countsNum: 50,
-        channel_code: ''
+        channel_code: '',
+        keyword: ''
       },
       list: [],
-      pageBean: {}
+      pageBean: {},
+      keywords: ''
     }
   },
   methods: {
+    mixinHighLight,
     handlePage(page) {
       this.searchData.currentPage = page
       this.getList()
@@ -54,7 +58,15 @@ export default {
     },
     handleRoute(route) {
       if (!route.query.channel_code) return
+      this.keywords = ''
+      this.searchData.keyword = ''
       this.searchData.channel_code = route.query.channel_code
+      this.searchData.currentPage = 1
+      this.getList()
+    },
+    handleKeyWords(keywords) {
+      this.keywords = keywords
+      this.searchData.keyword = encodeURIComponent(keywords)
       this.searchData.currentPage = 1
       this.getList()
     }

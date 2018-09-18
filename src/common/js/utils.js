@@ -51,7 +51,8 @@ export function post(url, params = {}, status = true) {
   params = Object.assign({}, {
     userId: user.ccmu17 === 1 ? user.aac001 : user.aab001,
     ccmu17: user.ccmu17,
-    _token: user.token
+    _token: user.token,
+    plateform: 1
   }, params)
   return new Promise((resolve, reject) => {
     $.ajax({
@@ -205,11 +206,15 @@ export function echo(target, resource) {
 export const reg = {
   tel(str) { // 手机号+固定电话正则
     if (str === '') return true
-    return /(^([0-9]{3,4}-)?[0-9]{7,8}$)|(^1[345789]\d{9}$)/.test(str)
+    return /(^([0-9]{3,4}-)?[0-9]{7,8}$)|(^1[3456789]\d{9}$)/.test(str)
   },
   phone(str) { // 手机号正则
     if (str === '') return true
-    return /^1[345789]\d{9}$/.test(str)
+    return /^1[3456789]\d{9}$/.test(str)
+  },
+  code(str) { // 邀请码正则
+    if (str === '') return true
+    return /^[a-zA-Z0-9]{1,50}$/.test(str)
   },
   email(str) { // 邮箱
     if (str === '') return true

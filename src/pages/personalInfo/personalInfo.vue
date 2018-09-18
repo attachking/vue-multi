@@ -36,74 +36,68 @@
           <div class="container">
             <transition name="el-fade-in" mode="out-in">
               <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="姓名">
+                <el-form-item label="姓名" v-if="info1.aac003">
                   <span class="fix-width">{{info1.aac003 || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="出生日期">
+                <!--<el-form-item label="身份证号">
+                  <span class="fix-width">{{info1.aac002 || '&#45;&#45;'}}</span>
+                </el-form-item>-->
+                <el-form-item label="出生日期" v-if="info1.aac006">
                   <span class="fix-width">{{info1.aac006 || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="年龄">
-                  <span class="fix-width">{{info1.age || '--'}}</span>
-                </el-form-item>
-                <el-form-item label="性别">
+                <el-form-item label="性别" v-if="info1.aac004name">
                   <span class="fix-width">{{info1.aac004name || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="民族">
+                <el-form-item label="民族" v-if="info1.aac005name">
                   <span class="fix-width">{{info1.aac005name || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="联系电话">
+                <el-form-item label="手机号" v-if="info1.aae005">
                   <span class="fix-width">{{info1.aae005 || '--'}}</span>
                 </el-form-item>
-                <!--<el-form-item label="身高">
-                  <span class="fix-width">{{info1.aac034 ? info1.aac034 + 'cm' : '&#45;&#45;'}}</span>
-                </el-form-item>
-                <el-form-item label="体重">
-                  <span class="fix-width">{{info1.aac035 ? info1.aac035 + 'kg' : '&#45;&#45;'}}</span>
-                </el-form-item>-->
-                <el-form-item label="学历">
+                <el-form-item label="学历" v-if="info1.aac011name">
                   <span class="fix-width">{{info1.aac011name || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="政治面貌">
+                <el-form-item label="政治面貌" v-if="info1.aac024name">
                   <span class="fix-width">{{info1.aac024name || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="婚姻状况">
+                <el-form-item label="婚姻状况" v-if="info1.aac017name">
                   <span class="fix-width">{{info1.aac017name || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="毕业院校">
+                <el-form-item label="健康状况" v-if="info1.aac033Name">
+                  <span class="fix-width">{{info1.aac033Name || '--'}}</span>
+                </el-form-item>
+                <el-form-item label="最高毕业院校" v-if="info1.aac180name">
                   <span class="fix-width">{{info1.aac180name || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="专业类别">
+                <el-form-item label="专业类别" v-if="info1.acc01gName">
                   <span class="fix-width">{{info1.acc01gName || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="专业名称">
+                <el-form-item label="专业名称" v-if="info1.aac040">
                   <span class="fix-width">{{info1.aac040 || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="毕业时间">
+                <el-form-item label="毕业时间" v-if="info1.aac181">
                   <span class="fix-width">{{info1.aac181 || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="户口所在地">
-                  <span class="fix-width">{{info1.aab305name || '--'}}</span>
+                <el-form-item label="户籍所在地" v-if="info1.aab305name">
+                  <span class="fix-width">{{info1.bab305 || info1.aab305name || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="军人证号">
-                  <span class="fix-width">{{info1.aac00a || '--'}}</span>
-                </el-form-item>
-                <el-form-item label="户口性质">
-                  <span class="fix-width">{{info1.aac009 || '--'}}</span>
-                </el-form-item>
-                <el-form-item label="籍贯">
-                  <span class="fix-width">{{info1.aac025 || '--'}}</span>
-                </el-form-item>
-                <el-form-item label="邮编">
-                  <span class="fix-width">{{info1.aae007 || '--'}}</span>
-                </el-form-item>
-                <el-form-item label="健康状况">
-                  <span class="fix-width">{{info1.aac033name || '--'}}</span>
-                </el-form-item>
-                <el-form-item label="现居住地址">
+                <el-form-item label="现居住地址" v-if="info1.aab301">
                   <span class="fix-width">{{info1.aab301 || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="电子邮箱">
+                <el-form-item label="邮编" v-if="info1.aae007">
+                  <span class="fix-width">{{info1.aae007 || '--'}}</span>
+                </el-form-item>
+                <el-form-item label="邮箱" v-if="info1.aae015">
                   <span class="fix-width">{{info1.aae015 || '--'}}</span>
+                </el-form-item>
+                <el-form-item label="微信号" v-if="info1.wechat">
+                  <span class="fix-width">{{info1.wechat || '--'}}</span>
+                </el-form-item>
+                <el-form-item label="QQ号" v-if="info1.qq">
+                  <span class="fix-width">{{info1.qq || '--'}}</span>
+                </el-form-item>
+                <el-form-item label="微博" v-if="info1.tweet">
+                  <span class="fix-width">{{info1.tweet || '--'}}</span>
                 </el-form-item>
               </el-form>
             </transition>
@@ -115,31 +109,22 @@
             <transition name="el-fade-in" mode="out-in">
               <el-form ref="form" class="demo-table">
                 <el-form-item label="意向岗位">
-                  <span>{{info2.bca112 || '--'}}{{info2.bcaa12 && `，${info2.bcaa12}`}}{{info2.bcab12 && `，${info2.bcab12}`}}</span>
+                  <span>{{info2.bca112 || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="工作地区">
-                  <span>{{info2.bcb202 || '--'}}{{info2.bcb203 && `，${info2.bcb203}`}}{{info2.bcb204 && `，${info2.bcb204}`}}</span>
-                </el-form-item>
-                <el-form-item label="期望薪资">
-                  <span>{{info2.acc034Name || '--'}}</span>
+                <el-form-item label="工作地点">
+                  <span>{{info2.bcb202 || '--'}}</span>
                 </el-form-item>
                 <el-form-item label="工作性质">
                   <span>{{info2.aac013Name || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="福利待遇">
-                  <span>{{info2.acc21411name || '--'}}</span>
+                <el-form-item label="工作行业">
+                  <span>{{info2.industryname || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="食宿要求">
-                  <span>{{info2.acb228name || '--'}}</span>
+                <el-form-item label="税前期望月薪">
+                  <span>{{info2.acc034Name || '--'}}</span>
                 </el-form-item>
-                <el-form-item label="单位性质">
-                  <span>{{info2.aab019name || '--'}}</span>
-                </el-form-item>
-                <el-form-item label="经济类型">
-                  <span>{{info2.aab020name || '--'}}</span>
-                </el-form-item>
-                <el-form-item label="参加工作时间">
-                  <span>{{info2.aac007 || '--'}}</span>
+                <el-form-item label="目前状态">
+                  <span>{{info2.applystatus || '--'}}</span>
                 </el-form-item>
               </el-form>
             </transition>
@@ -148,41 +133,29 @@
             <span class="item active"><i class="xffont font-xueshimao"></i>教育背景</span>
           </div>
           <div class="container" v-if="educationList.length">
-            <transition name="el-fade-in" mode="out-in">
-              <el-table
-                :data="educationList"
-                stripe
-                style="width: 100%">
-                <el-table-column
-                  align="center"
-                  label="时间">
-                  <template slot-scope="scope">
-                    <span>{{scope.row.aae030}} -- {{scope.row.aac046}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  align="center"
-                  label="学校">
-                  <template slot-scope="scope">
-                    <span>{{scope.row.aac045 || '--'}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  align="center"
-                  label="专业">
-                  <template slot-scope="scope">
-                    <span>{{scope.row.acc01g || '--'}}</span>
-                  </template>
-                </el-table-column>
-                <el-table-column
-                  align="center"
-                  label="学历">
-                  <template slot-scope="scope">
-                    <span>{{scope.row.atc011 || '--'}}</span>
-                  </template>
-                </el-table-column>
-              </el-table>
-            </transition>
+            <el-form class="demo-table work-item" v-for="(val, key) in educationList" :key="key">
+              <el-form-item label="起止时间">
+                <span>{{val.aae030}} -- {{val.aac046}}</span>
+              </el-form-item>
+              <el-form-item label="毕业院校" class="row-two">
+                <span>{{val.aac045 || '--'}}</span>
+              </el-form-item>
+              <el-form-item label="专业类别" class="row-two">
+                <span>{{val.acc01gname || '--'}}</span>
+              </el-form-item>
+              <el-form-item label="专业名称" class="row-two">
+                <span>{{val.bcc01g || '--'}}</span>
+              </el-form-item>
+              <el-form-item label="毕业情况" class="row-two">
+                <span>{{val.situationname || '--'}}</span>
+              </el-form-item>
+              <el-form-item label="学历" class="row-two">
+                <span>{{val.atc011 || '--'}}</span>
+              </el-form-item>
+              <el-form-item label="学位" class="row-two">
+                <span>{{val.aac037name || '--'}}</span>
+              </el-form-item>
+            </el-form>
           </div>
           <div class="card-tit" v-if="worksList.length">
             <span class="item active"><i class="xffont font-iconzhiwei"></i>工作经历</span>
@@ -195,13 +168,13 @@
                   <el-form-item label="起止时间">
                     <span>{{val.aae030}} -- {{val.aae031}}</span>
                   </el-form-item>
-                  <el-form-item label="公司名称">
+                  <el-form-item label="工作单位">
                     <span>{{val.aac045 || '--'}}</span>
                   </el-form-item>
                   <el-form-item label="岗位名称">
                     <span>{{val.aac0b3 || '--'}}</span>
                   </el-form-item>
-                  <el-form-item label="岗位描述">
+                  <el-form-item label="工作内容">
                     <span class="max-text">{{val.aac0b4 || '--'}}</span>
                   </el-form-item>
                 </el-form>
@@ -235,7 +208,7 @@
                   </el-table-column>
                   <el-table-column
                     align="center"
-                    label="获得日期">
+                    label="获取日期">
                     <template slot-scope="scope">
                       <span>{{scope.row.aac0c4 || '--'}}</span>
                     </template>
@@ -254,13 +227,6 @@
                       <span>{{scope.row.aac0c3 || '--'}}</span>
                     </template>
                   </el-table-column>
-                  <el-table-column
-                    align="center"
-                    label="备注">
-                    <template slot-scope="scope">
-                      <span>{{scope.row.aae013 || '--'}}</span>
-                    </template>
-                  </el-table-column>
                 </el-table>
               </div>
             </transition>
@@ -276,29 +242,18 @@
                   <el-form-item label="起止时间">
                     <span>{{val.starttime}} -- {{val.endtime}}</span>
                   </el-form-item>
-                  <el-form-item label="公司名称">
+                  <el-form-item label="培训机构">
                     <span>{{val.agencyname || '--'}}</span>
                   </el-form-item>
-                  <el-form-item label="培训内容">
+                  <el-form-item label="培训课程">
                     <span class="max-text">{{val.traindesc || '--'}}</span>
                   </el-form-item>
                 </el-form>
               </div>
             </transition>
           </div>
-          <div class="card-tit" v-if="info1.aac042">
-            <span class="item active"><i class="xffont font-admin"></i>技能描述</span>
-          </div>
-          <div class="container" v-if="info1.aac042">
-            <transition name="el-fade-in" mode="out-in">
-              <div class="skill-box">
-                <p class="no-data" v-if="!info1.aac042"><i class="el-icon-info"></i>--</p>
-                <p class="skill">{{info1.aac042}}</p>
-              </div>
-            </transition>
-          </div>
           <div class="card-tit" v-if="info1.aac041">
-            <span class="item active"><i class="xffont font-yonghu"></i>自我介绍</span>
+            <span class="item active"><i class="xffont font-yonghu"></i>自我描述</span>
           </div>
           <div class="container" v-if="info1.aac041">
             <transition name="el-fade-in" mode="out-in">
@@ -358,7 +313,16 @@ export default {
       this.$post('/service/business/person/resumeInfo/getRCResumeIndex.xf', {
         aac001: this.aac001,
         ccmu01: this.$userInfo.ccmu17 === 2 ? this.$userInfo.ccmu01 : ''
-      }).then(res => {
+      }, false).then(res => {
+        if (res.error && res.error.result === 0) {
+          this.$alert(`${res.error.message}`, '提示', {
+            confirmButtonText: '确定',
+            callback: action => {
+              location.href = 'index.html'
+            }
+          })
+          return
+        }
         this.is_Collection = res.result.is_Collection
         this.is_Resume = res.result.is_Resume
         this.info1 = res.result.personInfo
@@ -600,6 +564,7 @@ export default {
   .work-item{
     padding: 10px 0;
     position: relative;
+    @include clearFixed;
     .item-edit{
       width: 80px;
       position: absolute;
@@ -609,6 +574,10 @@ export default {
     }
     &:not(:last-child){
       border-bottom: 1px dashed #d9d9d9;
+    }
+    .row-two{
+      width: 50%;
+      float: left;
     }
   }
   .formSkill{
@@ -620,6 +589,7 @@ export default {
     word-break: break-all;
     max-width: 850px;
     font-size: 14px;
+    line-height: 30px;
   }
   .no-data{
     color: #666;

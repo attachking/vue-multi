@@ -195,6 +195,7 @@ export default {
       form2: {
         email: '',
         ccmu01: this.$userInfo.ccmu01,
+        ccmu17: this.$userInfo.ccmu17,
         flag: 0
       },
       rules2: {
@@ -204,7 +205,7 @@ export default {
           trigger: 'change'
         }, {
           validator(rule, value, callback) {
-            if (value === _this.info.ccmu08) {
+            if (value === _this.info.ccmu08 && _this.info.ccmu12 === 1) {
               callback(new Error('该邮箱已认证，无需重复认证'))
               return
             }
@@ -359,6 +360,7 @@ export default {
             this.loading2 = false
             if (res.error && res.error.result === 1) {
               this.emailDialog = true
+              this.formEmailCode.emailCode = ''
             }
           }).catch(() => {
             this.loading2 = false

@@ -1,51 +1,51 @@
 <template>
   <div class="personal">
     <div class="title">个人报名</div>
-      <transition name="el-fade-in" mode="out-in">
-        <div class="form-con" key="form" v-if="showForm">
-          <el-form ref="form" :rules="rules" :model="form" label-width="100px" class="form">
-            <el-form-item label="姓名" prop="name">
-              <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
-            </el-form-item>
-            <el-form-item label="身份证号" prop="cardno">
-              <el-input v-model="form.cardno" placeholder="请输入身份证号"></el-input>
-            </el-form-item>
-            <el-form-item label="手机号" prop="tel">
-              <el-input v-model="form.tel" placeholder="请输入手机号"></el-input>
-            </el-form-item>
-            <el-form-item label="民族" prop="nation">
-              <el-select v-model="form.nation" placeholder="请选择民族" filterable>
-                <el-option v-for="item in dictionaries.TAB_NATION" :key="item.code" :label="item.name" :value="item.code"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="政治面貌" prop="political">
-              <el-select v-model="form.political" placeholder="请选择政治面貌" filterable>
-                <el-option v-for="item in dictionaries.TAB_AFFIL" :key="item.code" :label="item.name" :value="item.code"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="职称" prop="position">
-              <xf-cascader :fulltext.sync="form.positionName" :options="titles" filterable v-model="form.position" placeholder="请选择职称"></xf-cascader>
-            </el-form-item>
-            <el-form-item label="学历" prop="education">
-              <el-select v-model="form.education" placeholder="请选择学历" filterable>
-                <el-option v-for="item in dictionaries.TAB_EDUCATION" :key="item.code" :label="item.name" :value="item.code"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="拟参加活动" prop="activity" ref="activity">
-              <el-select v-model="multis" placeholder="请选择拟参加活动" filterable multiple collapse-tags ref="select">
-                <el-option v-for="item in activities" :key="item.cand01" :label="item.cand03" :value="item.cand01"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="所在地区" prop="area">
-              <xf-cascader :fulltext.sync="form.areaName" :options="dictionaries.TAB_CITY" filterable v-model="form.area" placeholder="请选择所在地区"></xf-cascader>
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" @click="onSubmit" class="submit" v-loading="loading">我要报名</el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-        <sign-success key="success" v-if="!showForm"></sign-success>
-      </transition>
+    <transition name="el-fade-in" mode="out-in">
+      <div class="form-con" key="form" v-if="showForm">
+        <el-form ref="form" :rules="rules" :model="form" label-width="100px" class="form">
+          <el-form-item label="姓名" prop="name">
+            <el-input v-model="form.name" placeholder="请输入姓名"></el-input>
+          </el-form-item>
+          <el-form-item label="身份证号" prop="cardno">
+            <el-input v-model="form.cardno" placeholder="请输入身份证号"></el-input>
+          </el-form-item>
+          <el-form-item label="手机号" prop="tel">
+            <el-input v-model="form.tel" placeholder="请输入手机号"></el-input>
+          </el-form-item>
+          <el-form-item label="民族" prop="nation">
+            <el-select v-model="form.nation" placeholder="请选择民族" filterable>
+              <el-option v-for="item in dictionaries.TAB_NATION" :key="item.code" :label="item.name" :value="item.code"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="政治面貌" prop="political">
+            <el-select v-model="form.political" placeholder="请选择政治面貌" filterable>
+              <el-option v-for="item in dictionaries.TAB_AFFIL" :key="item.code" :label="item.name" :value="item.code"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="职称" prop="position">
+            <xf-cascader :fulltext.sync="form.positionName" :options="titles" filterable v-model="form.position" placeholder="请选择职称"></xf-cascader>
+          </el-form-item>
+          <el-form-item label="学历" prop="education">
+            <el-select v-model="form.education" placeholder="请选择学历" filterable>
+              <el-option v-for="item in dictionaries.TAB_EDUCATION" :key="item.code" :label="item.name" :value="item.code"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="拟参加活动" prop="activity" ref="activity">
+            <el-select v-model="multis" placeholder="请选择拟参加活动" filterable multiple collapse-tags ref="select">
+              <el-option v-for="item in activities" :key="item.cand01" :label="item.cand03" :value="item.cand01"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="所在地区" prop="area">
+            <xf-cascader :fulltext.sync="form.areaName" :options="dictionaries.TAB_CITY" filterable v-model="form.area" placeholder="请选择所在地区"></xf-cascader>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="onSubmit" class="submit" :loading="loading">我要报名</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+      <sign-success key="success" v-if="!showForm"></sign-success>
+    </transition>
   </div>
 </template>
 <script>
@@ -123,7 +123,7 @@ export default {
           trigger: 'change'
         }],
         position: [{
-          required: true,
+          required: false,
           message: '请选择职称',
           trigger: 'blur'
         }],

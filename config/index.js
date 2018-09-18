@@ -59,6 +59,7 @@ module.exports = {
     // 是否生成map文件
     productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
+    // devtool: '#source-map',
     devtool: '#source-map',
 
     // Gzip off by default as many popular static hosts such as

@@ -12,7 +12,15 @@ MyPlugin.prototype.apply = function (compiler) {
         data.html = data.html.replace(/(<\/head>)/, `
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 ${keywords}
-<script>    
+<script>
+  (function() {
+    var loc = location.href;
+    if (/^https/.test(loc)) {
+      location.href = loc.replace(/https/, 'http');
+    }
+  }());
+</script>
+<script>
   var _hmt = _hmt || [];
   (function() {
     var hm = document.createElement("script");

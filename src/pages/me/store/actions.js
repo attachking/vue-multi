@@ -9,7 +9,7 @@ export const getPhoneOpen = function({commit, state}, name) {
 
 export const getDictionaries = function ({commit, state}, name) {
   post('/service/sys/config/config/getConditionList', {
-    tabStr: 'TAB_CITY,TAB_EDUCATION,TAB_AFFIL,TAB_NATION,TAB_NATURE,TAB_SEX,TAB_SALARY,CRAFT_AS,TAB_MARRIAGE,TAB_CERTIFICATE_TYPE,INDUSTRY_AS,TAB_UNITNATURE,TAB_PSCALE,TAB_SREQUIREMENT,TAB_WORKYEARS,TAB_WELFARE,tab_university_city,tab_major_type,TAB_SECURITY,TAB_FUND_SOURCE,TAB_PROJECT_TYPE,TAB_COOPERATION_TYPE,TAB_INDUSTRYCLASSES,TAB_CATEGORY,TAB_HEALTH,TAB_ECONOMIC'
+    tabStr: 'TAB_CITY,TAB_EDUCATION,TAB_AFFIL,TAB_NATION,TAB_NATURE,TAB_SEX,TAB_SALARY,CRAFT_AS,TAB_MARRIAGE,TAB_CERTIFICATE_TYPE,INDUSTRY_AS,TAB_UNITNATURE,TAB_PSCALE,TAB_SREQUIREMENT,TAB_WORKYEARS,TAB_WELFARE,tab_university_city,tab_major_type,TAB_SECURITY,TAB_INDUSTRYCLASSES,TAB_HEALTH,TAB_ECONOMIC,TAB_JOBSTATUS,TAB_GRADUATION_SITUATION,TAB_DEGREE'
   }).then(res => {
     let tabMajorType = []
     res.result.tab_major_type.forEach((item, i) => {
@@ -47,13 +47,16 @@ export const getDictionaries = function ({commit, state}, name) {
       tab_university_city: res.result.tab_university_city,
       tab_major_type: tabMajorType,
       TAB_SECURITY: res.result.TAB_SECURITY,
-      TAB_FUND_SOURCE: res.result.TAB_FUND_SOURCE,
-      TAB_PROJECT_TYPE: res.result.TAB_PROJECT_TYPE,
-      TAB_COOPERATION_TYPE: res.result.TAB_COOPERATION_TYPE,
+      // TAB_FUND_SOURCE: res.result.TAB_FUND_SOURCE,
+      // TAB_PROJECT_TYPE: res.result.TAB_PROJECT_TYPE,
+      // TAB_COOPERATION_TYPE: res.result.TAB_COOPERATION_TYPE,
       TAB_INDUSTRYCLASSES: res.result.TAB_INDUSTRYCLASSES,
-      TAB_CATEGORY: res.result.TAB_CATEGORY,
+      // TAB_CATEGORY: res.result.TAB_CATEGORY,
       TAB_HEALTH: res.result.TAB_HEALTH,
-      TAB_ECONOMIC: res.result.TAB_ECONOMIC
+      TAB_ECONOMIC: res.result.TAB_ECONOMIC,
+      TAB_JOBSTATUS: res.result.TAB_JOBSTATUS,
+      TAB_GRADUATION_SITUATION: res.result.TAB_GRADUATION_SITUATION,
+      TAB_DEGREE: res.result.TAB_DEGREE
     })
   })
 }

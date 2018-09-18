@@ -2,9 +2,9 @@
   <div class="fixed-header">
     <div class="xf-header">
       <div class="header-con">
-        <div class="logo">
+        <a class="logo" href="/">
           <img src="../../common/img/logo-color.png" alt="">
-        </div>
+        </a>
         <a class="item" :href="handleUrl(val.CANC04)" v-for="(val, key) in list" :key="key">
           <span>{{val.CANC03}}</span>
           <span class="menu-list">
@@ -14,18 +14,18 @@
         <span class="login" v-if="!userInfo.status">
           <a href="javascript:;" @click="login('', 1)">个人登录</a>&nbsp;/&nbsp;<a href="javascript:;" @click="login('', 2)">单位登录</a>&nbsp;/&nbsp;<a href="register.html">注册</a>
         </span>
-        <div class="user-info" v-if="userInfo.status === 1">
-          <el-dropdown placement="bottom" @command="handleCommand">
-            <a class="img" href="me.html">
-              <img :src="userInfo.logo">
-            </a>
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="me.html">用户中心</el-dropdown-item>
-              <el-dropdown-item command="logout">退出登录</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-          <a class="user-info-name" href="me.html" :title="userInfo.name">{{userInfo.name}}</a>
-        </div>
+        <el-dropdown placement="bottom" @command="handleCommand" v-if="userInfo.status === 1">
+          <div class="user-info" v-if="userInfo.status === 1">
+              <a class="img" href="me.html">
+                <img :src="userInfo.logo">
+              </a>
+              <a class="user-info-name" href="me.html" :title="userInfo.name">{{userInfo.name}}</a>
+          </div>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="me.html">用户中心</el-dropdown-item>
+            <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
         <span class="lang">
           <a :href="en ? 'index.html' : 'javascript:;'" :class="{active: !en}">简体中文</a>&nbsp;/&nbsp;
           <a :href="en ? 'javascript:;' : 'theme.html?lang=en'" :class="{active: en}">English</a>
@@ -166,7 +166,7 @@ export default {
         this.$alert(`该功能需要登录个人账号`, '提示', {
           confirmButtonText: '确定',
           callback: action => {
-            this.login(val.canc04)
+            this.login(val.canc04, 1)
           }
         })
         return
@@ -175,7 +175,16 @@ export default {
         this.$alert(`该功能需要登录单位账号`, '提示', {
           confirmButtonText: '确定',
           callback: action => {
-            this.login(val.canc04)
+            this.login(val.canc04, 2)
+          }
+        })
+        return
+      }
+      if (val.canc04 === 'me.html#/talent' && this.$userInfo.ccmu17 !== 2) {
+        this.$alert(`该功能需要登录单位账号`, '提示', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.login(val.canc04, 2)
           }
         })
         return
@@ -340,7 +349,7 @@ export default {
     left: 0;
     top: 0;
     z-index: 10;
-    background: #fff;
+    background-color: #fff;
     border-bottom: 1px solid #d9d9d9;
     .header-con{
       width: 1340px;
@@ -455,8 +464,8 @@ export default {
     display: inline-block;
     vertical-align: middle;
     text-align: right;
-    width: 200px;
-    padding: 0 20px 0 0;
+    max-width: 200px;
+    padding: 0 20px 0 10px;
     .img{
       width: 40px;
       height: 40px;

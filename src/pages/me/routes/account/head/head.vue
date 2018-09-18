@@ -41,7 +41,8 @@ export default {
           ccmu01: _this.$userInfo.ccmu01,
           picSize: 1024,
           ccmu17: _this.$userInfo.ccmu17,
-          remark: 1
+          remark: 1,
+          plateform: 1
         }
         args._token = _this.$userInfo.token
         if (_this.$userInfo.ccmu17 === 1) {

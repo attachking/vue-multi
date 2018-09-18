@@ -7,13 +7,13 @@
     <div class="module normal-bg">
       <div class="module-con" ref="about" id="about">
         <div class="title">
-          <p>关于大会</p>
+          <p v-if="!en">关于大会</p>
           <p>ABOUT MEETING</p>
         </div>
-        <div class="about-con">
+        <div class="about-con" v-if="!en">
           <div class="about-text">
             <div class="about-tit">总体要求</div>
-            <div class="about-info">以习近平新时代中国特色社会主义思想为指导，深入学习贯彻党的十九大精神和省委十届四次全会精神，大力实施人才优先发展战略和人才强省战略，将中国•河南招才引智创新发展大会打造成我省宣传人才政策的平台、展示人才工作成果的平台、集中招才引智的平台、促进人才项目合作对接的平台。着力集聚一批高层次、高技能人才（团队），为实施“三区一群”国家战略、全面建成小康社会、开启新时代河南全面建设社会主义现代化新征程、谱写中原更加出彩新篇章，提供坚强人才支撑。</div>
+            <div class="about-info">以习近平新时代中国特色社会主义思想为指导，深入学习贯彻党的十九大精神和省委十届六次全会精神，大力实施人才优先发展战略和人才强省战略，将中国·河南招才引智创新发展大会打造成我省宣传人才政策的平台、展示人才工作成果的平台、集中招才引智的平台、促进人才项目合作对接的平台。着力集聚一批高层次、高技能人才（团队），为实施“三区一群”国家战略、全面建成小康社会、开启新时代河南全面建设社会主义现代化新征程、谱写中原更加出彩新篇章，提供坚强人才支撑。</div>
             <div class="about-tit">办会原则</div>
             <div class="about-info">• 坚持引进“高精尖”人才与引进急需紧缺人才相结合。在着力引进“高精尖”人才的同时，大力延揽青年人才、技能人才、高校毕业生等急需紧缺人才。
               <br>• 坚持刚性引才与柔性引智相结合。在着力刚性引才的同时，注重通过兼职、科研和技术合作、技术（专利）入股、聘请顾问等灵活多样方式柔性引智。
@@ -22,9 +22,28 @@
             <div class="about-tit">举办单位</div>
             <div class="about-info">主办：中共河南省委、河南省人民政府、欧美同学会（中国留学人员联谊会）。
               <br>承办：中共河南省委组织部（省人才工作领导小组办公室）、河南省人力资源和社会保障厅、郑州市人民政府。
-              <br>协办：中共河南省委宣传部、中共河南省委统战部、河南省教育厅、河南省科学技术厅、河南省商务厅、河南省卫生和计划生育委员会、河南省科学技术协会、河南欧美同学会（河南留学人员联谊会）、郑州航空港经济综合实验区管委会。</div>
+              <br>协办：中共河南省委宣传部、中共河南省委统战部、河南省编制委员会办公室、河南省教育厅、河南省科学技术厅（郑洛新国家自主创新示范区领导小组办公室）、河南省商务厅（河南自贸试验区工作办公室）、河南省卫生和计划生育委员会、河南省科学技术协会、河南省外事侨务办公室、河南欧美同学会（河南留学人员联谊会）、郑州航空港经济综合实验区管委会。</div>
             <div class="about-tit">参会人员</div>
-            <div class="about-info">国内外知名专家、学者、科研人员、留学人员；国内外创新创业团队、创新创业项目代表；人力资源服务机构、猎头公司、知名企业高管；高校、科研院所负责人；境内外主要新闻媒体；有关方面嘉宾；全省有人才需要的机关企事业单位代表等。邀请国家有关部委、有关协会负责同志出席。</div>
+            <div class="about-info">国内外知名专家、学者、科研人员、留学人员；国内外创新创业团队、创新创业项目代表；人力资源服务机构、猎头公司、知名企业高管；高校、科研院所负责人；境内外主要新闻媒体；有关方面嘉宾；全省有人才需求的机关企事业单位代表等。邀请国家有关部委、有关协会负责同志出席。</div>
+          </div>
+        </div>
+        <div class="about-con en" v-if="en">
+          <div class="about-text">
+            <div class="about-tit">Overall Requirement</div>
+            <div class="about-info">Under the guidance of Xi Jinping Thought on Socialism with Chinese Characteristics for a New Era and in response to the call of the 19th CPC National Congress and the Sixth Plenary Session of the 10th CPC Henan Provincial Committee on reinvigorating China through human resource development, the Conference is committed to putting the strategy of reinvigorating Henan through human resource development into action. It aims to build the Talent Recruitment Conference for Innovation and Development, Henan, China into an effective platform for Henan province to promote talent policies, showcase talent work achievement, recruit more talents and advance matchmaking of talent projects. Focusing on gathering a group of high-level and highly-skilled talent (group), it will provide strong intellectual support for implementing the national strategy of “Three Zones and One Cluster” and building a moderately prosperous society in all respects, which will promote the process of Henan’s modernization drive in the new era and contribute to a brighter future of Central Plains.</div>
+            <div class="about-tit">Principle</div>
+            <div class="about-info">• Focus on introducing both top talents and urgently needed talents. In addition to top notch talents in the profession, we make great efforts to bring in young and skilled personnel, graduates from colleges and universities and other talents whose skills are in short supply.
+              <br>• Combine traditional ways with flexible strategies. Except for traditional employment, we explore various flexible ways to channel brains to Henan in forms of part-time job, research and technological cooperation, technology (patent) investment, and advisory service, etc.
+              <br>• Bring in both talents and projects. The settlement of high-level innovation talents will boost a group of projects. In the meanwhile, the selected projects that conform to the industrial advancement trend will further attract more high-level talents to Henan for innovation and entrepreneurship.
+              <br>• Establish long-term talent recruitment mechanism driven by regular talent recruitment event. We will give full play to the scale effect of the regular recruitment event to raise the awareness of the whole society on the importance of talents and encourage them to introduce talents and motivate talents and establish a long-term talent recruitment mechanism.
+            </div>
+            <div class="about-tit">Sponsors</div>
+            <div class="about-info">Sponsors:The CPC Henan Provincial Committee;The People’s Government of Henan Province;Western Returned Scholars Association· Overseas-educated Scholars;
+              <br>Organizers:Organization Department of the CPC Henan Provincial Committee (Office of Leading Group of Provincial Human Resources Work);Department of Human Resources and Social Security of Henan Province;The People’s Government of Zhengzhou;
+              <br>Co-organizers:Publicity Department of the CPC Henan Provincial Committee;The United Front Work Department of the CPC Henan Provincial Committee;Education Department of Henan Province;Department of Science and Technology of Henan Province;Henan Provincial Commerce Department;Health and Family Planning Commission of Henan Province;Henan Association for Science and Technology;Henan Returned Scholars Association;Management Committee of Zhengzhou Airport Economy Zone;
+            </div>
+            <div class="about-tit">Participants</div>
+            <div class="about-info">Renowned experts, scholars, researchers and overseas-educated scholars at home and abroad; innovation and entrepreneurship groups and project representatives at home and abroad; senior managers of human resources service organizations, head-hunting companies and well-known enterprises; principals from colleges and universities and research institutes; domestic and foreign media; distinguished guests from concerned fields; representatives of authorities, enterprises and institutions in need of talents across the province, etc. Officers from relevant ministries and commissions and associations will be invited to the Conference.</div>
           </div>
         </div>
       </div>
@@ -36,7 +55,7 @@
           <span>2018-10</span>
         </div>
         <div class="tit">
-          <span>开幕式直播</span>
+          <span v-if="!en">开幕式直播</span>
           <span>OPENING CEREMONY LIVE</span>
         </div>
         <div class="time">[ 2018.10.27 09:00 ]</div>
@@ -56,119 +75,119 @@
     <div class="module process-box normal-bg" ref="process" id="process">
       <div class="module-con">
         <div class="title">
-          <p>大会议程</p>
+          <p v-if="!en">大会议程</p>
           <p>CONFERENCE AGENDA</p>
         </div>
         <div class="radius">
-          <div class="radius-item" :class="currentTab2 === 0 ? 'radius-active' : ''" @click="handleCurrentTab2(0)">10月27日</div>
-          <div class="radius-item" :class="currentTab2 === 1 ? 'radius-active' : ''" @click="handleCurrentTab2(1)">10月28日</div>
+          <div class="radius-item" :class="currentTab2 === 0 ? 'radius-active' : ''" @click="handleCurrentTab2(0)">{{en ? 'October 27' : '10月27日'}}</div>
+          <div class="radius-item" :class="currentTab2 === 1 ? 'radius-active' : ''" @click="handleCurrentTab2(1)">{{en ? 'October 28' : '10月28日'}}</div>
         </div>
         <transition name="el-zoom-in-top" mode="out-in">
           <div class="process-con" key="1027" v-if="currentTab2 === 0">
             <div class="table">
               <div class="th">
-                <div class="td">时间</div>
-                <div class="td">主题</div>
-                <div class="td">地点</div>
+                <div class="td">{{en ? 'Time' : '时间'}}</div>
+                <div class="td">{{en ? 'Theme' : '主题'}}</div>
+                <div class="td">{{en ? 'Venue' : '地点'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">大会开幕式</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? '9:00 am – 10:00 am' : '9:00-10:00'}}</div>
+                <div class="td">{{en ? 'Opening Ceremony' : '大会开幕式'}}</div>
+                <div class="td">{{en ? 'Xuanyuan Hall at Convention Center' : '会议中心轩辕堂'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">10:30-17:00</div>
+                <div class="td">{{en ? 'Summit of Talent Development in Central Plains' : '中原人才发展高层论坛'}}</div>
+                <div class="td">{{en ? 'Xuanyuan Hall at Convention Center' : '会议中心轩辕堂'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
             </div>
           </div>
           <div class="process-con" key="1028" v-if="currentTab2 === 1">
             <div class="table">
               <div class="th">
-                <div class="td">时间</div>
-                <div class="td">主题</div>
-                <div class="td">地点</div>
+                <div class="td">{{en ? 'Time' : '时间'}}</div>
+                <div class="td">{{en ? 'Theme' : '主题'}}</div>
+                <div class="td">{{en ? 'Venue' : '地点'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">大会开幕式2</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
               <div class="tr">
-                <div class="td">9:00-10:00</div>
-                <div class="td">2018中国互联网+建筑产业高峰论坛311会议室</div>
-                <div class="td">大会堂B段</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">{{en ? 'nothing' : '待定'}}</div>
               </div>
             </div>
           </div>
@@ -178,7 +197,7 @@
     <div class="module dt-box" ref="dt" id="dt">
       <div class="module-con">
         <div class="title">
-          <p>大会动态</p>
+          <p v-if="!en">大会动态</p>
           <p>GENERAL ASSEMBLY DYNAMICS</p>
         </div>
         <div class="dt-con">
@@ -202,22 +221,22 @@
           </div>
         </div>
         <div class="dt-more">
-          <a class="more" :href="'newsList.html?lang=' + (en ? 'en' : 'cn') + '#/module?channel_code=DHDT' + (en ? '_EN' : '')">查看更多</a>
+          <a class="more" :href="'newsList.html?lang=' + (en ? 'en' : 'cn') + '#/module?channel_code=DHDT' + (en ? '_EN' : '')">{{en ? 'MORE' : '查看更多'}}</a>
         </div>
       </div>
     </div>
     <div class="module topics-box normal-bg" ref="topics" id="topics">
       <div class="module-con">
         <div class="title">
-          <p>大会专题</p>
+          <p v-if="!en">大会专题</p>
           <p>CONFERENCE TOPICS</p>
         </div>
         <div class="radius">
-          <div class="radius-item" :class="currentTab1 === 0 ? 'radius-active' : ''" @click="handleCurrentTab1(0)">专题活动</div>
-          <div class="radius-item" :class="currentTab1 === 1 ? 'radius-active' : ''" @click="handleCurrentTab1(1)">河南行活动</div>
+          <div class="radius-item" :class="currentTab1 === 0 ? 'radius-active' : ''" @click="handleCurrentTab1(0)">{{en ? 'Special Events' : '专题活动'}}</div>
+          <div class="radius-item" :class="currentTab1 === 1 ? 'radius-active' : ''" @click="handleCurrentTab1(1)">{{en ? 'Tours in Henan' : '河南行活动'}}</div>
         </div>
         <transition name="el-fade-in" mode="out-in">
-          <div class="topics-con" v-if="currentTab1 === 0" key="SDZT">
+          <div class="topics-con topic-special" v-if="currentTab1 === 0" key="SDZT">
             <a :title="val.cand03" :href="'subject.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01 + '&key=' + key" class="topics-item" v-for="(val, key) in SDZT" :key="key">
               <div class="topics-img">
                 <img :src="val.cand11" onload="handleBeauty(event)">
@@ -243,7 +262,7 @@
     <div class="module guide-box" ref="guide" id="guide">
       <div class="module-con">
         <div class="title">
-          <p>会议指南</p>
+          <p v-if="!en">会议指南</p>
           <p>CONFERENCE GUIDE</p>
         </div>
       </div>
@@ -338,8 +357,8 @@
     <div class="module supporting-box normal-bg" ref="supporting" id="supporting">
       <div class="module-con">
         <div class="title">
-          <p>合作媒体</p>
-          <p>SUPPORTING AGENCY</p>
+          <p v-if="!en">合作媒体</p>
+          <p>ASSOCIATED MEDIA</p>
         </div>
         <div class="supporting-con">
           <a target="_blank" :href="val.ccmw03" class="supporting-item" v-for="(val, key) in ZZDW" :key="key" :title="val.ccmw02">
@@ -348,11 +367,11 @@
         </div>
       </div>
     </div>
-    <!--<div class="module supporting-box" ref="media">
+    <div class="module supporting-box normal-bg" ref="media">
       <div class="module-con">
         <div class="title">
-          <p>合作媒体</p>
-          <p>ASSOCIATED MEDIA</p>
+          <p v-if="!en">友情链接</p>
+          <p>FRIENDSHIP LINK</p>
         </div>
         <div class="supporting-con">
           <a target="_blank" :href="val.ccmw03" class="supporting-item" v-for="(val, key) in HZMT" :key="key" :title="val.ccmw02">
@@ -360,7 +379,7 @@
           </a>
         </div>
       </div>
-    </div>-->
+    </div>
     <xf-footer></xf-footer>
     <right-menu ref="right" @onscroll="stop"></right-menu>
   </div>
@@ -467,14 +486,14 @@ export default {
         this.HNXHD = res.result
       })
     },
-    getZZDW() { // 赞助单位
+    getZZDW() { // 合作媒体
       this.$post('/service/business/fm/link/links/getLinksList.xf', {
         ccmw05: 0
       }).then(res => {
         this.ZZDW = res.result.links
       })
     },
-    getHZMT() { // 合作媒体
+    getHZMT() { // 友情链接
       this.$post('/service/business/fm/link/links/getLinksList.xf', {
         ccmw05: 1
       }).then(res => {
@@ -502,7 +521,7 @@ export default {
     this.getHNXHD()
     this.getZZDW()
     this.getLives()
-    // this.getHZMT()
+    this.getHZMT()
   },
   mounted() {
     const to = queryParse(location.search).to
@@ -554,6 +573,15 @@ export default {
       background: url("static/about.png") no-repeat center center;
       background-size: 90%;
       position: relative;
+      &.en{
+        height: 1100px;
+        background-size: 110%;
+        .about-text{
+          left: 130px;
+          top: 114px;
+          width: 997px;
+        }
+      }
       .about-text{
         position: absolute;
         left: 236px;
@@ -732,6 +760,22 @@ export default {
         padding: 30px 0 0 0;
         @include clearFixed;
       }
+      .topic-special{
+        .topics-item{
+          &:last-child{
+            width: 100%;
+            .topics-img{
+              height: 192px;
+            }
+            .topics-info{
+              height: 51px;
+              div{
+                @include ellipsis;
+              }
+            }
+          }
+        }
+      }
       .topics-item{
         width: 380px;
         height: 243px;
@@ -814,8 +858,8 @@ export default {
         @include clearFixed;
         .supporting-item{
           float: left;
-          width: 270px;
-          height: 175px;
+          width: 215px;
+          height: 137px;
           border: 1px solid #d9d9d9;
           margin-right: 30px;
           margin-bottom: 30px;
@@ -826,7 +870,7 @@ export default {
             opacity: .9;
             transform: scale(1.1);
           }
-          &:nth-child(4n){
+          &:nth-child(5n){
             margin-right: 0;
           }
         }

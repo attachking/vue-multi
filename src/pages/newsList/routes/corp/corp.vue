@@ -4,7 +4,7 @@
       <div class="search-tit">
         <el-form inline :model="form" class="demo-form-inline">
           <el-form-item>
-            <el-input v-model="form.aab004" placeholder="请输入单位名称/关键字"></el-input>
+            <el-input v-model="form.aab004" placeholder="请输入单位名称/关键字" @keydown.enter.native="onSubmit"></el-input>
           </el-form-item>
           <el-form-item>
             <el-select v-model="form.ccpr10" filterable clearable placeholder="请选择行业类别">
@@ -46,7 +46,7 @@
                   :value="item.code"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item>
+            <!--<el-form-item>
               <el-select v-model="form.aab056" clearable placeholder="单位规模">
                 <el-option
                   v-for="item in dictionaries.TAB_PSCALE"
@@ -54,13 +54,12 @@
                   :label="item.name"
                   :value="item.code"></el-option>
               </el-select>
-            </el-form-item>
+            </el-form-item>-->
             <el-form-item>
               <el-select v-model="form.updateDates" clearable placeholder="更新时间">
                 <el-option label="不限" value="0"></el-option>
                 <el-option label="三天以内" value="3"></el-option>
                 <el-option label="一周以内" value="7"></el-option>
-                <el-option label="十天以内" value="7"></el-option>
                 <el-option label="十天以内" value="10"></el-option>
                 <el-option label="一个月以内" value="30"></el-option>
               </el-select>
@@ -76,11 +75,11 @@
             <img :src="val.ccmu15">
           </div>
           <div class="info">
-            <p>{{val.aab004}}</p>
-            <p>{{val.ccpr10name || '--'}}</p>
+            <p :title="val.aab004">{{val.aab004}}</p>
+            <p :title="val.ccpr10name">{{val.ccpr10name || '--'}}</p>
             <p v-html="val.acb206 || '--'"></p>
           </div>
-          <div class="count">在招岗位数：<span>{{val.cnt || 0}}</span></div>
+          <div class="count">在招岗位数：<span>{{val.cnt || 0}}</span>需求人数：<span>{{val.personCnt || 0}}</span></div>
           <i class="xffont font-tubiao- red" title="重点推荐" v-if="Number(val.ccpr26) === 1"></i>
         </a>
       </div>
@@ -291,10 +290,11 @@ export default {
         .count{
           line-height: 41px;
           text-align: center;
-          font-size: 16px;
+          font-size: 14px;
           color: #666;
           span{
             color: $--color-primary;
+            margin-right: 5px;
           }
         }
         .red{

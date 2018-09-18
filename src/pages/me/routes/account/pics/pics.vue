@@ -86,9 +86,9 @@ export default {
       this.del(file.id)
     },
     handlePreview(file) {
-      // caoa07 0未审核，1审核成功，2审核失败   caoa08失败原因
+      // caoa07 0未审核，1审核成功，2审核不通过   caoa08失败原因
       if (file.caoa07 === 2) {
-        this.$alert(`失败原因：${file.reason || '--'}，重新审核请删除后重新上传`, '详细信息', {
+        this.$alert(`不通过原因：${file.reason || '--'}，重新审核请删除后重新上传`, '详细信息', {
           confirmButtonText: '确定',
           callback: action => {}
         })
@@ -118,7 +118,7 @@ export default {
         this.fileList = res.result.map(item => {
           return {
             url: item.caoa02,
-            name: `${item.caoa03}（${item.caoa07 === 0 ? '未审核' : item.caoa07 === 1 ? '已审核' : '审核失败'}）`,
+            name: `${item.caoa03}（${item.caoa07 === 0 ? '未审核' : item.caoa07 === 1 ? '已审核' : '审核不通过'}）`,
             id: item.caoa01,
             realname: item.caoa03,
             status: item.caoa07 === 1 ? 0 : 1,
@@ -130,6 +130,9 @@ export default {
     },
     onSuccess(res, file) {
       if (res.error && res.error.result === 1) {
+        if (file.name && file.name.length > 20) {
+          file.name = file.name.substr(0, 20)
+        }
         this.itemForm.caoa01 = ''
         this.itemForm.file = res.result[0]
         this.itemForm.desc = encodeURIComponent(file.name)

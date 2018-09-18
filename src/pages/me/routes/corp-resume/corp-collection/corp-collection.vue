@@ -179,7 +179,7 @@ export default {
         return
       }
       */
-      this.$refs.invitation.show(this.checked.join(',')).then(() => {
+      this.$refs.invitation.show(this.checked.map(item => item.ccmp01).join(',')).then(() => {
         this.getList()
       })
     },

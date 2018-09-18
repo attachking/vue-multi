@@ -1,15 +1,19 @@
 <!--美丽河南图片展示页面-->
 <template>
   <div class="beauty">
+    <empty v-if="pageBean.totalCount === 0"></empty>
     <div class="list">
       <div class="item" v-for="val in list" :key="val.cand01">
         <el-card>
           <a class="img" :href="'newsDetail.html?channel_code=' + val.channelCode + '&cand01=' + val.cand01">
             <img :src="val.cand11" onload="handleBeauty(event)">
           </a>
-          <div class="tip">{{val.cand19}}</div>
+          <div class="tip" :title="val.cand19">{{val.cand19}}</div>
         </el-card>
       </div>
+    </div>
+    <div class="page">
+      <pagination :bean="pageBean" @current-change="handlePage"></pagination>
     </div>
     <div class="beauty-shade" v-if="show"></div>
     <div class="beauty-img" v-if="show" @click="hide">
@@ -21,8 +25,13 @@
 </template>
 <script>
 import $ from 'jquery'
+import Empty from '../../../../components/empty/empty.vue'
+import Pagination from '../../../../components/pagination/pagination.vue'
 
 export default {
+  components: {
+    Pagination,
+    Empty},
   data() {
     return {
       list: [],
@@ -35,11 +44,12 @@ export default {
       textBottom: 0,
       textWidth: 0,
       searchData: {
-        rowsNum: 10,
+        rowsNum: 9,
         currentPage: 1,
         countsNum: 50,
         channel_code: ''
-      }
+      },
+      pageBean: {}
     }
   },
   methods: {
@@ -54,6 +64,7 @@ export default {
     getList() {
       this.$post('/service/business/sms/sms/getContentList', this.searchData).then(res => {
         this.list = res.result
+        this.pageBean = res.pageBean
       })
     },
     rotate() {
@@ -80,6 +91,10 @@ export default {
       if (!route.query.channel_code) return
       this.searchData.channel_code = route.query.channel_code
       this.searchData.currentPage = 1
+      this.getList()
+    },
+    handlePage(page) {
+      this.searchData.currentPage = page
       this.getList()
     }
   },
@@ -122,6 +137,9 @@ export default {
           cursor: pointer;
           opacity: .9;
         }
+      }
+      .el-card{
+        height: 275px;
       }
     }
   }
@@ -180,5 +198,9 @@ export default {
     width: 100%;
     font-size: 14px;
     @include ellipsis;
+  }
+  .page{
+    padding: 10px 0;
+    text-align: center;
   }
 </style>

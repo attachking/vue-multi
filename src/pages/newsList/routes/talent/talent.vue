@@ -1,6 +1,33 @@
 <!--人才推介-->
 <template>
   <div class="talent">
+    <el-form inline class="demo-form-inline">
+      <el-form-item>
+        <el-select v-model="aac011" clearable placeholder="请选择学历">
+          <el-option
+            v-for="item in dictionaries.TAB_EDUCATION"
+            :key="item.code"
+            :label="item.name"
+            :value="item.code">
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <xf-cascader
+          :options="dictionaries.CRAFT_AS"
+          v-model="bca111"
+          placeholder="请选择求职意向"
+          clearable
+          filterable></xf-cascader>
+      </el-form-item>
+      <el-form-item>
+        <el-input class="keywords" v-model.trim="keywords" placeholder="请输入关键字/姓名/求职意向" @keydown.enter.native="onSubmit"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" size="mini" icon="el-icon-search" @click="onSubmit">搜索</el-button>
+        <el-button type="default" size="mini" icon="el-icon-refresh" @click="onReset">重置</el-button>
+      </el-form-item>
+    </el-form>
     <div class="list">
       <div class="item" v-for="val in list" :key="val.aac001">
         <el-card>
@@ -29,23 +56,50 @@
 import Pagination from '../../../../components/pagination/pagination.vue'
 import Empty from '../../../../components/empty/empty.vue'
 import event from '../../../../common/js/event'
+import XfCascader from '../../../../components/xf-cascader/xf-cascader.vue'
+import {handleCity, echo} from '../../../../common/js/utils'
 
 export default {
   components: {
+    XfCascader,
     Empty,
     Pagination},
   data() {
     return {
       searchData: {
         rowsNum: 6,
-        currentPage: 1
+        currentPage: 1,
+        keyword: '',
+        aac011: '', // 学历
+        bca111: '' // 求职意向
       },
       pageBean: {},
       list: [],
-      status: this.$userInfo.status
+      status: this.$userInfo.status,
+      dictionaries: {
+        CRAFT_AS: [],
+        TAB_EDUCATION: [] // 学历
+      },
+      keywords: '',
+      aac011: '', // 学历
+      bca111: '' // 求职意向
     }
   },
   methods: {
+    onSubmit() {
+      this.searchData.currentPage = 1
+      this.searchData.aac011 = this.aac011
+      this.searchData.bca111 = this.bca111
+      this.searchData.keyword = encodeURIComponent(this.keywords)
+      this.getList()
+    },
+    onReset() {
+      this.keywords = ''
+      this.aac011 = ''
+      this.aac004 = ''
+      this.bca111 = ''
+      echo(this.searchData)
+    },
     getList() {
       this.$post('/service/business/search/stuApplyJob/seachRCPersonnel.xf', this.searchData).then(res => {
         this.list = res.result
@@ -64,10 +118,19 @@ export default {
       }).then(() => {
         event.$emit('login')
       })
+    },
+    getDictionaries() { // 字典表
+      this.$post('/service/sys/config/config/getConditionList', {
+        tabStr: 'CRAFT_AS,TAB_EDUCATION'
+      }).then(res => {
+        res.result.CRAFT_AS = handleCity(res.result.CRAFT_AS.children)
+        this.dictionaries = res.result
+      })
     }
   },
   created() {
     this.getList()
+    this.getDictionaries()
   }
 }
 </script>
@@ -135,5 +198,11 @@ export default {
   }
   .empty{
     margin: 50px 0 0 0;
+  }
+  .demo-form-inline{
+    padding: 20px 0 0 20px;
+  }
+  .keywords{
+    width: 220px;
   }
 </style>

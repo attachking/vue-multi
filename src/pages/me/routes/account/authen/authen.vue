@@ -24,6 +24,7 @@
           :action="baseUrl + '/service/business/fm/pic/picInfo/uploadPicInfo'"
           :on-remove="handleRemove"
           :on-success="onSuccess"
+          :on-error="handleError"
           :file-list="fileList"
           :limit="1">
           <el-button size="small" type="primary">点击上传</el-button>
@@ -32,7 +33,7 @@
       </el-form-item>
       <el-form-item>
         <el-tooltip placement="left">
-          <div slot="content">提交到后台，由就业中心工作人员进行人工认证，<br>大概2-3个工作日认证完成</div>
+          <div slot="content">提交到后台，由网站后台工作人员进行人工认证，<br>大概2-3个工作日认证完成</div>
           <el-button type="warning" @click="onSubmit(0)" :loading="loading1" :disabled="loading2">人工认证</el-button>
         </el-tooltip>
         <el-tooltip placement="right">
@@ -150,10 +151,10 @@ export default{
           trigger: 'change'
         }, {
           validator(rule, value, callback) {
-            if (/^[a-zA-Z\d]{18}$/.test(value)) {
+            if (/^[a-zA-Z\d]{0,18}$/.test(value)) {
               callback()
             } else {
-              callback(new Error('请填写18位证件号码'))
+              callback(new Error('请填写正确的证件号码'))
             }
           }
         }],
@@ -175,7 +176,8 @@ export default{
         _token: this.$userInfo.token,
         ccmu17: this.$userInfo.ccmu17,
         userId: this.$userInfo.ccmu17 === 1 ? this.$userInfo.aac001 : this.$userInfo.aab001,
-        ccmu01: this.$userInfo.ccmu01
+        ccmu01: this.$userInfo.ccmu01,
+        plateform: 1
       },
       dialogVisible: false,
       info: {},
@@ -203,6 +205,7 @@ export default{
                   message: res.error.message,
                   type: 'success'
                 })
+                this.formShow = false
               } else {
                 this.autoAuthenDialog()
               }
@@ -258,7 +261,28 @@ export default{
       }).catch(() => {
         this.loading3 = false
       })
+    },
+    handleAuthenInfo() {
+      this.form.aab007 = this.authenInfo.aab007 || ''
+      this.form.aab010 = this.authenInfo.aab010 || ''
+    },
+    handleError(e) {
+      /*
+      this.$message({
+        message: e.message,
+        type: 'warning'
+      })
+      this.fileList = []
+      */
     }
+  },
+  created() {
+    this.handleAuthenInfo()
+    this.$watch('authenInfo', () => {
+      setTimeout(() => {
+        this.handleAuthenInfo()
+      }, 20)
+    })
   }
 }
 </script>

@@ -6,17 +6,27 @@
       </div>
       <div class="xf-footer-middle">
         <p>地址：中国·河南省郑州市正光路11号  中国·河南招才引智创新发展大会组委会办公室</p>
-        <p>电话：0371-69690404&nbsp;&nbsp;0371-69690431&nbsp;&nbsp;0371-69690432</p>
-        <p style="text-indent: 3em;">0371-69690433&nbsp;&nbsp;0371-69690434&nbsp;&nbsp;0371-69690435</p>
+        <p>大会咨询热线：12333</p>
+        <p>大会网站技术服务：0371-67919501&nbsp;&nbsp;0371-67919503（周一至周五 早上9点—下午5点）</p>
+        <p>大会组委会办公室：0371-69690404（周一至周五 早上9点—下午5点）</p>
         <p>传真：0371-69690431&nbsp;&nbsp;邮箱：hnzcyz@126.com&nbsp;&nbsp;邮编：450000</p>
-        <p><a href="http://www.miibeian.gov.cn/" target="_blank">豫ICP备14002359号</a>&nbsp;Copyright © 2018 All Rights Reserved&nbsp;中国·河南招才引智创新发展大会组委会</p>
+        <p class="police">
+          <a href="http://www.miibeian.gov.cn/" target="_blank">豫ICP备14002359号</a>&nbsp;
+          <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41010702002490">
+            <img style="vertical-align: middle" src="../../../static/assets/icon-police.png" />&nbsp;<span>豫公网安备 41010702002490号</span>
+          </a>
+        </p>
+        <p>Copyright © 2018 All Rights Reserved&nbsp;中国·河南招才引智创新发展大会组委会</p>
+        <p>技术支持：<a href="http://www.xfxxgs.com/" target="_blank">河南讯丰信息技术有限公司</a>
+          <span style="margin-left: 15px;" :title="'总访问量：' + allCounts">今日访问量：{{dayCounts}}</span>
+        </p>
       </div>
       <div class="xf-footer-right-con">
         <div class="xf-footer-right">
           <div class="xf-footer-qrcode">
             <img src="../../../static/assets/qrcode/weixin-service.jpg">
           </div>
-          <p>微信公众号</p>
+          <p>微信服务号</p>
           <!--<div class="xf-footer-qrcode">
             <img src="../../../static/assets/qrcode/weixin.jpg">
           </div>
@@ -57,10 +67,21 @@ export default {
   name: 'xf-footer',
   data() {
     return {
-      test: test
+      test: test,
+      dayCounts: '',
+      allCounts: ''
+    }
+  },
+  methods: {
+    getCount() {
+      this.$post('/service/business/baiduApi/baiduApi/getBaiduSTT.xf', {}, false).then(res => {
+        this.dayCounts = res.result.dayCounts
+        this.allCounts = res.result.allCounts
+      })
     }
   },
   created() {
+    this.getCount()
     // 图片自适应大小函数，img需要有固定大小父容器，onload函数调用
     window.handleBeauty = function(e) {
       var $el = $(e.target)
@@ -90,19 +111,19 @@ export default {
   .xf-footer{
     width: 100%;
     background: #303032;
-    height: 230px;
+    height: 240px;
     .xf-footer-con{
       width: 1250px;
       margin: 0 auto;
       color: #fff;
-      font-size: 14px;
+      font-size: 12px;
       @include clearFixed;
       .xf-footer-left{
         width: 180px;
-        height: 170px;
+        height: 200px;
         float: left;
         border-right: 1px solid #454547;
-        margin: 30px 0;
+        margin: 20px 0;
         padding: 33px 0 0 30px;
         img{
           width: 116px;
@@ -113,9 +134,9 @@ export default {
         width: 695px;
         float: left;
         border-right: 1px solid #454547;
-        padding: 0 0 0 30px;
-        line-height: 33px;
-        height: 170px;
+        padding: 0 0 0 115px;
+        line-height: 25px;
+        height: 200px;
         margin: 30px 0 0 0;
         a{
           color: #fff;
@@ -128,7 +149,7 @@ export default {
         width: 120px;
         height: 100%;
         float: left;
-        padding: 10px 0 0 20px;
+        padding: 20px 0 0 20px;
         p{
           margin: 5px 0 0 0;
           text-align: center;
@@ -155,6 +176,15 @@ export default {
         width: 100%;
         height: 100%;
       }
+    }
+  }
+  .police{
+    img{
+      vertical-align: middle;
+      display: inline-block;
+    }
+    span{
+      vertical-align: middle;
     }
   }
 </style>

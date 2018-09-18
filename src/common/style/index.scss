@@ -63,3 +63,6 @@ a{
     opacity: .95;
   }
 }
+.el-table--striped .el-table__body tr.el-table__row--striped td{
+  background: #f3f3f3;
+}

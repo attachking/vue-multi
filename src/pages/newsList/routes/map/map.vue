@@ -18,7 +18,7 @@ export default {
       echarts.registerMap('henan', henan)
       this.chart.setOption({
         title: {
-          text: '求职招聘',
+          text: '个人求职-中国·河南招才引智创新发展大会',
           left: 'center'
         },
         tooltip: {
@@ -74,6 +74,18 @@ export default {
             }
           },
           animation: false,
+          markPoint: {
+            symbol: 'image://./static/assets/star.png',
+            symbolSize: 40,
+            label: {
+              show: true
+            },
+            data: [{
+              name: '省直机构单位',
+              coord: [113.306063, 34.592956],
+              id: 999999
+            }]
+          },
           data: [
             {name: '郑州市', id: 1675},
             {name: '洛阳市', id: 1701},

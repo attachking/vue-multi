@@ -56,7 +56,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="工作地点" prop="acb202">
-        <xf-cascader placeholder="请选择工作地点" :options="dictionaries.TAB_CITY3" v-model="form.acb202" :fulltext.sync="form.bcb202"></xf-cascader>
+        <xf-cascader clearable placeholder="请选择工作地点" :options="dictionaries.TAB_CITY3" v-model="form.acb202" :fulltext.sync="form.bcb202"></xf-cascader>
       </el-form-item>
       <el-form-item label="工作性质" prop="acb21i">
         <el-select v-model="form.acb21i" placeholder="请选择工作性质" clearable>
@@ -69,10 +69,10 @@
         </el-select>
       </el-form-item>
       <el-form-item label="优惠政策" prop="favouredPolicy">
-        <el-input v-model="form.favouredPolicy" placeholder="请输入优惠政策" clearable></el-input>
+        <el-input type="textarea" :rows="8" v-model="form.favouredPolicy" placeholder="请输入优惠政策"></el-input>
       </el-form-item>
       <el-form-item label="岗位描述" prop="cca114">
-        <el-input type="textarea" :rows="6" v-model="form.cca114" placeholder="请输入岗位描述"></el-input>
+        <el-input type="textarea" :rows="8" v-model="form.cca114" placeholder="请输入岗位描述"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="save" :loading="loading">提交</el-button>
@@ -191,6 +191,11 @@ export default {
       acc01g_2: '',
       acc01g_3: '',
       rules: {
+        aac011: [{
+          required: true,
+          message: '请选择学历要求',
+          trigger: 'change'
+        }],
         bca111: [{
           required: true,
           message: '请选择岗位类别',
@@ -240,7 +245,7 @@ export default {
           trigger: 'change'
         }],
         acb228: [{
-          required: true,
+          required: false,
           message: '请选择食宿情况',
           trigger: 'change'
         }],
@@ -249,13 +254,13 @@ export default {
           message: '请输入岗位描述',
           trigger: 'change'
         }, {
-          max: 500,
-          message: '最多500个字符',
+          max: 2000,
+          message: '最多2000个字符',
           trigger: 'change'
         }],
         favouredPolicy: [{
-          max: 30,
-          message: '最多30个字符',
+          max: 2000,
+          message: '最多2000个字符',
           trigger: 'change'
         }]
       },
@@ -398,11 +403,36 @@ export default {
     handleChange(page) {
       this.searchData.currentPage = page
       this.getHistoryList()
+    },
+    handleRemove() {
+      let arr = []
+      if (this.acc01g_1) {
+        arr.push(this.acc01g_1)
+      }
+      if (this.acc01g_2) {
+        arr.push(this.acc01g_2)
+      }
+      if (this.acc01g_3) {
+        arr.push(this.acc01g_3)
+      }
+      this.acc01g_1 = arr[0] || ''
+      this.acc01g_2 = arr[1] || ''
+      this.acc01g_3 = arr[2] || ''
     }
   },
   created() {
     this.handleRouter(this.$route)
     this.$watch('$route', this.handleRouter)
+    this.$watch('acc01g_1', newVal => {
+      setTimeout(() => {
+        this.handleRemove()
+      }, 20)
+    })
+    this.$watch('acc01g_2', newVal => {
+      setTimeout(() => {
+        this.handleRemove()
+      }, 20)
+    })
     this.$watch('dictionaries', () => {
       setTimeout(() => {
         this.$refs.form.clearValidate()

@@ -9,10 +9,10 @@
               <p class="pos-name">{{detail.cca113 || '--'}}</p>
               <p class="info">
                 <span class="salary">{{detail.acc034Name || '--'}}</span>&nbsp;&nbsp;
-                <span>{{detail.acb21r || 0}}人</span>&nbsp;|&nbsp;
+                <span>{{detail.acb21r ? detail.acb21r + '人' : '若干'}}</span>&nbsp;|&nbsp;
                 <span>{{detail.acb21iName || '--'}}</span>&nbsp;|&nbsp;
-                <span>{{detail.acc218 || '--'}}</span>&nbsp;|&nbsp;
-                <span>{{detail.aac012 || '--'}}</span>
+                <span>{{detail.acc218 || '--'}}</span><span v-if="detail.aac012">&nbsp;|&nbsp;</span>
+                <span v-if="detail.aac012">{{detail.aac012 || '--'}}</span>
                 <span class="time">{{$dateFormat(detail.ccpr05, 'yyyy-MM-dd')}}刷新</span>
               </p>
               <div class="edit" v-if="ccmu17 !== 2">
@@ -49,7 +49,7 @@
               <div class="con">0379-63091742</div>
             </div>-->
           </div>
-          <div class="left-bottom">
+          <div class="left-bottom" v-loading="listLoading">
             <p class="position-tit">
               <span>该单位招聘岗位</span>
               <span>
@@ -67,16 +67,16 @@
                 </p>
                 <p>
                   <span>
-                    <span>{{val.bcb202 || '--'}}</span>&nbsp;&nbsp;|
-                    <span>{{val.acb21r || '--'}}人</span>&nbsp;&nbsp;|
-                    <span>{{val.acb21iName || '--'}}</span>&nbsp;&nbsp;|
-                    <span>{{val.acc218 || '--'}}</span>&nbsp;&nbsp;|
-                    <span>{{val.aac012 || '--'}}</span>
+                    <span>{{val.bcb202 || '--'}}</span>&nbsp;|&nbsp;
+                    <span>{{val.acb21r ? val.acb21r + '人' : '若干'}}</span><span v-if="val.acc01gname">&nbsp;|&nbsp;</span>
+                    <span v-if="val.acc01gname">{{val.acc01gname || '--'}}</span>&nbsp;|&nbsp;
+                    <span>{{val.acc218 || '--'}}</span><span v-if="val.aac012">&nbsp;|&nbsp;</span>
+                    <span v-if="val.aac012">{{val.aac012 || '--'}}</span>
                   </span>
                   <span class="salary">{{val.acc034Name}}</span>
                 </p>
                 <div class="job-control">
-                  <i class="xffont" :class="Number(val.is_Collection) > 0 ? 'font-shoucang1' : 'font-shoucang'" @click="collect(val.acb210, val.is_Collection)" :title="Number(val.is_Collection) > 0 ? '已收藏' : '收藏'"></i>
+                  <i class="xffont" :class="Number(val.is_Collection) > 0 ? 'font-shoucang1' : 'font-shoucang'" @click="collect(val.acb210, val.is_Collection, 2)" :title="Number(val.is_Collection) > 0 ? '已收藏' : '收藏'"></i>
                   <i class="xffont font-send" :class="Number(val.is_Resume) > 0 ? 'active' : ''" @click="confirmSend(val.acb210, val.is_Resume)" :title="Number(val.is_Resume) > 0 ? '已投递简历' : '投递简历'"></i>
                 </div>
               </div>
@@ -96,7 +96,7 @@
               </p>
               <p>
                 <span class="label">电话：</span>
-                <span>{{status && corpInfo.aae005 || '--'}}</span>
+                <span>{{status && (corpInfo.aab115 || corpInfo.aae005) || '--'}}</span>
               </p>
               <p>
                 <span class="label">邮箱：</span>
@@ -111,9 +111,9 @@
               </div>
             </div>
           </div>
-          <div class="right-middle" v-if="false">
-            <img src="./static/qrcode.png" alt="">
-            <p>扫描二维码在手机查看单位详情</p>
+          <div class="right-middle" v-if="qrCode">
+            <img :src="qrCode" alt="">
+            <p>扫描二维码在手机查看岗位详情</p>
           </div>
           <div class="right-bottom">
             <div class="recommend-tit">推荐岗位</div>
@@ -168,7 +168,9 @@ export default {
       corpLogo: {},
       currentSearch: {},
       ccmu17: this.$userInfo.ccmu17,
-      status: this.$userInfo.status
+      status: this.$userInfo.status,
+      listLoading: false,
+      qrCode: ''
     }
   },
   methods: {
@@ -184,14 +186,14 @@ export default {
         this.corpLogo = res.result.corpLogo
       })
     },
-    collect(acb210, state) {
+    collect(acb210, state, remark) {
       if (this.$userInfo.status !== 1) {
         event.$emit('login')
         return
       }
       if (this.$userInfo.ccmu17 !== 1) {
         this.$message({
-          message: '只有求职者才能投递简历',
+          message: '只有求职者才能收藏岗位',
           type: 'warning'
         })
         return
@@ -209,7 +211,11 @@ export default {
             message: res.error.message,
             type: 'success'
           })
-          this.getState()
+          if (remark === 2) {
+            this.getOtherJob()
+          } else {
+            this.getState()
+          }
         }
       }).catch(() => {
         this.editLoading = false
@@ -225,9 +231,13 @@ export default {
       })
     },
     getOtherJob() {
+      this.listLoading = true
       this.$post('/service/business/corp/newPosition/getPositionList.xf', this.searchData).then(res => {
+        this.listLoading = false
         this.otherJob = res.result || []
         this.pageBean = res.pageBean
+      }).catch(() => {
+        this.listLoading = false
       })
     },
     handlePage(page) {
@@ -294,6 +304,17 @@ export default {
     },
     login() {
       event.$emit('login')
+    },
+    getQrCode(acb210) { // 获取二维码
+      this.$post('/service/business/fm/pic/picInfo/qrCodeGenerate.xf', {
+        /// type=1 个人   type=2 单位   type=3 岗位
+        type: 3,
+        paramsId: acb210
+      }, false).then(res => {
+        if (res.result && res.result.qrCodeUrl) {
+          this.qrCode = res.result.qrCodeUrl
+        }
+      })
     }
   },
   created() {
@@ -304,6 +325,7 @@ export default {
     this.getState()
     this.searchData.acb210 = search.acb210
     this.getOtherJob()
+    this.getQrCode(search.acb210)
   }
 }
 </script>
@@ -443,6 +465,11 @@ export default {
             &:nth-child(1){
               font-size: 16px;
               color: #333;
+              a{
+                display: inline-block;
+                max-width: 700px;
+                @include ellipsis;
+              }
               span{
                 display: inline-block;
                 float: right;
@@ -578,14 +605,14 @@ export default {
             }
             a{
               display: inline-block;
-              max-width: 67%;
+              max-width: 64%;
               @include ellipsis;
               font-size: 16px;
             }
             span{
               color: #f26b01;
               font-size: 14px;
-              width: 33%;
+              width: 36%;
               float: right;
             }
           }

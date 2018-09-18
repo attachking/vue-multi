@@ -6,7 +6,7 @@
           <h3>找工作</h3>
           <p>海量工作岗位一网全知</p>
           <div class="jobImg">
-            <img src="./job.png" alt="">
+            <img src="./job.jpg" alt="" onload="handleBeauty(event)">
           </div>
           <div class="jobInput">
             <router-link to="/user">
@@ -17,8 +17,8 @@
         <div class="findWorker">
           <h3>找人才</h3>
           <p>优秀人才信息一览无余</p>
-          <div class="workerImg">
-            <img src="./worker.png" alt="">
+          <div class="jobImg">
+            <img src="./worker.jpg" alt="" onload="handleBeauty(event)">
           </div>
           <div class="workerInput">
             <router-link to="/boss">
@@ -93,11 +93,13 @@ export default {
       color: #666;
       margin: 20px 0;
     }
-    img {
+    .jobImg {
       width: 232px;
       height: 172px;
+      margin: 0 auto;
       img{
-        margin: 30px 15px;
+        width: 100%;
+        height: 100%;
       }
     }
   }

@@ -57,7 +57,9 @@
               <div class="count">在招岗位数：<span>{{val.cnt || 0}}</span></div>
             </a>
           </div>
-          <pagination :bean="pageBean" @current-change="handleChange"></pagination>
+          <div class="page">
+            <pagination :bean="pageBean" @current-change="handleChange"></pagination>
+          </div>
         </div>
       </div>
     </div>
@@ -72,9 +74,11 @@ import XfHeader from '../../components/xf-header/xf-header.vue'
 import {queryParse, isEn} from '../../common/js/utils'
 import Empty from '../../components/empty/empty.vue'
 import ThemeHeader from '../../components/theme-header/theme-header.vue'
+import Pagination from '../../components/pagination/pagination.vue'
 
 export default {
   components: {
+    Pagination,
     ThemeHeader,
     Empty,
     XfHeader,
@@ -108,6 +112,7 @@ export default {
       this.getCorps()
     },
     async getCorps() {
+      this.searchData.cand01 = this.cand01
       const res = await this.$post('/service/business/corp/corps/corpZCList', this.searchData)
       this.corps = res.result
       this.pageBean = res.pageBean
@@ -319,5 +324,9 @@ export default {
         right: 10px;
       }
     }
+  }
+  .page{
+    padding: 20px 0;
+    text-align: center;
   }
 </style>

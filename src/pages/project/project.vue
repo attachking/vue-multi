@@ -19,22 +19,22 @@
           </div>
           <el-form label-width="180px" class="demo-table-expand">
             <el-form-item label="立项单位">
-              <a :href="'corp.html?aab001=' + detail.aab001">{{detail.aab004 || '--'}}</a>
+              <a :href="'corp.html?aab001=' + detail.aab001">{{detail.projectApprovalunit || '--'}}</a>
             </el-form-item>
             <el-form-item label="项目名称">
               <span>{{detail.projectName || '--'}}</span>
             </el-form-item>
             <el-form-item label="项目类别" class="half">
-              <span>{{detail.projectCategoryName || '--'}}</span>
+              <span>{{detail.projectCategory || '--'}}</span>
             </el-form-item>
             <el-form-item label="经费来源" class="half">
-              <span>{{detail.fundSourceName || '--'}}</span>
+              <span>{{detail.projectFundresourse || '--'}}</span>
             </el-form-item>
             <el-form-item label="合作方式" class="half">
-              <span>{{detail.projectWorktypeName || '--'}}</span>
+              <span>{{detail.projectWorktype || '--'}}</span>
             </el-form-item>
             <el-form-item label="待遇" class="half">
-              <span>{{detail.projectTreatmentName || '--'}}</span>
+              <span>{{detail.projectTreatment || '--'}}</span>
             </el-form-item>
             <el-form-item label="工作地点" class="half">
               <span>{{detail.projectWorkaddress || '--'}}</span>

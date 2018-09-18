@@ -26,6 +26,7 @@ const collectedCorp = () => import('../routes/user-collection/corp/corp.vue') //
 const records = () => import('../routes/records/records.vue') // 求职管理
 const apply = () => import('../routes/records/apply/apply.vue') // 求职管理（应聘记录）
 const invitation = () => import('../routes/records/invitation/invitation.vue') // 求职管理（面试邀请）
+const qrCode = () => import('../routes/qr-code/qr-code.vue') // 我的二维码
 
 // 单位中心
 const corp = () => import('../routes/corp-index/corp-index.vue') // 单位中心首页
@@ -225,6 +226,10 @@ const router = new Router({
       name: 'projectDetail',
       component: projectDetail
     }]
+  }, {
+    path: '/qrCode',
+    name: 'qrCode',
+    component: qrCode
   }]
 })
 
@@ -242,7 +247,6 @@ router.beforeEach((to, from, next) => {
   } else if (to.matched.some(record => typeof record.meta.ccmu17 !== 'undefined' && record.meta.ccmu17 !== ccmu17)) {
     next({name: ccmu17 === 1 ? 'user' : 'corp'})
   } else if (ccmu17 === 2 && !/(account|message)/.test(to.path)) { // 未认证单位权限限制
-    console.log()
     if (store.state.authenInfo.infoState === 0) {
       next({name: 'info'})
       MessageBox('请先完善单位基本信息', '提示', {
@@ -264,6 +268,12 @@ router.beforeEach((to, from, next) => {
     } else {
       next(true)
     }
+  } else if (store.state.authenInfo.infoState === 0 && to.name === 'authen') { // 未完善基本信息不能进行认证
+    next({name: 'info'})
+    MessageBox('请先完善单位基本信息', '提示', {
+      confirmButtonText: '确定',
+      callback: action => {}
+    })
   } else {
     next(true)
   }

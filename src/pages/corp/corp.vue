@@ -11,9 +11,11 @@
             <div class="corp-tit">
               <p>{{corpInfo.aab004 || '--'}}</p>
               <p>
-                <span>{{corpInfo.aaa021 || '--'}}</span>&nbsp;&nbsp;|&nbsp;&nbsp;
-                <span>{{corpInfo.aab019name || '--'}}</span>&nbsp;&nbsp;|&nbsp;&nbsp;
-                <span>{{corpInfo.aab056name || '--'}}</span>
+                <span v-if="corpInfo.aaa021">{{corpInfo.aaa021 || '--'}}&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                <span>{{corpInfo.aab019name || '--'}}</span><span v-if="corpInfo.aab056name">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+                <span v-if="corpInfo.aab056name">{{corpInfo.aab056name || '--'}}</span>
+                <span v-if="corpInfo.ccpr10name">&nbsp;&nbsp;|&nbsp;&nbsp;
+                  {{corpInfo.ccpr10name || '--'}}</span>
               </p>
             </div>
             <div class="collect" v-if="ccmu17 !== 2">
@@ -50,11 +52,11 @@
                 </p>
                 <p>
                   <span>
-                    <span>{{val.bcb202 || '--'}}</span>&nbsp;&nbsp;|
-                    <span>{{val.acb21r || '--'}}人</span>&nbsp;&nbsp;|
-                    <span>{{val.acb21iName || '--'}}</span>&nbsp;&nbsp;|
-                    <span>{{val.acc218 || '--'}}</span>&nbsp;&nbsp;|
-                    <span>{{val.aac012 || '--'}}</span>
+                    <span>{{val.bcb202 || '--'}}</span>&nbsp;|&nbsp;
+                    <span>{{val.acb21r ? val.acb21r + '人' : '若干'}}</span><span v-if="val.acc01gname">&nbsp;|&nbsp;</span>
+                    <span v-if="val.acc01gname">{{val.acc01gname || '--'}}</span>&nbsp;|&nbsp;
+                    <span>{{val.acc218 || '--'}}</span><span v-if="val.aac012">&nbsp;|&nbsp;</span>
+                    <span v-if="val.aac012">{{val.aac012 || '--'}}</span>
                   </span>
                   <span class="salary">{{val.acc034Name}}</span>
                 </p>
@@ -76,7 +78,7 @@
               </p>
               <p>
                 <span class="label">电话：</span>
-                <span>{{status && corpInfo.aae005 || '--'}}</span>
+                <span>{{status && (corpInfo.aab115 || corpInfo.aae005) || '--'}}</span>
               </p>
               <p>
                 <span class="label">邮箱：</span>
@@ -91,8 +93,8 @@
               </div>
             </div>
           </div>
-          <div class="right-middle" v-if="false">
-            <img src="./static/qrcode.png">
+          <div class="right-middle" v-if="qrCode">
+            <img :src="qrCode">
             <p>扫描二维码在手机查看单位详情</p>
           </div>
           <div class="right-bottom">
@@ -104,7 +106,7 @@
                 </div>
                 <div class="recommend-info">
                   <a :href="'corp.html?aab001=' + val.aab001" :title="val.aab004">{{val.aab004 || '--'}}</a>
-                  <span>{{val.aab056name || '--'}}</span>
+                  <span>{{val.ccpr10name || '--'}}</span>
                 </div>
               </div>
             </div>
@@ -135,6 +137,7 @@ export default {
       val: {},
       corpInfo: {},
       corpPic: [],
+      corpLogo: {},
       isCollect: false,
       aab001: '',
       loading: false,
@@ -150,7 +153,8 @@ export default {
         aac001: this.$userInfo.aac001
       },
       jobPageBean: {},
-      status: this.$userInfo.status
+      status: this.$userInfo.status,
+      qrCode: ''
     }
   },
   methods: {
@@ -164,6 +168,7 @@ export default {
       }).then(res => {
         this.corpInfo = res.result.corpInfo
         this.corpPic = res.result.corpPic
+        this.corpLogo = res.result.corpLogo
         renderTitle(res.result.corpInfo.aab004)
       })
     },
@@ -357,6 +362,17 @@ export default {
       }).catch(() => {
         this.jobLoading = false
       })
+    },
+    getQrCode(aab001) { // 获取二维码
+      this.$post('/service/business/fm/pic/picInfo/qrCodeGenerate.xf', {
+        /// type=1 个人   type=2 单位   type=3 岗位
+        type: 2,
+        paramsId: aab001
+      }, false).then(res => {
+        if (res.result && res.result.qrCodeUrl) {
+          this.qrCode = res.result.qrCodeUrl
+        }
+      })
     }
   },
   created() {
@@ -367,6 +383,7 @@ export default {
     this.getState()
     this.getCorpList()
     this.getJob()
+    this.getQrCode(search.aab001)
   }
 }
 </script>
@@ -494,6 +511,11 @@ export default {
             &:nth-child(1){
               font-size: 16px;
               color: #333;
+              a{
+                display: inline-block;
+                max-width: 700px;
+                @include ellipsis;
+              }
               span{
                 display: inline-block;
                 float: right;

@@ -19,6 +19,7 @@
           <p class="content">{{topNews.cand19}}</p>
         </div>
       </div>
+      <count-down></count-down>
       <div class="module">
         <div class="news">
           <div class="news-con">
@@ -30,7 +31,7 @@
                   </a>
                 </el-carousel-item>
               </el-carousel>
-              <div class="news-banner-info">{{firstSlider.length && firstSlider[firstSliderIndex].cand03}}</div>
+              <div class="news-banner-info">{{firstSlider.length ? firstSlider[firstSliderIndex].cand03 : ''}}</div>
             </div>
           </div>
           <div class="news-con">
@@ -66,29 +67,31 @@
           <a href="javascript:;" :class="{active: recommendIndex === 1}" @click="recommendIndex = 1">岗位推介</a><a href="javascript:;" :class="{active: recommendIndex === 2}" @click="recommendIndex = 2">单位推介</a><a :class="{active: recommendIndex === 3}" href="javascript:;" @click="recommendIndex = 3">人才推介</a>
         </div>
         <transition name="el-fade-in" mode="out-in">
-          <div class="recommend-job-list" key="job" v-if="recommendIndex === 1">
-            <div class="item hover-opa" v-for="val in recommendJob" :key="val.acb210">
-              <div class="top">
-                <p>
-                  <a :href="'job.html?acb210=' + val.acb210" target="_blank" :title="val.cca113">{{val.cca113}}</a>
-                  <span class="salary">{{val.acc034Name}}</span>
-                </p>
-                <p>{{val.aac012 || '--'}} / {{val.acb21r || 0}}人 / {{val.acb21iName || '--'}}</p>
-                <p>[ {{$dateFormat(val.ccpr05, 'yyyy-MM-dd hh:mm:ss')}} 发布 ]</p>
-              </div>
-              <div class="bottom">
-                <div class="img">
-                  <img :src="val.ccmu15" alt="">
-                </div>
-                <div class="corp-info">
-                  <a :href="'corp.html?aab001=' + val.aab001" target="_blank">{{val.aab004}}</a>
+          <div class="recommend-job-list" key="job" v-if="recommendIndex === 1" v-loading="jobLoading">
+            <div>
+              <div class="item hover-opa" v-for="val in recommendJob" :key="val.acb210">
+                <div class="top">
                   <p>
-                    <span>{{val.bcb202 || '--'}}</span>
+                    <a :href="'job.html?acb210=' + val.acb210" target="_blank" :title="val.cca113">{{val.cca113}}</a>
+                    <span class="salary">{{val.acc034Name}}</span>
                   </p>
+                  <p>{{val.aac012 || '--'}} / {{val.acb21r ? val.acb21r + '人' : '若干'}} / {{val.acb21iName || '--'}}</p>
+                  <p>[ {{$dateFormat(val.ccpr05, 'yyyy-MM-dd hh:mm:ss')}} 发布 ]</p>
                 </div>
-                <div class="edit">
-                  <i class="xffont" v-if="ccmu17 !== 2" @click="collectSingle(val)" :class="Number(val.is_Collection) === 0 ? 'font-shoucang' : 'font-shoucang1'" :title="Number(val.is_Collection) === 0 ? '收藏' : '已收藏'"></i>
-                  <i class="xffont font-send" v-if="ccmu17 !== 2" :class="Number(val.is_Resume) > 0 ? 'active' : ''" @click="handleResume(val)" :title="Number(val.is_Resume) > 0 ? '已投递简历' : '投递简历'"></i>
+                <div class="bottom">
+                  <div class="img">
+                    <img :src="val.ccmu15" alt="">
+                  </div>
+                  <div class="corp-info">
+                    <a :href="'corp.html?aab001=' + val.aab001" target="_blank">{{val.aab004}}</a>
+                    <p>
+                      <span>{{val.bcb202 || '--'}}</span>
+                    </p>
+                  </div>
+                  <div class="edit">
+                    <i class="xffont" v-if="ccmu17 !== 2" @click="collectSingle(val)" :class="Number(val.is_Collection) === 0 ? 'font-shoucang' : 'font-shoucang1'" :title="Number(val.is_Collection) === 0 ? '收藏' : '已收藏'"></i>
+                    <i class="xffont font-send" v-if="ccmu17 !== 2" :class="Number(val.is_Resume) > 0 ? 'active' : ''" @click="handleResume(val)" :title="Number(val.is_Resume) > 0 ? '已投递简历' : '投递简历'"></i>
+                  </div>
                 </div>
               </div>
             </div>
@@ -103,7 +106,7 @@
                 <p class="ell">{{val.ccpr10name || '--'}}</p>
                 <p style="height: 58px;">{{val.acb206 || '--'}}</p>
               </div>
-              <div class="count">在招岗位数：<span>{{val.cnt || 0}}</span></div>
+              <div class="count">在招岗位数：<span>{{val.cnt || 0}}</span>需求人数：<span>{{val.personCnt || 0}}</span></div>
             </a>
           </div>
           <div class="personnel-list" key="talent" v-if="recommendIndex === 3">
@@ -203,6 +206,19 @@
         </div>
       </div>
     </div>
+    <div class="module supporting-box normal-bg" ref="media">
+      <div class="module-con">
+        <div class="title">
+          <p>友情链接</p>
+          <p>FRIENDSHIP LINK</p>
+        </div>
+        <div class="supporting-con">
+          <a target="_blank" :href="val.ccmw03" class="supporting-item" v-for="(val, key) in HZMT" :key="key" :title="val.ccmw02">
+            <img :src="val.ccmw07" onload="handleBeauty(event)">
+          </a>
+        </div>
+      </div>
+    </div>
     <xf-footer></xf-footer>
     <right-menu></right-menu>
   </div>
@@ -213,9 +229,11 @@ import XfFooter from '../../components/xf-footer/xf-footer.vue'
 import RightMenu from '../../components/right-menu/right-menu.vue'
 import $ from 'jquery'
 import event from '../../common/js/event'
+import CountDown from '../../components/count-down/count-down.vue'
 
 export default {
   components: {
+    CountDown,
     RightMenu,
     XfFooter,
     XfHeader},
@@ -238,7 +256,8 @@ export default {
       recommendCorp: [],
       recommendTalent: [],
       ccmu17: this.$userInfo.ccmu17,
-      status: this.$userInfo.status
+      status: this.$userInfo.status,
+      HZMT: []
     }
   },
   methods: {
@@ -356,13 +375,18 @@ export default {
       }
     },
     getRecommendJob() { // 岗位推介
+      this.jobLoading = true
       this.$post('/service/business/corp/newPosition/queryPositionList.xf', {
         acb21z: 3,
         rowsNum: 9,
         currentPage: 1,
+        aac001: this.$userInfo.aac001,
         key: 'POSITION'
       }).then(res => {
+        this.jobLoading = false
         this.recommendJob = res.result
+      }).catch(() => {
+        this.jobLoading = false
       })
     },
     getRecommendCorp() {
@@ -402,39 +426,39 @@ export default {
         event.$emit('login')
         return
       }
-      this.loading = true
+      this.jobLoading = true
       this.$post('/service/business/person/positionTalent/saveTalentPositionInfo.xf', {
         aac001: this.$userInfo.aac001,
         acb210
       }).then(res => {
-        this.loading = false
+        this.jobLoading = false
         if (res.error && res.error.result === 1) {
           this.$message({
             message: res.error.message,
             type: 'success'
           })
-          this.getList()
+          this.getRecommendJob()
         }
       }).catch(() => {
-        this.loading = false
+        this.jobLoading = false
       })
     },
     delCollect(acb210) {
-      this.loading = true
+      this.jobLoading = true
       this.$post('/service/business/person/positionTalent/delTalentPositionInfo.xf', {
         aac001: this.$userInfo.aac001,
         acb210
       }).then(res => {
-        this.loading = false
+        this.jobLoading = false
         if (res.error && res.error.result === 1) {
           this.$message({
             message: res.error.message,
             type: 'success'
           })
-          this.getList()
+          this.getRecommendJob()
         }
       }).catch(() => {
-        this.loading = false
+        this.jobLoading = false
       })
     },
     handleResume(val) {
@@ -490,6 +514,13 @@ export default {
       }).then(() => {
         event.$emit('login')
       })
+    },
+    getHZMT() { // 友情链接
+      this.$post('/service/business/fm/link/links/getLinksList.xf', {
+        ccmw05: 1
+      }).then(res => {
+        this.HZMT = res.result.links
+      })
     }
   },
   created() {
@@ -505,6 +536,7 @@ export default {
     this.getRecommendJob()
     this.getRecommendCorp()
     this.getRecommendTalent()
+    this.getHZMT()
     $(window).on('resize', () => {
       this.topBannerHeight = Math.max($(window).width(), 1200) / 1920 * 730 + 'px'
     })
@@ -558,9 +590,11 @@ export default {
       font-weight: bold;
       width: 700px;
       padding: 20px 0 0 0;
-      @include ellipsis;
       a{
         color: #dd0303;
+        display: inline-block;
+        width: 100%;
+        @include ellipsis;
         &:hover{
           color: lighten(#dd0303, 20%);
         }
@@ -936,7 +970,7 @@ export default {
   .wisdom-box{
     height: 723px;
     padding: 60px 0;
-    background: url("./static/wisdom.png") no-repeat;
+    background: url("./static/wisdom.jpg") no-repeat;
     background-size: 100% 100%;
     .title{
       text-align: center;
@@ -1188,10 +1222,11 @@ export default {
       .count{
         line-height: 41px;
         text-align: center;
-        font-size: 16px;
+        font-size: 14px;
         color: #666;
         span{
           color: $--color-primary;
+          margin-right: 3px;
         }
       }
       .red{
@@ -1206,5 +1241,51 @@ export default {
   }
   .red{
     color: red;
+  }
+  .module{
+    width: 100%;
+    .module-con{
+      width: 1200px;
+      margin: 0 auto;
+      .title{
+        text-align: center;
+        p{
+          &:first-child{
+            color: #05a5c3;
+            font-size: 24px;
+          }
+          &:nth-child(2){
+            color: #666;
+            font-size: 14px;
+            padding: 5px 0;
+          }
+        }
+      }
+    }
+  }
+  .supporting-box{
+    padding: 65px 0 0 0;
+    .supporting-con{
+      padding: 50px 0 0 0;
+      @include clearFixed;
+      .supporting-item{
+        float: left;
+        width: 215px;
+        height: 137px;
+        border: 1px solid #d9d9d9;
+        margin-right: 30px;
+        margin-bottom: 30px;
+        display: block;
+        overflow: hidden;
+        &:hover{
+          cursor: pointer;
+          opacity: .9;
+          transform: scale(1.1);
+        }
+        &:nth-child(5n){
+          margin-right: 0;
+        }
+      }
+    }
   }
 </style>

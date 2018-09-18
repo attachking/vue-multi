@@ -3,6 +3,7 @@ const state = {
   dictionaries: { // 字典表
     TAB_AFFIL: [], // 政治面貌
     TAB_CITY3: [], // 城市，三级
+    TAB_CITY: [], // 城市，所有
     TAB_WELFARE: [], // 福利
     TAB_WORKYEARS: [], // 工作年限
     CRAFT_AS: [], // 岗位
@@ -26,7 +27,10 @@ const state = {
     TAB_INDUSTRYCLASSES: [], // 所在产业
     TAB_CATEGORY: [], // 户口性质
     TAB_HEALTH: [], // 健康状况
-    TAB_ECONOMIC: [] // 经济类型
+    TAB_ECONOMIC: [], // 经济类型
+    TAB_JOBSTATUS: [], // 目前状态
+    TAB_GRADUATION_SITUATION: [], // 毕业情况
+    TAB_DEGREE: [] // 学位
   },
   phoneOpen: false,
   corpInfo: {}, // 单位信息,

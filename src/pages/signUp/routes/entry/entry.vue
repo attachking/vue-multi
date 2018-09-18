@@ -2,11 +2,11 @@
   <div class="entry">
     <div class="center">
       <div class="centerBox">
-        <div class="findJob">
+        <div class="item">
           <h3>个人报名</h3>
           <p>栽下梧桐树，引得凤凰来</p>
           <div class="jobImg">
-            <img src="./worker.png" alt="">
+            <img src="./user.jpg" alt="">
           </div>
           <div class="jobInput">
             <router-link to="/personal">
@@ -14,14 +14,24 @@
             </router-link>
           </div>
         </div>
-        <div class="findWorker">
+        <div class="item">
           <h3>用人单位报名</h3>
           <p>中原大舞台，助力您精彩</p>
           <div class="workerImg">
-            <img src="./corp.png" alt="">
+            <img src="./corp.jpg" alt="">
           </div>
           <div class="workerInput">
-            <router-link to="/corp">
+            <input type="button" value="去报名" @click="handleCorp">
+          </div>
+        </div>
+        <div class="item">
+          <h3>特邀专家报名</h3>
+          <p>共商创新发展，支撑人才智力</p>
+          <div class="workerImg">
+            <img src="./expert.jpg" alt="">
+          </div>
+          <div class="workerInput">
+            <router-link to="/expert-check">
               <input type="button" value="去报名">
             </router-link>
           </div>
@@ -42,6 +52,17 @@ export default {
   methods: {
     login() {
       event.$emit('login')
+    },
+    handleCorp() {
+      this.$confirm('用人单位报名名额已满，享受更多服务，请直接注册！', '提示', {
+        confirmButtonText: '去注册',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        location.href = 'register.html'
+      }).catch(() => {
+        // 取消
+      })
     }
   }
 }
@@ -53,18 +74,15 @@ export default {
   }
   .centerBox {
     width: 100%;
-    padding: 50px 70px 40px 70px;
+    padding: 50px 20px 40px 20px;
     text-align: center;
     @include clearFixed;
-    .findJob {
-      width: 50%;
+    .item{
+      width: 33.3%;
       float: left;
-      border-right: 1px dotted #e3e3e3;
-    }
-    .findWorker {
-      float: left;
-      width: 50%;
-      text-align: center;
+      &:not(:last-child){
+        border-right: 1px dotted #e3e3e3;
+      }
     }
     input {
       width: 178px;
@@ -86,6 +104,7 @@ export default {
     p {
       color: #666;
       margin: 20px 0;
+      min-height: 22px;
     }
     img {
       width: 232px;

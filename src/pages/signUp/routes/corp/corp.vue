@@ -61,13 +61,13 @@
             </el-upload>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click="onSubmit" class="submit" v-loading="loading">我要报名</el-button>
+            <el-button type="primary" @click="onSubmit" class="submit" :loading="loading">我要报名</el-button>
           </el-form-item>
         </el-form>
       </div>
       <sign-success v-if="!showForm"></sign-success>
     </transition>
-    <img :src="form.picture" v-img="form.picture" style="display: none;" ref="img">
+    <img :src="tempImg" v-img="tempImg" style="display: none;" ref="img">
   </div>
 </template>
 <script>
@@ -91,7 +91,8 @@ export default {
         _token: this.$userInfo.token,
         ccmu17: this.$userInfo.ccmu17,
         userId: this.$userInfo.ccmu17 === 1 ? this.$userInfo.aac001 : this.$userInfo.aab001,
-        ccmu01: this.$userInfo.ccmu01
+        ccmu01: this.$userInfo.ccmu01,
+        plateform: 1
       },
       form: {
         name: '', // 单位名称
@@ -129,10 +130,10 @@ export default {
           trigger: 'change'
         }, {
           validator(rule, value, callback) {
-            if (/^[a-zA-Z\d]{18}$/.test(value)) {
+            if (/^[a-zA-Z\d]{0,18}$/.test(value)) {
               callback()
             } else {
-              callback(new Error('请填写18位证件号码'))
+              callback(new Error('请填写正确的证件号码'))
             }
           },
           trigger: 'blur'
@@ -212,7 +213,8 @@ export default {
       },
       loading: false,
       activities: [],
-      multis: []
+      multis: [],
+      tempImg: ''
     }
   },
   methods: {
@@ -256,7 +258,7 @@ export default {
             flag: 1
           }, this.form)
           this.$post('/service/business/registration/registration/save', form, false).then(res => {
-            if (res.error && res.error.result === 1) {
+            if (res.error) {
               this.$alert(res.error.message, '提示', {
                 confirmButtonText: '确定',
                 callback: action => {
@@ -276,7 +278,10 @@ export default {
       this.fileList = []
     },
     handlePreview(file) {
-      this.$refs.img.click()
+      this.tempImg = file.url
+      setTimeout(() => {
+        this.$refs.img.click()
+      }, 20)
     },
     onSuccess(res) {
       if (res.error && res.error.result === 1) {

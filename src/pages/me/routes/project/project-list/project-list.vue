@@ -1,6 +1,6 @@
 <template>
   <div class="project-list">
-    <el-table :data="list" v-loading="loading">
+    <el-table :data="list" v-loading="loading" stripe>
       <el-table-column
         align="center"
         width="150"
@@ -14,7 +14,7 @@
         width="150"
         label="项目类别">
         <template slot-scope="scope">
-          <span class="ellipsis" :title="scope.row.projectCategoryName">{{scope.row.projectCategoryName || '--'}}</span>
+          <span class="ellipsis" :title="scope.row.projectCategory">{{scope.row.projectCategory || '--'}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -22,7 +22,7 @@
         width="150"
         label="经费来源">
         <template slot-scope="scope">
-          <span class="ellipsis" :title="scope.row.fundSourceName">{{scope.row.fundSourceName || '--'}}</span>
+          <span class="ellipsis" :title="scope.row.projectFundresourse">{{scope.row.projectFundresourse || '--'}}</span>
         </template>
       </el-table-column>
       <el-table-column

@@ -16,7 +16,7 @@
           <p class="pos-detail">
               <span>
                 <span>地点：{{val.bcb202 || '--'}}</span>&nbsp;|&nbsp;
-                <span>招聘人数：{{val.acb21r || 0}} 人</span>&nbsp;|&nbsp;
+                <span>招聘人数：{{val.acb21r ? val.acb21r + '人' : '若干'}} </span>&nbsp;|&nbsp;
                 <span>经验：{{val.acc218 || '--'}}</span>&nbsp;|&nbsp;
                 <span>学历：{{val.aac012 || '--'}}</span>&nbsp;|&nbsp;
                 <span>工作性质：{{val.acb21iName || '--'}}</span>

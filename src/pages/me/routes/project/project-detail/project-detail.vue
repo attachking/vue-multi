@@ -8,7 +8,7 @@
         <span>{{info.projectName || '--'}}</span>
       </el-form-item>
       <el-form-item label="项目类别">
-        <span>{{info.projectCategoryName || '--'}}</span>
+        <span>{{info.projectCategory || '--'}}</span>
       </el-form-item>
       <el-form-item label="项目介绍">
         <span>{{info.projectIntroduction || '--'}}</span>
@@ -17,13 +17,13 @@
         <span>{{info.projectProblem || '--'}}</span>
       </el-form-item>
       <el-form-item label="经费来源">
-        <span>{{info.fundSourceName || '--'}}</span>
+        <span>{{info.projectFundresourse || '--'}}</span>
       </el-form-item>
       <el-form-item label="合作方式">
-        <span>{{info.projectWorktypeName || '--'}}</span>
+        <span>{{info.projectWorktype || '--'}}</span>
       </el-form-item>
       <el-form-item label="待遇">
-        <span>{{info.projectTreatmentName || '--'}}</span>
+        <span>{{info.projectTreatment || '--'}}</span>
       </el-form-item>
       <el-form-item label="参与单位">
         <span class="no-wrap">{{info.projectJoinUnit || '--'}}</span>

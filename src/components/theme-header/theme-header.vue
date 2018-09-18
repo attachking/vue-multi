@@ -35,7 +35,7 @@ export default {
   @import "../../common/style/variables";
   .header{
     height: 100px;
-    background: #fff;
+    background-color: #fff;
     border-bottom: 1px solid #d9d9d9;
     .header-con{
       width: 1250px;

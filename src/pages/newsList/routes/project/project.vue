@@ -1,7 +1,25 @@
 <template>
   <div class="list" v-loading="loading">
+    <el-form inline class="demo-form-inline">
+      <el-form-item>
+        <xf-cascader
+          :options="dictionaries.TAB_CITY"
+          v-model="city"
+          placeholder="请选择地区"
+          clearable
+          change-on-select
+          filterable></xf-cascader>
+      </el-form-item>
+      <el-form-item>
+        <el-input class="keywords" v-model.trim="keywords" placeholder="请输入关键字/项目名称/项目类别/经费来源/合作方式/待遇" @keydown.enter.native="onSubmit"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" size="mini" icon="el-icon-search" @click="onSubmit">搜索</el-button>
+        <el-button type="default" size="mini" icon="el-icon-refresh" @click="onReset">重置</el-button>
+      </el-form-item>
+    </el-form>
     <div class="item" v-for="val in list" :key="val.projectid">
-      <a class="tit" :href="'project.html?channel_code=' + $route.query.channel_code + '&projectid=' + val.projectid"><span :title="val.projectName">{{val.projectName}}</span></a>
+      <a class="tit" :href="'project.html?channel_code=' + $route.query.channel_code + '&projectid=' + val.projectid"><span :title="val.projectName" v-html="mixinHighLight(val.projectName, keywords)"></span><i title="热点" class="xffont font-tubiao-" v-if="Number(val.projectPromotion) === 1"></i></a>
       <span class="time"><i class="xffont font-msnui-time"></i><span>{{$dateFormat(val.projectSubmitdate, 'yy-MM-dd')}}</span></span>
     </div>
     <empty v-if="pageBean.totalPage === 0" class="empty"></empty>
@@ -13,9 +31,13 @@
 <script>
 import Pagination from '../../../../components/pagination/pagination.vue'
 import Empty from '../../../../components/empty/empty.vue'
+import {handleCity, echo} from '../../../../common/js/utils'
+import XfCascader from '../../../../components/xf-cascader/xf-cascader.vue'
+import {mixinHighLight} from '../../../../common/js/mixin'
 
 export default {
   components: {
+    XfCascader,
     Empty,
     Pagination},
   data() {
@@ -24,12 +46,31 @@ export default {
       list: [],
       searchData: {
         rowsNum: 10,
-        currentPage: 1
+        currentPage: 1,
+        projectWorkCode: '',
+        keyword: ''
       },
-      loading: false
+      loading: false,
+      keywords: '',
+      city: '',
+      dictionaries: {
+        TAB_CITY: []
+      }
     }
   },
   methods: {
+    mixinHighLight,
+    onSubmit() {
+      this.searchData.currentPage = 1
+      this.searchData.projectWorkCode = this.city
+      this.searchData.keyword = encodeURIComponent(this.keywords)
+      this.getList()
+    },
+    onReset() {
+      this.keywords = ''
+      this.city = ''
+      echo(this.searchData)
+    },
     getList() {
       this.loading = true
       this.$post('/service/business/project/enterpriseProject/getAllProjectList', this.searchData).then(res => {
@@ -43,15 +84,27 @@ export default {
     handlePage(page) {
       this.searchData.currentPage = page
       this.getList()
+    },
+    getDictionaries() { // 字典表
+      this.$post('/service/sys/config/config/getConditionList', {
+        tabStr: 'TAB_CITY'
+      }).then(res => {
+        res.result.TAB_CITY = handleCity(res.result.TAB_CITY.children)
+        this.dictionaries = res.result
+      })
     }
   },
   created() {
+    this.getDictionaries()
     this.getList()
   }
 }
 </script>
 <style lang="scss" scoped>
   @import "../../../../common/style/variables";
+  .demo-form-inline{
+    padding: 20px 0 0 0;
+  }
   .page{
     padding: 10px 0;
     text-align: center;
@@ -80,6 +133,7 @@ export default {
       .font-tubiao-{
         font-size: 16px;
         color: red;
+        margin-left: 5px;
       }
     }
     .time{
@@ -92,11 +146,12 @@ export default {
         margin: 0 5px 0 10px;
       }
     }
-    &:not(:last-child){
-      border-bottom: 1px dashed #d9d9d9;
-    }
+    border-bottom: 1px dashed #d9d9d9;
   }
   .empty{
     margin: 50px 0 0 0;
+  }
+  .keywords{
+    width: 400px;
   }
 </style>

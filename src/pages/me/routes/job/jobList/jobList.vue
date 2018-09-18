@@ -13,8 +13,8 @@
           <el-option label="使用中" value="0"></el-option>
           <el-option label="暂停" value="1"></el-option>
           <el-option label="已过期" value="2"></el-option>
-          <el-option label="审核不通过" value="3"></el-option>
-          <el-option label="待审核" value="4"></el-option>
+         <!-- <el-option label="审核不通过" value="3"></el-option>
+          <el-option label="待审核" value="4"></el-option>-->
         </el-select>
       </el-form-item>
     </el-form>
