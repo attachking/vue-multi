@@ -2,7 +2,8 @@
   <div class="header">
     <div class="header-con">
       <a class="logo">
-        <img src="../../common/img/logo-color.png" alt="">
+        <img src="../../common/img/logo-color.png" v-if="!en" alt="">
+        <img src="../../common/img/logo-color-en.png" v-if="en" alt="">
       </a>
       <a class="item" :href="en ? 'theme.html?lang=en' : 'index.html'">{{en ? 'Home' : '首页'}}</a>
       <a class="item" :href="en ? 'theme.html?lang=en#/about' : 'theme.html#/about'">{{en ? 'About' : '关于大会'}}</a>

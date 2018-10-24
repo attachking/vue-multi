@@ -323,6 +323,10 @@ export default {
           })
           return
         }
+        if (res.error && (res.error.result === 90 || res.error.result === 92)) {
+          location.href = 'index.html'
+          return
+        }
         this.is_Collection = res.result.is_Collection
         this.is_Resume = res.result.is_Resume
         this.info1 = res.result.personInfo

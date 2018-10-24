@@ -49,9 +49,9 @@
         <el-form-item label="联系人手机号" prop="aae005">
           <el-input v-model="form.aae005" placeholder="请输入联系人手机号"></el-input>
         </el-form-item>
-        <el-form-item label="联系人固定电话" prop="aab115">
-          <el-input v-model="form.aab115" placeholder="请输入联系人固定电话"></el-input>
-          <span class="tip red">单位及职位详情优先显示固定电话</span>
+        <el-form-item label="办公电话" prop="aab115">
+          <el-input v-model="form.aab115" placeholder="请输入办公电话"></el-input>
+          <span class="tip red">单位及职位详情仅显示办公电话，需向求职者公开</span>
         </el-form-item>
         <el-form-item label="联系人邮箱" prop="aae015">
           <el-input v-model="form.aae015" placeholder="请输入联系人邮箱"></el-input>
@@ -125,7 +125,7 @@
         <el-form-item label="联系人手机号">
           <span>{{info.aae005 || '--'}}</span>
         </el-form-item>
-        <el-form-item label="联系人固定电话">
+        <el-form-item label="办公电话">
           <span>{{info.aab115 || '--'}}</span>
         </el-form-item>
         <el-form-item label="联系人邮箱">
@@ -221,7 +221,7 @@ export default {
         aab041: '', // 微信
         aae015: '', // 联系人邮箱
         aab020: '', // 单位所属经济类型
-        aab115: '', // 联系人固定电话
+        aab115: '', // 办公电话
         aab043: '' // 微博
       },
       rules: {
@@ -301,6 +301,10 @@ export default {
           trigger: 'change'
         }],
         aab115: [{
+          required: true,
+          message: '请输入办公电话',
+          trigger: 'change'
+        }, {
           validator(rule, value, callback) {
             if (reg.tel(value)) {
               callback()

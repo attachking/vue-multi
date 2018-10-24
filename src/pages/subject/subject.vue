@@ -39,6 +39,14 @@
             <p class="title">专场招聘</p>
             <p><span></span></p>
           </div>
+          <div class="seek">
+            <el-input placeholder="请输入搜索内容" v-model="search" @keydown.native.enter="doSearch">
+              <el-select v-model="searchData.nature" slot="prepend" placeholder="请选择" clearable class="pullDown">
+                <el-option :key="val.code" :label="val.name" :value="val.code" v-for="val in dictionaries.TAB_UNITNATURE" ></el-option>
+              </el-select>
+              <el-button slot="append" icon="el-icon-search" @click="doSearch"></el-button>
+            </el-input>
+          </div>
           <div class="btn-list" v-if="Number(info.category) === 12">
             <el-button type="primary" :plain="current !== ''" @click="handleCity()">全部</el-button>
             <el-button type="primary" :plain="current !== val.id" v-for="(val, key) in cities" :key="key" @click="handleCity(val.id)">{{val.name}}</el-button>
@@ -83,24 +91,43 @@ export default {
     Empty,
     XfHeader,
     RightMenu,
-    XfFooter},
+    XfFooter
+  },
   data() {
     return {
+      search: '',
       cities: [],
       searchData: {
         rowsNum: 12,
         currentPage: 1,
-        cand01: ''
+        cand01: '',
+        nature: ''
       },
       pageBean: {},
       corps: [],
       current: '',
       cand01: '',
       info: {},
-      en: isEn()
+      en: isEn(),
+      dictionaries: {
+        TAB_UNITNATURE: []
+      }
     }
   },
   methods: {
+    async getDictionaries() {
+      const res = await this.$post('/service/sys/config/config/getConditionList', {
+        tabStr: 'TAB_UNITNATURE'
+      })
+      this.dictionaries = {
+        TAB_UNITNATURE: res.result.TAB_UNITNATURE
+      }
+    },
+    doSearch() {
+      this.searchData.aab004 = encodeURIComponent(this.search)
+      this.searchData.currentPage = 1
+      this.getCorps()
+    },
     async getCities() {
       const list = await this.$post('/service/sys/catagry/citys/getHeNanCity', {})
       this.cities = list.result
@@ -136,6 +163,7 @@ export default {
       this.handleCity()
     }
     this.getInfo()
+    this.getDictionaries()
   }
 }
 </script>
@@ -243,6 +271,7 @@ export default {
   .fair-con{
     width: 100%;
     background: #f3f3f3;
+    position: relative;
     .fair{
       padding: 50px 0;
       .btn-list{
@@ -251,6 +280,15 @@ export default {
           margin-bottom: 10px;
           margin-left: 10px;
         }
+      }
+    }
+    .seek{
+      width: 300px;
+      position: absolute;
+      right: 180px;
+      top: 60px;
+      .pullDown{
+        width: 89px;
       }
     }
   }

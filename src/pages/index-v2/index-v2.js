@@ -2,7 +2,7 @@
 import 'babel-polyfill'
 import Vue from 'vue'
 import Element from 'element-ui'
-import App from './index-v2.vue'
+import App from './index.vue'
 import base from '../../common/js/base'
 import '../../common/style/index.scss'
 import '../../common/font/iconfont.css'

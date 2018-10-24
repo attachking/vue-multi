@@ -1,6 +1,6 @@
 <template>
   <div class="expert">
-    <div class="title">特邀专家报名</div>
+    <div class="title">特邀嘉宾报名</div>
     <div class="form-con">
       <el-form ref="form" :rules="rules" :model="form" label-width="170px" class="form">
         <el-form-item label="姓名" prop="guestName">
@@ -9,9 +9,9 @@
         <el-form-item label="手机号" prop="guestTel">
           <el-input v-model.trim="form.guestTel" placeholder="请输入手机号"></el-input>
         </el-form-item>
-        <el-form-item label="邀请码" prop="invitationNo">
-          <el-input v-model.trim="form.invitationNo" placeholder="请输入邀请码"></el-input>
-        </el-form-item>
+        <!--<el-form-item label="邀请函编号" prop="invitationNo">
+          <el-input v-model.trim="form.invitationNo" placeholder="请输入邀请函编号"></el-input>
+        </el-form-item>-->
         <el-form-item>
           <el-button type="primary" @click="onSubmit" class="submit" :loading="loading">下一步</el-button>
         </el-form-item>
@@ -52,14 +52,14 @@ export default {
         }],
         invitationNo: [{
           required: true,
-          message: '请输入邀请码',
+          message: '请输入邀请函编号',
           trigger: 'change'
         }, {
           validator(rule, value, callback) {
             if (reg.code(value)) {
               callback()
             } else {
-              callback(new Error('请输入正确的邀请码'))
+              callback(new Error('请输入正确的邀请函编号'))
             }
           },
           trigger: 'change'
@@ -68,7 +68,7 @@ export default {
       form: {
         guestName: '', // name
         guestTel: '', // 电话
-        invitationNo: '' // 邀请码
+        invitationNo: '' // 邀请函编号
       }
     }
   },

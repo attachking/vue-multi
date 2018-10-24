@@ -11,6 +11,15 @@
             <a :href="handleUrl(item.canc04)" v-for="item in val.CR_LIST" :key="item.canc04" :target="item.cand05 === 2 ? '_blank' : '_self'" @click="handleClick(item)">{{item.canc03}}</a>
           </span>
         </a>
+        <el-input
+          placeholder="请输入内容"
+          prefix-icon="el-icon-search"
+          size="mini"
+          class="g-search"
+          @keydown.native.enter="onKeyWords"
+          v-if="false"
+          v-model="keywords">
+        </el-input>
         <span class="login" v-if="!userInfo.status">
           <a href="javascript:;" @click="login('', 1)">个人登录</a>&nbsp;/&nbsp;<a href="javascript:;" @click="login('', 2)">单位登录</a>&nbsp;/&nbsp;<a href="register.html">注册</a>
         </span>
@@ -228,9 +237,6 @@ export default {
           this.loading = true
           this.$post('/service/business/login/account/userLogin', form).then(res => {
             this.loading = false
-            if (res.result === 4) {
-              this.validCode()
-            }
             if (res.error.result === 1) { // 登陆成功
               this.saveStorage(res)
               if (this.redirect) {
@@ -243,6 +249,8 @@ export default {
               } else {
                 location.reload()
               }
+            } else {
+              this.validCode()
             }
           }).catch(() => {
             this.loading = false
@@ -297,7 +305,11 @@ export default {
     go(str) {
       location.href = str
     },
-    handleLang: handleLang
+    handleLang: handleLang,
+    onKeyWords() {
+      if (!this.keywords) return
+      location.href = `newsList.html#/g-search?channel_code=SEARCH&keywords=${encodeURIComponent(this.keywords)}`
+    }
   },
   created() {
     this.getChannel()
@@ -492,5 +504,9 @@ export default {
   .forget{
     display: inline-block;
     float: right;
+  }
+  .g-search{
+    width: 122px;
+    vertical-align: middle;
   }
 </style>

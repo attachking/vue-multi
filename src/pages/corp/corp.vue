@@ -77,8 +77,12 @@
                 <a :href="corpInfo.aae016" target="_blank">{{status && corpInfo.aae016 || '--'}}</a>
               </p>
               <p>
+                <span class="label">联系人：</span>
+                <span>{{status && corpInfo.aae004 || '--'}}</span>
+              </p>
+              <p>
                 <span class="label">电话：</span>
-                <span>{{status && (corpInfo.aab115 || corpInfo.aae005) || '--'}}</span>
+                <span>{{status && corpInfo.aab115 || '--'}}</span>
               </p>
               <p>
                 <span class="label">邮箱：</span>
@@ -153,7 +157,7 @@ export default {
         aac001: this.$userInfo.aac001
       },
       jobPageBean: {},
-      status: this.$userInfo.status,
+      status: this.$userInfo.status, // this.$userInfo.status
       qrCode: ''
     }
   },

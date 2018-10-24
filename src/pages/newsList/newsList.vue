@@ -70,12 +70,21 @@ export default {
   },
   methods: {
     handleKeyWords() {
-      console.log(this.$refs.view)
       if (typeof this.$refs.view.handleKeyWords === 'function') {
         this.$refs.view.handleKeyWords(this.keywords)
       }
     },
     getChannel() {
+      if (this.$route.name === 'gSearch') {
+        this.cr = [{
+          canc03: '全局搜索',
+          channelCode: 'SEARCH'
+        }]
+        this.pr = {
+          canc03: '全局搜索'
+        }
+        return
+      }
       this.$post('/service/business/sms/sms/channelInfo/getCrChannel', this.searchData).then(res => {
         res.result.cr.forEach(item => {
           if (item.channelCode === this.searchData.channel_code) {
@@ -112,7 +121,9 @@ export default {
         })
         return
       }
-      location.href = val.canc04
+      if (val.canc04) {
+        location.href = val.canc04
+      }
     }
   },
   watch: {
@@ -122,6 +133,9 @@ export default {
   },
   created() {
     this.handleRoute(this.$route)
+    event.$on('current', current => {
+      this.current = current
+    })
   },
   mounted() {
     $(this.$refs.right).on('DOMNodeInserted contentchanged', () => {

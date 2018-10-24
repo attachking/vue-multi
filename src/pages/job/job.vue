@@ -95,8 +95,12 @@
                 <a :href="corpInfo.aae016" target="_blank">{{status && corpInfo.aae016 || '--'}}</a>
               </p>
               <p>
+                <span class="label">联系人：</span>
+                <span>{{status && corpInfo.aae004 || '--'}}</span>
+              </p>
+              <p>
                 <span class="label">电话：</span>
-                <span>{{status && (corpInfo.aab115 || corpInfo.aae005) || '--'}}</span>
+                <span>{{status && corpInfo.aab115 || '--'}}</span>
               </p>
               <p>
                 <span class="label">邮箱：</span>
@@ -168,7 +172,7 @@ export default {
       corpLogo: {},
       currentSearch: {},
       ccmu17: this.$userInfo.ccmu17,
-      status: this.$userInfo.status,
+      status: this.$userInfo.status, // this.$userInfo.status
       listLoading: false,
       qrCode: ''
     }

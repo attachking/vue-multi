@@ -2,7 +2,8 @@
   <div class="theme-page">
     <theme-header></theme-header>
     <div class="banner">
-      <img src="./static/banner.jpg" alt="">
+      <img src="./static/banner.jpg" alt="" v-if="!en">
+      <img src="./static/banner-en.jpg" alt="" v-if="en">
     </div>
     <div class="module normal-bg">
       <div class="module-con" ref="about" id="about">
@@ -48,7 +49,7 @@
         </div>
       </div>
     </div>
-    <div class="module live-con">
+    <div class="module live-con" v-if="false">
       <div class="live">
         <div class="left-top">
           <span>27</span>
@@ -78,12 +79,13 @@
           <p v-if="!en">大会议程</p>
           <p>CONFERENCE AGENDA</p>
         </div>
-        <div class="radius">
-          <div class="radius-item" :class="currentTab2 === 0 ? 'radius-active' : ''" @click="handleCurrentTab2(0)">{{en ? 'October 27' : '10月27日'}}</div>
-          <div class="radius-item" :class="currentTab2 === 1 ? 'radius-active' : ''" @click="handleCurrentTab2(1)">{{en ? 'October 28' : '10月28日'}}</div>
+        <div class="radius" style="width: 570px;">
+          <div class="radius-item" :class="currentTab2 === 0 ? 'radius-active' : ''" @click="handleCurrentTab2(0)">{{en ? 'October 26' : '10月26日'}}</div>
+          <div class="radius-item" :class="currentTab2 === 1 ? 'radius-active' : ''" @click="handleCurrentTab2(1)">{{en ? 'October 27' : '10月27日'}}</div>
+          <div class="radius-item" :class="currentTab2 === 2 ? 'radius-active' : ''" @click="handleCurrentTab2(2)">{{en ? 'October 28' : '10月28日'}}</div>
         </div>
         <transition name="el-zoom-in-top" mode="out-in">
-          <div class="process-con" key="1027" v-if="currentTab2 === 0">
+          <div class="process-con" key="1026" v-if="currentTab2 === 0">
             <div class="table">
               <div class="th">
                 <div class="td">{{en ? 'Time' : '时间'}}</div>
@@ -91,53 +93,181 @@
                 <div class="td">{{en ? 'Venue' : '地点'}}</div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? '9:00 am – 10:00 am' : '9:00-10:00'}}</div>
+                <div class="td">09:00-17:00</div>
+                <div class="td">{{en ? 'Visit to Henan (Nanyang) by Academicians of Chinese Academy of Sciences and Chinese Academy of Engineering' : '两院院士河南行-南阳行'}}</div>
+                <div class="td">{{en ? 'Nanyang' : '南阳'}}
+                  <a href="newsDetail.html?channel_code=HNXHD&cand01=1533728030218" v-if="!en">详情</a>
+                  <a href="newsDetail.html?channel_code=HNXHD_EN&cand01=153372830218" v-if="en">more</a>
+                </div>
+              </div>
+              <div class="tr">
+                <div class="td">09:00-17:00</div>
+                <div class="td">{{en ? 'Visit to Henan by Education Specialists' : '教育专家河南行'}}</div>
+                <div class="td">{{en ? 'Henan Agricultural University, Henan University of Technology, Zhengzhou University, Henan University, Henan University of Chinese Medicine, North China University of Water Resources and Electric Power ' : '河南农业大学、河南工业大学、郑州大学、河南大学、河南中医药大学、华北水利水电大学'}}
+                  <a href="newsDetail.html?channel_code=HNXHD&cand01=1533727948968" v-if="!en">详情</a>
+                  <a href="newsDetail.html?channel_code=HNXHD_EN&cand01=153372948968" v-if="en">more</a>
+                </div>
+              </div>
+              <div class="tr">
+                <div class="td">15:00-18:00</div>
+                <div class="td">{{en ? 'Visit to Henan (Zhengzhou) by Overseas Academicians' : '海外院士河南行-郑州考察调研'}}</div>
+                <div class="td">{{en ? 'Zhengzhou' : '郑州'}}
+                  <a href="newsDetail.html?channel_code=HNXHD&cand01=1533728018671" v-if="!en">详情</a>
+                  <a href="newsDetail.html?channel_code=HNXHD_EN&cand01=153372818671" v-if="en">more</a>
+                </div>
+              </div>
+              <div class="tr">
+                <div class="td">15:00-18:00</div>
+                <div class="td">{{en ? 'Visit to Henan by Returned Expert Service Group of Western Returned Scholars Association' : '欧美同学会海归专家服务团河南行'}}</div>
+                <div class="td">{{en ? 'Zhengzhou' : '郑州'}}
+                  <a href="newsDetail.html?channel_code=HNXHD&cand01=1533728008093" v-if="!en">详情</a>
+                  <a href="newsDetail.html?channel_code=HNXHD_EN&cand01=153378008093" v-if="en">more</a>
+                </div>
+              </div>
+              <div class="tr">
+                <div class="td">20:00-22:00</div>
+                <div class="td">{{en ? 'Artistic performance of Goddess and the Dreamer' : '文艺演出《水月洛神》'}}</div>
+                <div class="td">{{en ? 'Theater of Henan Arts Center' : '河南艺术中心大剧院'}}</div>
+              </div>
+            </div>
+          </div>
+          <div class="process-con" key="1027" v-if="currentTab2 === 1">
+            <div class="table">
+              <div class="th">
+                <div class="td">{{en ? 'Time' : '时间'}}</div>
+                <div class="td">{{en ? 'Theme' : '主题'}}</div>
+                <div class="td">{{en ? 'Venue' : '地点'}}</div>
+              </div>
+              <div class="tr">
+                <div class="td">09:00-09:50</div>
                 <div class="td">{{en ? 'Opening Ceremony' : '大会开幕式'}}</div>
                 <div class="td">{{en ? 'Xuanyuan Hall at Convention Center' : '会议中心轩辕堂'}}</div>
               </div>
               <div class="tr">
+                <div class="td">09:00-17:00</div>
+                <div class="td">{{en ? '“Introduce Elites from Famous Universities to Henan” Session' : '“名校英才入豫计划”专场'}}</div>
+                <div class="td">{{en ? 'Recruitment Zone in Zhengzhou International Convention and Exhibition Center' : '郑州国际会展中心大会招聘区'}}
+                  <a href="subject.html?channel_code=SDZT&cand01=1533727487031&key=5" v-if="!en">详情</a>
+                  <a href="subject.html?channel_code=SDZT_EN&cand01=153372487031&key=5" v-if="en">more</a>
+                </div>
+              </div>
+              <div class="tr">
+                <div class="td">10:00-18:00</div>
+                <div class="td">{{en ? 'Visit to Henan by Academicians of Chinese Academy of Sciences and Chinese Academy of Engineering' : '两院院士河南行'}}</div>
+                <div class="td">{{en ? 'Cities in Henan Province' : '各地市'}}
+                  <a href="newsDetail.html?channel_code=HNXHD&cand01=1533728030218" v-if="!en">详情</a>
+                  <a href="newsDetail.html?channel_code=HNXHD_EN&cand01=153372830218" v-if="en">more</a>
+                </div>
+              </div>
+              <div class="tr">
+                <div class="td">10:00-18:00</div>
+                <div class="td">{{en ? 'Visit to Henan by Overseas Academicians' : '海外院士河南行'}}</div>
+                <div class="td">{{en ? 'Cities in Henan Province' : '各地市'}}
+                  <a href="newsDetail.html?channel_code=HNXHD&cand01=1533728018671" v-if="!en">详情</a>
+                  <a href="newsDetail.html?channel_code=HNXHD_EN&cand01=153372818671" v-if="en">more</a>
+                </div>
+              </div>
+              <div class="tr">
+                <div class="td">10:00-18:00</div>
+                <div class="td">{{en ? 'Visit to Henan by Returned Expert Service Group of Western Returned Scholars Association' : '欧美同学会海归专家服务团河南行'}}</div>
+                <div class="td">{{en ? 'Cities in Henan Province' : '各地市'}}
+                  <a href="newsDetail.html?channel_code=HNXHD&cand01=1533728008093" v-if="!en">详情</a>
+                  <a href="newsDetail.html?channel_code=HNXHD_EN&cand01=153378008093" v-if="en">more</a>
+                </div>
+              </div>
+              <div class="tr">
+                <div class="td">10:00-18:00</div>
+                <div class="td">{{en ? 'Visit to Henan by Postdoctor Technological Service Group and Overseas Returnees' : '博士后科技服务团暨留学回国人员河南行'}}</div>
+                <div class="td">{{en ? 'Cities in Henan Province' : '各地市'}}
+                  <a href="newsDetail.html?channel_code=HNXHD&cand01=1533727960296" v-if="!en">详情</a>
+                  <a href="newsDetail.html?channel_code=HNXHD_EN&cand01=153372760296" v-if="en">more</a>
+                </div>
+              </div>
+              <div class="tr">
                 <div class="td">10:30-17:00</div>
+                <div class="td">{{en ? 'On-site Recruitment Activities' : '大会现场招聘活动'}}</div>
+                <div class="td">{{en ? 'Zone B, C, D, E, F in the exhibition center of Zhengzhou International Convention and Exhibition Center' : '郑州国际会展中心展览馆BCDEF区'}}</div>
+              </div>
+              <div class="tr">
+                <div class="td">10:30-12:30</div>
                 <div class="td">{{en ? 'Summit of Talent Development in Central Plains' : '中原人才发展高层论坛'}}</div>
                 <div class="td">{{en ? 'Xuanyuan Hall at Convention Center' : '会议中心轩辕堂'}}</div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">10:00-18:00</div>
+                <div class="td">{{en ? 'Talent (Project) Outcome Exhibition & Recruitment Session for Cities in Henan Province ' : '各省辖市人才（项目）成果展示暨招聘专场'}}</div>
+                <div class="td">{{en ? 'Zhengzhou International Convention and Exhibition Center, Zijingshan Hotel' : '国际会展中心、紫荆山宾馆'}}
+                  <a href="subject.html?channel_code=SDZT&cand01=1533727423281&key=0" v-if="!en">详情</a>
+                  <a href="subject.html?channel_code=SDZT_EN&cand01=153370423281&key=9" v-if="en">more</a>
+                </div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">14:00-17:00</div>
+                <div class="td">{{en ? 'Talent Recruitment Session for Zhengzhou Airport Economy Zone' : '郑州航空港经济综合实验区招才引智专场启动仪式'}}</div>
+                <div class="td">{{en ? 'Expo Garden Jianguo Hotel' : '园博园建国饭店'}}
+                  <a href="subject.html?channel_code=SDZT&cand01=1533727660750&key=0" v-if="!en">详情</a>
+                  <a href="subject.html?channel_code=SDZT_EN&cand01=153372660750&key=0" v-if="en">more</a>
+                </div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">14:30-17:00</div>
+                <div class="td">{{en ? 'Talent Recruitment Session for China (Henan) Pilot Free Trade Zone' : '中国（河南）自由贸易试验区招才引智专场启动仪式'}}</div>
+                <div class="td">{{en ? 'Millennium Hall on F3, JW Marriott Hotel' : '绿地JW万豪酒店三楼千玺宴会厅'}}
+                  <a href="subject.html?channel_code=SDZT&cand01=1533727637218&key=0" v-if="!en">详情</a>
+                  <a href="subject.html?channel_code=SDZT_EN&cand01=153372737218&key=1" v-if="en">more</a>
+                </div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">15:00-18:00</div>
+                <div class="td">{{en ? 'Talent Recruitment for Zheng-Luo-Xin National Innovation Demonstration Area & Leading Technological Innovation Talent (Group) Recruitment Session' : '郑洛新国家自主创新示范区招才引智暨科技创新领军人才（团队）招聘专场启动仪式'}}</div>
+                <div class="td">{{en ? 'Taishi Hall of Zhengzhou International Convention and Exhibition Center' : '郑州国际会展中心太室厅'}}
+                  <a href="subject.html?channel_code=SDZT&cand01=1533727616203&key=0" v-if="!en">详情</a>
+                  <a href="subject.html?channel_code=SDZT_EN&cand01=153372616203&key=2" v-if="en">more</a>
+                </div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">15:00-18:00</div>
+                <div class="td">{{en ? '“Healthy Henan” Talent Recruitment Session' : '“健康河南”招才引智专场启动仪式'}}</div>
+                <div class="td">{{en ? 'Dahe Hall of Zhengzhou International Convention and Exhibition Center' : '郑州国际会展中心大河厅'}}
+                  <a href="subject.html?channel_code=SDZT&cand01=1533727589328&key=0" v-if="!en">详情</a>
+                  <a href="subject.html?channel_code=SDZT_EN&cand01=153372589328&key=3" v-if="en">more</a>
+                </div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">15:30-16:30</div>
+                <div class="td">{{en ? 'High-level Talent Recruitment Session for Colleges and Universities' : '高等院校引进高层次人才专场启动仪式'}}</div>
+                <div class="td">{{en ? 'Xuanyuan Hall at Convention Center C' : '郑州国际会展中心轩辕堂C厅'}}
+                  <a href="subject.html?channel_code=SDZT&cand01=1533727573218&key=0" v-if="!en">详情</a>
+                  <a href="subject.html?channel_code=SDZT_EN&cand01=153372573218&key=4" v-if="en">more</a>
+                </div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">14:00-15:00</div>
+                <div class="td">{{en ? 'Overseas High-level Talents (Returned Talents) Program Matchmaking Session' : '海外高层次人才暨项目对接洽谈专场启动仪式'}}</div>
+                <div class="td">{{en ? 'Zhongyuan Hall of Sheraton Hotel' : '喜来登酒店中原厅'}}
+                  <a href="subject.html?channel_code=SDZT&cand01=1533727471015&key=0" v-if="!en">详情</a>
+                  <a href="subject.html?channel_code=SDZT_EN&cand01=153370471015&key=6" v-if="en">more</a>
+                </div>
+              </div>
+              <div class="tr">
+                <div class="td">14:30-17:30</div>
+                <div class="td">{{en ? 'Highly Skilled Talent Recruitment Session' : '高技能人才招聘专场启动仪式'}}</div>
+                <div class="td">{{en ? 'VIP1 meeting room of Zhengzhou International Convention and Exhibition Center' : '郑州国际会展中心VIP1会议室'}}
+                  <a href="subject.html?channel_code=SDZT&cand01=1533727447921&key=0" v-if="!en">详情</a>
+                  <a href="subject.html?channel_code=SDZT_EN&cand01=153370447921&key=7" v-if="en">more</a>
+                </div>
+              </div>
+              <div class="tr">
+                <div class="td">15:00-16:30</div>
+                <div class="td">{{en ? 'Talent (Group) Outcome Exhibition & Recruitment Session for All Cities' : '“智汇郑州”高层次人才暨项目对接洽谈专场启动仪式'}}</div>
+                <div class="td">{{en ? 'Xuanyuan Hall at Convention Center B' : '郑州国际会展中心轩辕B'}}
+                  <a href="subject.html?channel_code=SDZT&cand01=1533727436593&key=0" v-if="!en">详情</a>
+                  <a href="subject.html?channel_code=SDZT_EN&cand01=153372436593&key=8" v-if="en">more</a>
+                </div>
               </div>
             </div>
           </div>
-          <div class="process-con" key="1028" v-if="currentTab2 === 1">
+          <div class="process-con" key="1028" v-if="currentTab2 === 2">
             <div class="table">
               <div class="th">
                 <div class="td">{{en ? 'Time' : '时间'}}</div>
@@ -145,56 +275,74 @@
                 <div class="td">{{en ? 'Venue' : '地点'}}</div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">10:00-18:00</div>
+                <div class="td">{{en ? 'Visit to Henan by Academicians of Chinese Academy of Sciences and Chinese Academy of Engineering' : '两院院士河南行'}}</div>
+                <div class="td">{{en ? 'Cities in Henan Province' : '各地市'}}
+                  <a href="newsDetail.html?channel_code=HNXHD&cand01=1533728030218" v-if="!en">详情</a>
+                  <a href="newsDetail.html?channel_code=HNXHD_EN&cand01=153372830218" v-if="en">more</a>
+                </div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">10:00-18:00</div>
+                <div class="td">{{en ? 'Visit to Henan by Overseas Academicians' : '海外院士河南行'}}</div>
+                <div class="td">{{en ? 'Cities in Henan Province' : '各地市'}}
+                  <a href="newsDetail.html?channel_code=HNXHD&cand01=1533728018671" v-if="!en">详情</a>
+                  <a href="newsDetail.html?channel_code=HNXHD_EN&cand01=153372818671" v-if="en">more</a>
+                </div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">10:00-18:00</div>
+                <div class="td">{{en ? 'Visit to Henan by Returned Expert Service Group of Western Returned Scholars Association' : '欧美同学会海归专家服务团河南行'}}</div>
+                <div class="td">{{en ? 'Cities in Henan Province' : '各地市'}}
+                  <a href="newsDetail.html?channel_code=HNXHD&cand01=1533728008093" v-if="!en">详情</a>
+                  <a href="newsDetail.html?channel_code=HNXHD_EN&cand01=153378008093" v-if="en">more</a>
+                </div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">10:00-18:00</div>
+                <div class="td">{{en ? 'Visit to Henan by China Postdoctor Technological Service Group' : '博士后科技服务团暨留学回国人员河南行'}}</div>
+                <div class="td">{{en ? 'Cities in Henan Province' : '各地市'}}
+                  <a href="newsDetail.html?channel_code=HNXHD&cand01=1533727960296" v-if="!en">详情</a>
+                  <a href="newsDetail.html?channel_code=HNXHD_EN&cand01=153372760296" v-if="en">more</a>
+                </div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">10:00-18:00</div>
+                <div class="td">{{en ? 'Visit to Henan by Medical and Health Specialists' : '医疗卫生专家河南行'}}</div>
+                <div class="td">{{en ? 'Cities in Henan Province' : '各地市'}}
+                  <a href="newsDetail.html?channel_code=HNXHD&cand01=1533727927750" v-if="!en">详情</a>
+                  <a href="newsDetail.html?channel_code=HNXHD_EN&cand01=153377927750" v-if="en">more</a>
+                </div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">09:00-15:00</div>
+                <div class="td">{{en ? 'On-site recruitment activities' : '大会现场招聘活动'}}</div>
+                <div class="td">{{en ? 'Zone B, C, D, E, F in the exhibition center of Zhengzhou International Convention and Exhibition Center' : '郑州国际会展中心展览馆BCDEF区'}}</div>
               </div>
               <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-              </div>
-              <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-              </div>
-              <div class="tr">
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
-                <div class="td">{{en ? 'nothing' : '待定'}}</div>
+                <div class="td">09:00-15:00</div>
+                <div class="td">{{en ? '“Introduce Elites from Famous Universities to Henan” Session' : '“名校英才入豫计划”专场'}}</div>
+                <div class="td">{{en ? 'Recruitment Zone in Zhengzhou International Convention and Exhibition Center' : '郑州国际会展中心大会招聘区'}}
+                  <a href="subject.html?channel_code=SDZT&cand01=1533727487031&key=5" v-if="!en">详情</a>
+                  <a href="subject.html?channel_code=SDZT_EN&cand01=153372487031&key=5" v-if="en">more</a>
+                </div>
               </div>
             </div>
           </div>
         </transition>
       </div>
     </div>
-    <div class="module dt-box" ref="dt" id="dt">
+    <div class="module" ref="dt">
+      <div class="module-con">
+        <div class="title">
+          <p v-if="!en">大会动态</p>
+          <p>GENERAL ASSEMBLY DYNAMICS</p>
+        </div>
+        <br>
+        <iframe width="100%" height="650" class="share_self"  frameborder="0" scrolling="no" src="https://widget.weibo.com/weiboshow/index.php?language=&width=0&height=650&fansRow=1&ptype=1&speed=0&skin=1&isTitle=1&noborder=1&isWeibo=1&isFans=0&uid=6535737664&verifier=2e167da5&dpc=1"></iframe>
+      </div>
+    </div>
+    <div class="module dt-box" ref="dt" id="dt" v-if="false">
       <div class="module-con">
         <div class="title">
           <p v-if="!en">大会动态</p>
@@ -604,7 +752,8 @@ export default {
       width: 380px;
       height: 56px;
       margin: 10px auto;
-      background: url("static/radius.png");
+      background: url("static/radius.png") no-repeat;
+      background-size: 100% 100%;
       .radius-item{
         width: 178px;
         color: #fff;
@@ -643,6 +792,8 @@ export default {
             text-align: center;
             color: #333;
             display: inline-block;
+            white-space: normal;
+            vertical-align: middle;
             &:nth-child(1){
               width: 25%;
             }
@@ -651,6 +802,10 @@ export default {
             }
             &:nth-child(3){
               width: 25%;
+            }
+            a{
+              font-size: 14px;
+              color: $--color-primary;
             }
           }
           .tr{
@@ -670,7 +825,6 @@ export default {
       padding: 70px 0;
       background: url("static/dt.png") no-repeat;
       background-size: 100% 100%;
-      height: 920px;
       .dt-con{
         width: 100%;
         padding-top: 40px;
@@ -755,7 +909,7 @@ export default {
       }
     }
     .topics-box{
-      padding: 117px 0;
+      padding: 75px 0;
       .topics-con{
         padding: 30px 0 0 0;
         @include clearFixed;

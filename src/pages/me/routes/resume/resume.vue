@@ -172,7 +172,7 @@
           <!--<el-form-item prop="aac025" label="籍贯">
             <el-input placeholder="请输入籍贯" v-model.trim="form1.aac025"></el-input>
           </el-form-item>-->
-          <el-form-item prop="aac180" label="最高毕业院校">
+          <el-form-item prop="aac180name" label="最高毕业院校">
             <el-input placeholder="请选择毕业院校" v-model="form1.aac180name" readonly @click.native="showSchool"></el-input>
           </el-form-item>
           <el-form-item prop="acc01g" label="专业类别">
@@ -700,18 +700,18 @@
       title="选择院校"
       :visible.sync="dialogVisible"
       :close-on-click-modal="false"
-      width="500px">
+      width="350px">
       <div style="white-space: nowrap;">
-        <el-select v-model="formSchool.province" filterable clearable placeholder="请选择省份" style="width: 35%;">
+        <!--<el-select v-model="formSchool.province" filterable clearable placeholder="请选择省份" style="width: 35%;">
           <el-option v-for="item in dictionaries.tab_university_city" :key="item.code" :label="item.name" :value="item.code"></el-option>
-        </el-select>
-        <el-select v-model="formSchool.school" filterable placeholder="请输入搜索院校" style="width: 63%;" remote :remote-method="getSchoolList" :loading="remoteLoading">
+        </el-select>-->
+        <el-select v-model="formSchool.school" filterable placeholder="请输入搜索院校" style="width: 100%;" remote :remote-method="getSchoolList" :loading="remoteLoading">
           <el-option v-for="item in schoolList" :key="item.id" :label="item.name" :value="item.id"></el-option>
         </el-select>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="confirmSchool">确 定</el-button>
-        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirmSchool" size="mini">确 定</el-button>
+        <el-button @click="dialogVisible = false" size="mini">取 消</el-button>
       </span>
     </el-dialog>
   </div>
@@ -774,6 +774,7 @@ export default {
         aac035: '', // 体重
         aac180: '', // 毕业院校（code）
         aac180name: '',
+        addressId: '', // 如果毕业院校选择的不是库里的，则传3534
         aac017: '', // 婚姻状况
         aac017name: '',
         aac00a: '', // 军人证号
@@ -797,7 +798,7 @@ export default {
           message: '请选择专业类别',
           trigger: 'change'
         }],
-        aac180: [{
+        aac180name: [{
           required: true,
           message: '请选择最高毕业院校',
           trigger: 'change'
@@ -877,7 +878,7 @@ export default {
           trigger: 'blur'
         }, {
           validator(rule, value, callback) {
-            if (/^[1][3,4,5,7,8,9][0-9]{9}$/.test(value)) {
+            if (reg.phone(value)) {
               callback()
             } else {
               callback(new Error('请输入正确的手机号'))
@@ -1843,8 +1844,14 @@ export default {
     },
     confirmSchool() {
       this.dialogVisible = false
-      this.form1.aac180 = this.formSchool.school
-      let index = this.schoolList.findIndex(item => item.id === this.form1.aac180)
+      if (this.formSchool.school === -1) { // 如果用户选择了库里没有的学校
+        this.form1.aac180 = ''
+        this.form1.addressId = 3534
+      } else {
+        this.form1.aac180 = this.formSchool.school
+        this.form1.addressId = ''
+      }
+      let index = this.schoolList.findIndex(item => item.id === this.formSchool.school)
       this.form1.aac180name = this.schoolList[index].name
     },
     // 根据省份变化获取学校列表
@@ -1856,7 +1863,15 @@ export default {
         keyword: query
       }).then(res => {
         this.remoteLoading = false
-        this.schoolList = res.result
+        // 如果填写的院校库里查不到
+        if (!res.result.length) {
+          this.schoolList = [{
+            name: query,
+            id: -1
+          }]
+        } else {
+          this.schoolList = res.result
+        }
       }).catch(() => {
         this.remoteLoading = false
       })

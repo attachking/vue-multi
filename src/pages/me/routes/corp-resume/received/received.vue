@@ -36,7 +36,7 @@
         align="center"
         label="姓名">
         <template slot-scope="scope">
-          <a target="_blank" :href="'personalInfo.html?aac001=' + scope.row.ccmu01">{{scope.row.aac003 || '--'}}</a>
+          <a target="_blank" :href="'personalInfo.html?aac001=' + scope.row.ccmu01" @click="handleStatus(scope.row)">{{scope.row.aac003 || '--'}}</a>
         </template>
       </el-table-column>
       <el-table-column
@@ -153,6 +153,11 @@ export default {
     }
   },
   methods: {
+    handleStatus(val) {
+      if (val.ccpj03 === 0) {
+        this.sign(val.ccpj01, 2, true)
+      }
+    },
     getPositionList() {
       this.$post('/service/business/corp/corpPositon/positionList.xf', {
         aab001: this.$userInfo.aab001,
@@ -181,13 +186,13 @@ export default {
         this.loading = false
       })
     },
-    sign(ccpj01, ccpj05) {
+    sign(ccpj01, ccpj05, noTips) {
       this.$post('/service/business/corpResume/corpReceivedResume/getResumeSign.xf', {
         ccpj01,
         ccpj05 // 标记状态
       }).then(res => {
         if (res.error && res.error.result === 1) {
-          this.$message({
+          !noTips && this.$message({
             message: res.error.message,
             type: 'success'
           })

@@ -15,6 +15,7 @@ const talent = () => import('../routes/talent/talent.vue') // 人才推介
 const project = () => import('../routes/project/project.vue') // 项目推介
 const beauty = () => import('../routes/beauty/beauty.vue') // 美丽河南
 const map = () => import('../routes/map/map.vue') // 求职招聘（河南地图）
+const gSearch = () => import('../routes/g-search/g-search.vue') // 全局搜索
 
 const router = new Router({
   routes: [{
@@ -57,6 +58,10 @@ const router = new Router({
     path: '/map',
     name: 'map',
     component: map
+  }, {
+    path: '/g-search',
+    name: 'gSearch',
+    component: gSearch
   }]
 })
 

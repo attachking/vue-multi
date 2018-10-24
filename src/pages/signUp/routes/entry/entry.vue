@@ -25,7 +25,7 @@
           </div>
         </div>
         <div class="item">
-          <h3>特邀专家报名</h3>
+          <h3>特邀嘉宾报名</h3>
           <p>共商创新发展，支撑人才智力</p>
           <div class="workerImg">
             <img src="./expert.jpg" alt="">

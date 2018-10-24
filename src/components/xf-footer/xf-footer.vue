@@ -60,6 +60,7 @@
 </template>
 <script>
 import $ from 'jquery'
+import {STORAGE_TYPE, storage} from '../../common/js/utils'
 // 是否为质保环境
 const test = !!process.env.TEST
 
@@ -78,10 +79,39 @@ export default {
         this.dayCounts = res.result.dayCounts
         this.allCounts = res.result.allCounts
       })
+    },
+    notice() {
+      let until = new Date('2018/09/30 07:00:00')
+      let now = new Date()
+      if (now.getTime() > until.getTime()) return
+      this.$notify({
+        title: '通知',
+        message: '本网站定于2018年10月19日21：00至次日06：00进行网站维护，期间数据不会被保留，请勿操作，由此给您带来的不便，敬请谅解',
+        duration: 20000,
+        offset: 100,
+        type: 'warning',
+        customClass: 'tempNotice'
+      })
+    },
+    notice2() {
+      let until = new Date('2018/10/25 06:00:00')
+      let now = new Date()
+      if (now.getTime() > until.getTime()) return
+      if (storage.getTemp(STORAGE_TYPE.noticed)) return
+      this.$confirm('本网站定于2018年10月24日19：00至次日06：00进行网站维护，期间数据不会被保留，请勿操作，由此给您带来的不便，敬请谅解', '提示', {
+        confirmButtonText: '不再提示',
+        cancelButtonText: '关闭',
+        type: 'warning'
+      }).then(() => {
+        storage.temp(STORAGE_TYPE.noticed, 1)
+      }).catch(() => {
+        // closed
+      })
     }
   },
   created() {
     this.getCount()
+    this.notice2()
     // 图片自适应大小函数，img需要有固定大小父容器，onload函数调用
     window.handleBeauty = function(e) {
       var $el = $(e.target)

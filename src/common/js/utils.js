@@ -15,7 +15,8 @@ export const STORAGE_TYPE = {
   logo: '__logo__',
   token: '__token__',
   status: '__status__',
-  name: '__name__'
+  name: '__name__',
+  noticed: '__noticed__'
 }
 
 // 设置storage
@@ -35,6 +36,12 @@ export const storage = {
     localStorage.removeItem(STORAGE_TYPE.token)
     localStorage.removeItem(STORAGE_TYPE.status)
     localStorage.removeItem(STORAGE_TYPE.name)
+  },
+  temp(key, value) {
+    sessionStorage.setItem(key, value)
+  },
+  getTemp(key) {
+    return sessionStorage.getItem(key)
   }
 }
 
@@ -223,6 +230,14 @@ export const reg = {
   idCard(str) { // 身份证号
     if (str === '') return true
     return /(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(str)
+  },
+  passPort(str) { // 护照
+    if (str === '') return true
+    return /^[a-zA-Z]{5,17}$/.test(str)
+  },
+  permit(str) { // 通行证
+    if (str === '') return true
+    return /^[0-9]{10}$/.test(str)
   }
 }
 

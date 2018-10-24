@@ -123,7 +123,7 @@ function getEntry() {
   }
 }
 
-//多入口配置
+// 多入口配置
 // 通过glob模块读取pages文件夹下的所有对应文件夹下的js后缀文件，如果该文件存在
 // 那么就作为入口处理
 exports.entries = function () {
@@ -143,6 +143,7 @@ exports.htmlPlugin = function () {
   let arr = []
   entryHtml.forEach((filePath) => {
     let filename = filePath.substring(filePath.lastIndexOf('\/') + 1, filePath.lastIndexOf('.'))
+    if (/废弃的/.test(filename)) return
     let conf = {
       // 模板来源
       template: filePath,
