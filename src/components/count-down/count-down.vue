@@ -21,7 +21,7 @@ export default {
   name: 'count-down',
   data() {
     return {
-      show: true
+      show: false
     }
   },
   methods: {
@@ -35,7 +35,11 @@ export default {
       if (c < 0) {
         c = 0
         this.show = false
+        clearInterval(this.timer)
+        return
       }
+      this.show = true
+      if (!this.$refs.day1) return
       let day = Math.floor(c / (1000 * 60 * 60 * 24)) + ''
       c -= day * 1000 * 60 * 60 * 24
       let hour = Math.floor(c / (1000 * 60 * 60)) + ''
@@ -58,7 +62,7 @@ export default {
     }
   },
   created() {
-    setInterval(() => {
+    this.timer = setInterval(() => {
       this.getTime()
     }, 1000)
   }

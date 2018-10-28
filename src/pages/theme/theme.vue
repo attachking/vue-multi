@@ -418,7 +418,8 @@
         <img src="./static/guide-map.png" class="map">
       </a>
       <div class="module-con">
-        <div class="card">
+        <!--中文版交通方式-->
+        <div class="card" v-if="!en">
           <div class="card-tit">
             <div class="card-tit-item" :style="'background:' + cards[0] + ';'" @mouseover="handleCard(0)">
               <img src="./static/train.png" alt="">
@@ -500,6 +501,91 @@
             </div>
           </div>
         </div>
+        <!--中文版交通方式结束-->
+        <!--英文版交通方式-->
+        <div class="card" v-if="en">
+          <div class="card-tit">
+            <div class="card-tit-item" :style="'background:' + cards[0] + ';'" @mouseover="handleCard(0)">
+              <img src="./static/train.png" alt="">
+              <p><span style="margin: 10px 0 0 0; display: inline-block;" >TRAIN</span></p>
+            </div>
+            <div class="card-tit-item" :style="'background:' + cards[1] + ';'" @mouseover="handleCard(1)">
+              <img src="./static/bus.png" alt="">
+              <p><span style="margin: 18px 0 0 0; display: inline-block;" >BUS</span></p>
+            </div>
+            <div class="card-tit-item" :style="'background:' + cards[2] + ';'" @mouseover="handleCard(2)">
+              <img src="./static/taxi.png" alt="">
+              <p><span style="margin: 18px 0 0 0; display: inline-block;" >TAXI</span></p>
+            </div>
+            <div class="card-tit-item" :style="'background:' + cards[3] + ';'" @mouseover="handleCard(3)">
+              <img src="./static/train.png" alt="">
+              <p><span style="margin: 18px 0 0 0; display: inline-block;" >METRO</span></p>
+            </div>
+            <div class="card-tit-item" :style="'background:' + cards[4] + ';'" @mouseover="handleCard(4)">
+              <img src="./static/plane.png" alt="">
+              <p><span style="margin: 18px 0 0 0; display: inline-block;" >AIRCRAFT</span></p>
+            </div>
+            <div class="card-tit-item" :style="'background:' + cards[5] + ';'" @mouseover="handleCard(5)">
+              <img src="./static/hotel.png" alt="">
+              <p><span style="display: inline-block; margin: 13px 0 0 -6px;">Surrounding hotels</span></p>
+            </div>
+            <div class="card-tit-item" :style="'background:' + cards[6] + ';'" @mouseover="handleCard(6)">
+              <img src="./static/food.png" alt="">
+              <p><span>Catering brands</span></p>
+            </div>
+            <div class="card-tit-item" :style="'background:' + cards[7] + ';'" @mouseover="handleCard(7)">
+              <img src="./static/scenery.png" alt="">
+              <p><span style="display: inline-block; margin: 23px 0 0 0;">Attractions</span></p>
+            </div>
+          </div>
+          <div class="card-con" :style="'background:' + cards[currentCard] + ';'">
+            <div v-if="currentCard === 0">
+              1) From Zhengzhou Railway Station: take metro Line 1 towards the New Campus of Henan University, get down at the Convention & Exhibition Center Station and get out from the Exit C2, and then walk 900 m northeast;
+              <br>2) From Zhengzhou East Railway Station: take metro Line 1 towards the Henan University of Technology, get down at the Convention & Exhibition Center Station and get out from the Exit C2, and then walk 900 m northeast;
+              <br>3) From Zhengzhou West Railway Station: Take No. 12 inter-zone bus towards west, get off at the Jianshexi Road and Fumin Road (Dazhuang) Station, walk 300 m to take metro Line 1 at Civic Center Station towards the New Campus of Henan University, get down at the Convention & Exhibition Center Station and get out from the Exit C2, and then walk 900 m northeast;
+            </div>
+            <div v-if="currentCard === 1">
+              1) From Zhengzhou Central Coach Station: take metro Line 1 towards the New Campus of Henan University, get down at the Convention & Exhibition Center Station and get out from the Exit C2, and then walk 900 m northeast;
+              <br>2) From Zhengzhou Master Coach Station: take bus (No. 551, No. 603, No. 81, No. 981) at Jingguang Road and Zhengtong Road Station and get off at West Square of Zhengzhou Railway Station, and then take metro Line 1 towards the New Campus of Henan University, get down at the Convention & Exhibition Center Station and get out from the Exit C2, and then walk 900 m northeast;
+              <br>3) From Zhengzhou South Coach Station: take No. 111 bus at the South Coach Station, get off at the Zijingshan Road and South 3rd Ring Road Station, and then take metro Line 2 to Zijingshan Station, transfer to Line 1 at Zijingshan Station, get down at the Convention & Exhibition Center Station and get out from the Exit C2, and then walk 900 m northeast;
+            </div>
+            <div v-if="currentCard === 2">
+              1) Take taxi or drive, by Zhongzhou Avenue and Huizhan Road, to 100 m Southwest of the intersection of Jiuru Road and Shangwu Inner Ring Road and then to the parking lot of the Convention & Exhibition Center;
+              <br>2) Take taxi or drive, by Zhongzhou Avenue and Shangwu Inner Ring Road, to the Greenland Center at No. 2 Central Business District and then to the No. 1 South Parking Lot of the Millennium Plaza;
+            </div>
+            <div v-if="currentCard === 3">
+              1) From Zhengzhou Railway Station: take metro Line 1 towards the New Campus of Henan University, get down at the Convention & Exhibition Center Station and get out from the Exit C2, and then walk 900 m northeast;
+              <br>2) From Zhengzhou East Railway Station: take metro Line 1 towards the Henan University of Technology, get down at the Convention & Exhibition Center Station and get out from the Exit C2, and then walk 900 m northeast;
+              <br>3) From Zhengzhou West Railway Station: Take No. 12 inter-zone bus towards west, get off at the Jianshexi Road and Fumin Road (Dazhuang) Station, walk 300 m to take metro Line 1 at Civic Center Station towards the New Campus of Henan University, get down at the Convention & Exhibition Center Station and get out from the Exit C2, and then walk 900 m northeast;
+            </div>
+            <div v-if="currentCard === 4">
+              1) Take Chengjiao Line towards the South 4th Ring Station at the Exit A or B of Xinzheng Airport Station, get off at South 4th Ring Station and then transfer to metro Line 2 towards Liuzhuang Station, get off at Zijingshan Station and transfer to metro Line 1 towards the New Campus of Henan University, get down at the Convention & Exhibition Center Station and get out from the Exit C2, and then walk 900 m northeast;
+              <br>2) Take Chengjiao Line towards the South 4th Ring Station at the Exit A or B of Xinzheng Airport Station, get off at South 4th Ring Station and then transfer to metro Line 2 towards Liuzhuang Station, get off at Huanghe Road Station and get out from Exit D, and then take No. 23 bus at Huanghe Road and Huanyuan Road Station to the Convention & Exhibition Center Station;
+            </div>
+            <div v-if="currentCard === 5">
+              1) JW Marriott Hotel Zhengzhou: 39/F, Millennium Plaza, No. 2 Central Business District; Tel: (0371)88828888;
+              <br>2) A.T. Hotel (Zhengzhou CBD): 1/F, Unit 2, No. 25 Shangwu Inner Ring Road, Zhengdong New District; Tel: (0371)55570111;
+              <br>3) Xingmu Hotel: 18/F, Unit 1, Sinograin Building (intersection of Shangwu Inner Ring Road and E Shangwu 4th Street); Tel: (0371)55678669;
+              <br>4) Zhengzhou Zhengzhan Fashion Hotel (Zhengzhou Convention & Exhibition Center): 11/F, Unit 1, Sinograin Building, No. 28 Shangwu Inner Ring Road; Tel: 17760778259;
+              <br>5) Weijia Hotel (Zhengzhou Convention & Exhibition Center): 1/F, No. 25 Building, Future International, Shangwu Inner Ring Road; Tel: (0371)55238989;
+            </div>
+            <div v-if="currentCard === 6">
+              1) Gushi Renjia (E Shangwu 4th Street): 50 m South of the Intersection of Shangwu Inner Ring Road and E Shangwu 4th Street; Tel: (0371)55952088,(0371)55952089;
+              <br>2) Jiaorong Chuanwei Lakeside Restaurant: No. 3 Shop, Yuhu Path, Millennium Plaza; Tel: (0371)55500500
+              <br>3) JW Marriott Hotel Zhengzhou – Marriott Chinese Restaurant: 39/F, Millennium Plaza, No. 2 Central Business District (Zhengzhou Convention & Exhibition Center); Tel: (0371)87078200;
+              <br>4) Starbucks (Zhengzhou Greenland Plaza): B1/F, Millennium Plaza, Greenland Center, Shangwu Inner Ring Road; Tel: (0371)55377576
+              <br>5) 18PLUS (Zhengdong CBD): No. 1-2 Shop, CBD Millennium Inner Ring, Shangwu Inner Ring Road (JW Marriott Hotel Zhengzhou); Tel: (0371)67000000;
+            </div>
+            <div v-if="currentCard === 7">
+              1) Fantawild Adventure: South of the Intersection of Zhengzhou-Kaifeng Expressway and Renwen Road (across from the north door of the Zhengzhou Green Expo Garden);
+              <br>2) Century Amusement Park: No. 1 Shihua Road, Guancheng Hui District, Zhengzhou; Tel: (0371)63282288;
+              <br>3) Henan Museum: No. 8, N Nongye Road, Zhengzhou; (0371)63511237;
+              <br>4) Zhengzhou Aquariums: No. 86, Guoji Road, Jinshui District, Zhengzhou City, Henan Province; Tel: (0371)63567403,(0371)63567402;
+              <br>5) Zhengdong New District Wetland Park: Zhengdong New District Wetland Park, Jinshui District, Zhengzhou City, Henan Province (N Shangwu Inner Ring Road);
+            </div>
+          </div>
+        </div>
+        <!--英文版交通方式结束-->
       </div>
     </div>
     <div class="module supporting-box normal-bg" ref="supporting" id="supporting">

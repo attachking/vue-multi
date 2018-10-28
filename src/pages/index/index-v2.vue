@@ -129,23 +129,7 @@
         </div>
       </div>
       <div class="tags-box" ref="tags">
-        <a href="">郑州新郑国际机场</a>
-        <a href="">中欧班列</a>
-        <a href="">名胜古迹</a>
-        <a href="">特色产业</a>
-        <a href="">行政区划</a>
-        <a href="">人口经济</a>
-        <a href="">自然地理</a>
-        <a href="">兰考普惠金融改革实验区</a>
-        <a href="">促进中部地区崛起十三五规划</a>
-        <a href="">中原城市群</a>
-        <a href="">国家大数据综合实验区</a>
-        <a href="">跨境电商综合实验区</a>
-        <a href="">河南自由贸易实验区</a>
-        <a href="">国家自助创新示范区</a>
-        <a href="">航空港经济综合实验区</a>
-        <a href="">中原经济区</a>
-        <a href="">粮食生产核心区</a>
+        <a :href="val.value" v-for="(val, key) in tags" :key="key" :style="`color: ${colors[key]};`">{{val.name}}</a>
       </div>
     </div>
     <div class="module supporting-box normal-bg" ref="media">
@@ -192,7 +176,60 @@ export default {
       ccmu17: this.$userInfo.ccmu17,
       status: this.$userInfo.status,
       HZMT: [],
-      closeNumber: 8
+      closeNumber: 8,
+      tags: [{
+        name: '郑州新郑国际机场',
+        value: ''
+      }, {
+        name: '中欧班列',
+        value: ''
+      }, {
+        name: '名胜古迹',
+        value: ''
+      }, {
+        name: '特色产业',
+        value: ''
+      }, {
+        name: '行政区划',
+        value: ''
+      }, {
+        name: '人口经济',
+        value: ''
+      }, {
+        name: '自然地理',
+        value: ''
+      }, {
+        name: '兰考普惠金融改革实验区',
+        value: ''
+      }, {
+        name: '促进中部地区崛起十三五规划',
+        value: ''
+      }, {
+        name: '中原城市群',
+        value: ''
+      }, {
+        name: '国家大数据综合实验区',
+        value: ''
+      }, {
+        name: '跨境电商综合实验区',
+        value: ''
+      }, {
+        name: '河南自由贸易实验区',
+        value: ''
+      }, {
+        name: '国家自助创新示范区',
+        value: ''
+      }, {
+        name: '航空港经济综合实验区',
+        value: ''
+      }, {
+        name: '中原经济区',
+        value: ''
+      }, {
+        name: '粮食生产核心区',
+        value: ''
+      }],
+      colors: ['#e4007f', '#f39700', '#f07029', '#f29c9f', '#448aca', '#f39700', '#002e73', '#666666', '#8957a1', '#a47949', '#01559d', '#0b7c81', '#fa6041', '#037f37', '#05a5c3', '#fa9d24', '#be9153', '#2d84ce', '#6a3906']
     }
   },
   methods: {

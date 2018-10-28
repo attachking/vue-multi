@@ -4,7 +4,7 @@
       <div class="search-tit">
         <el-form inline :model="form" class="demo-form-inline">
           <el-form-item>
-            <el-input v-model="form.aab004" placeholder="请输入单位名称/关键字" @keydown.enter.native="onSubmit"></el-input>
+            <el-input v-model.trim="form.aab004" placeholder="请输入单位名称/关键字" @keydown.enter.native="onSubmit"></el-input>
           </el-form-item>
           <el-form-item>
             <el-select v-model="form.ccpr10" filterable clearable placeholder="请选择行业类别">

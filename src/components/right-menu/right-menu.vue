@@ -3,8 +3,10 @@
     <div class="right-menu-item">
       <div class="sign-up-con">
         <div class="sign-up">
-          <a href="signUp.html">大会报名</a>
-          <a href="signUp.html">点击报名</a>
+          <a href="signUp.html" v-if="!en">大会报名</a>
+          <a href="signUp.html" v-if="!en">点击报名</a>
+          <a href="signUp.html" v-if="en" style="text-align: center; margin: 8px 0 0 11px; font-size: 12px;">Sign Up</a>
+          <a href="signUp.html" v-if="en" style="text-align: center; margin: 8px 0 0 11px; font-size: 12px;">Sign Up</a>
         </div>
       </div>
     </div>
@@ -12,7 +14,8 @@
       <div class="right-menu-icon">
         <div class="right-menu-icon-c two">
           <img src="./static/weixin.png">
-          <span>微信</span>
+          <span v-if="!en">微信</span>
+          <span v-if="en" style="font-size: 12px;padding: 21px 0 0 0;">WeChat</span>
         </div>
       </div>
       <div class="right-menu-qrcode">
@@ -29,8 +32,10 @@
     <div class="right-menu-item">
       <div class="sign-up-con">
         <div class="sign-up">
-          <a href="javascript:;">移动APP</a>
-          <a href="javascript:;">扫描下载</a>
+          <a href="javascript:;" v-if="!en">移动APP</a>
+          <a href="javascript:;" v-if="en" style="margin: 10px 0 0 2px; text-align: center;width: 46px; font-size: 12px;">Mobile APP</a>
+          <a href="javascript:;" v-if="!en">扫描下载</a>
+          <a href="javascript:;" v-if="en" style="margin: 10px 0 0 2px; text-align: center;width: 46px; font-size: 12px;">Mobile APP</a>
         </div>
       </div>
       <div class="right-menu-qrcode">
@@ -43,7 +48,8 @@
       <div class="right-menu-icon">
         <div class="right-menu-icon-c">
           <img src="./static/phone.png">
-          <span>手机微官网</span>
+          <span v-if="!en">手机微官网</span>
+          <span v-if="en" style="font-size: 12px; padding: 21px 0 0 0;">Mobile Web</span>
         </div>
       </div>
       <div class="right-menu-qrcode">
@@ -56,7 +62,8 @@
       <div class="right-menu-icon">
         <div class="right-menu-icon-c two">
           <img src="./static/weibo.png">
-          <span>微博</span>
+          <span v-if="!en">微博</span>
+          <span v-if="en" style="font-size: 12px;">Weibo</span>
         </div>
       </div>
       <div class="right-menu-qrcode">
@@ -69,7 +76,8 @@
       <div class="right-menu-icon">
         <div class="right-menu-icon-c">
           <img src="./static/top.png">
-          <span>回到顶部</span>
+          <span v-if="!en">回到顶部</span>
+          <span v-if="en" style="padding: 22px 0 0 0;font-size: 12px;">Back To Top</span>
         </div>
       </div>
     </div>
@@ -77,6 +85,7 @@
 </template>
 <script>
 import $ from 'jquery'
+import {isEn} from '../../common/js/utils'
 
 // 是否为质保环境
 const test = !!process.env.TEST
@@ -86,7 +95,8 @@ export default {
   data() {
     return {
       showTop: false,
-      test: test
+      test: test,
+      en: isEn()
     }
   },
   methods: {

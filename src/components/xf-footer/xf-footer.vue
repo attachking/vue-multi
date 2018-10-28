@@ -1,6 +1,53 @@
 <template>
   <div class="xf-footer">
-    <div class="xf-footer-con">
+    <!--英文版-->
+    <div class="xf-footer-con xf-footer-con-en" v-if="en">
+      <div class="xf-footer-left">
+        <img src="../../common/img/logo.png" alt="">
+      </div>
+      <div class="xf-footer-middle">
+        <p>Address: No. 11 Zhengguang Rd, Zhengzhou, Henan, China (Office of the Organizing Committee of Talent Recruitment Conference for Innovation and Development, Henan, China)</p>
+        <p>Hotline Service: 12333</p>
+        <p>Website Technical Services: 0371-67919501&nbsp;&nbsp;0371-67919503 (9:00 a.m. – 5:00 p.m. Monday to Friday)</p>
+        <p>Organizing Committee Office: 0371-69690404 (9:00 a.m. – 5:00 p.m. Monday to Friday)</p>
+        <p>Fax: 0371-69690431&nbsp;&nbsp;E-mail: hnzcyz@126.com&nbsp;&nbsp;Postcode: 450000</p>
+        <p class="police">
+          <a href="http://www.miibeian.gov.cn/" target="_blank">ICP Number: 14002359</a>&nbsp;
+          <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41010702002490">
+            <img style="vertical-align: middle" src="../../../static/assets/icon-police.png" />&nbsp;<span>豫公网安备 41010702002490号</span>
+          </a>
+        </p>
+        <p>Copyright © 2018 All Rights Reserved by Talent Recruitment Conference for Innovation and Development, Henan, China</p>
+        <p>Technical support:<a href="http://www.xfxxgs.com/" target="_blank">Henan Xunfeng Information Technology Co., Ltd.</a>
+          <span style="margin-left: 15px;" :title="'总访问量：' + allCounts">PV：{{dayCounts}}</span>
+        </p>
+      </div>
+      <div class="xf-footer-right-con">
+        <div class="xf-footer-right">
+          <div class="xf-footer-qrcode">
+            <img src="../../../static/assets/qrcode/weixin-service.jpg">
+          </div>
+          <p>Wechat Service Account</p>
+        </div>
+        <div class="xf-footer-right">
+          <div class="xf-footer-qrcode">
+            <img :src="test ? './static/assets/qrcode/app-test.png' : './static/assets/qrcode/app.png'">
+          </div>
+          <p>Mobile APP</p>
+        </div>
+        <div class="xf-footer-right">
+          <div class="xf-footer-qrcode">
+            <img src="../../../static/assets/qrcode/weibo.png">
+          </div>
+          <p>
+            <a href="https://weibo.com/u/6535737664" target="_blank">Weibo</a>
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--英文版结束-->
+    <!--中文版开始-->
+    <div class="xf-footer-con" v-if="!en">
       <div class="xf-footer-left">
         <img src="../../common/img/logo.png" alt="">
       </div>
@@ -18,7 +65,7 @@
         </p>
         <p>Copyright © 2018 All Rights Reserved&nbsp;中国·河南招才引智创新发展大会组委会</p>
         <p>技术支持：<a href="http://www.xfxxgs.com/" target="_blank">河南讯丰信息技术有限公司</a>
-          <span style="margin-left: 15px;" :title="'总访问量：' + allCounts">今日访问量：{{dayCounts}}</span>
+          <span style="margin-left: 15px;" :title="'ALL：' + allCounts">今日访问量：{{dayCounts}}</span>
         </p>
       </div>
       <div class="xf-footer-right-con">
@@ -56,11 +103,12 @@
         </div>
       </div>
     </div>
+    <!--中文版结束-->
   </div>
 </template>
 <script>
 import $ from 'jquery'
-import {STORAGE_TYPE, storage} from '../../common/js/utils'
+import {STORAGE_TYPE, storage, isEn} from '../../common/js/utils'
 // 是否为质保环境
 const test = !!process.env.TEST
 
@@ -70,7 +118,8 @@ export default {
     return {
       test: test,
       dayCounts: '',
-      allCounts: ''
+      allCounts: '',
+      en: isEn()
     }
   },
   methods: {
@@ -94,11 +143,11 @@ export default {
       })
     },
     notice2() {
-      let until = new Date('2018/10/25 06:00:00')
+      let until = new Date('2018/10/25 20:00:00')
       let now = new Date()
       if (now.getTime() > until.getTime()) return
       if (storage.getTemp(STORAGE_TYPE.noticed)) return
-      this.$confirm('本网站定于2018年10月24日19：00至次日06：00进行网站维护，期间数据不会被保留，请勿操作，由此给您带来的不便，敬请谅解', '提示', {
+      this.$confirm('本网站定于2018年10月25日15：00至20：00进行网站升级，由此给您带来的不便，敬请谅解', '提示', {
         confirmButtonText: '不再提示',
         cancelButtonText: '关闭',
         type: 'warning'
@@ -141,12 +190,27 @@ export default {
   .xf-footer{
     width: 100%;
     background: #303032;
-    height: 240px;
     .xf-footer-con{
       width: 1250px;
       margin: 0 auto;
       color: #fff;
       font-size: 12px;
+      height: 240px;
+      &.xf-footer-con-en{
+        height: 280px;
+        .xf-footer-middle{
+          padding: 0 0 0 22px;
+          height: 240px;
+          margin: 14px 0 0 0;
+        }
+        .xf-footer-left{
+          height: 240px;
+          padding: 59px 0 0 30px;
+        }
+        .xf-footer-right{
+          padding: 36px 0 0 20px;
+        }
+      }
       @include clearFixed;
       .xf-footer-left{
         width: 180px;

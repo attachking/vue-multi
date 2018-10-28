@@ -201,7 +201,7 @@
             <a class="wisdom-right-item" href="newsList.html#/module?channel_code=RCGZ"><span>人才工作</span><br>TALENT WORK<img src="./static/wisdom-icon-2.png"></a>
             <a class="wisdom-right-item" href="newsList.html#/module?channel_code=YZHD"><span>引智活动</span><br>INTELLECTUAL ACTIVITY<img src="./static/wisdom-icon-3.png"></a>
             <div class="wisdom-right-item"></div>
-            <a class="wisdom-right-item" href="newsList.html#/pic?channel_code=ZJFC"><span>专家风采</span><br>EXPERT DEMEANOR<img src="./static/wisdom-icon-4.png"></a>
+            <a class="wisdom-right-item" href="newsList.html#/pic2?channel_code=ZJFC"><span>专家风采</span><br>EXPERT DEMEANOR<img src="./static/wisdom-icon-4.png"></a>
           </div>
         </div>
       </div>
@@ -310,8 +310,7 @@ export default {
         rowsNum: 10,
         currentPage: 1,
         countsNum: 50,
-        channel_code: 'RCZC',
-        key: 'RCZC'
+        channel_code: 'RCZC'
       }).then(res => {
         this.RCZC = res.result
       })

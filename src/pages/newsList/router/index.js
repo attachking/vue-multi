@@ -8,6 +8,7 @@ Vue.use(Router)
 const module = () => import('../routes/module/module.vue') // 文字新闻列表
 const photo = () => import('../routes/photo/photo.vue')
 const pic = () => import('../routes/pic/pic.vue') // 图片新闻列表
+const pic2 = () => import('../routes/pic2/pic2.vue') // 图片人物列表
 const corp = () => import('../routes/corp/corp.vue') // 单位搜索列表
 const job = () => import('../routes/job/job.vue') // 岗位搜索列表
 const fair = () => import('../routes/fair/fair.vue') // 招聘会列表
@@ -30,6 +31,10 @@ const router = new Router({
     path: '/pic',
     name: 'pic',
     component: pic
+  }, {
+    path: '/pic2',
+    name: 'pic2',
+    component: pic2
   }, {
     path: '/corp',
     name: 'corp',

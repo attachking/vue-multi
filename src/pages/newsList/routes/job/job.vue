@@ -4,7 +4,7 @@
       <div class="search-tit">
         <el-form inline :model="form" class="demo-form-inline">
           <el-form-item>
-            <el-input v-model="form.bca112" placeholder="请输入岗位名称/单位名称" @keydown.enter.native="onSubmit"></el-input>
+            <el-input v-model.trim="form.bca112" placeholder="请输入岗位名称/单位名称" @keydown.enter.native="onSubmit"></el-input>
           </el-form-item>
           <el-form-item>
             <xf-cascader
